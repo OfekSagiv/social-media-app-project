@@ -1,15 +1,29 @@
 const userRepository = require('../repositories/user.repository');
 
-const createUser = async (userData) => {
-  const existing = await userRepository.findUserByEmail(userData.email);
-  if (existing) {
-    throw new Error('Email already in use');
+const checkIfExists = async (field, value, message) => {
+  const query = {};
+  query[field] = value;
+  const existing = await userRepository.findAllUsers(query);
+  if (existing.length > 0) {
+    throw new Error(message);
   }
+};
+
+const createUser = async (userData) => {
+  await checkIfExists('email', userData.email, 'Email already in use');
+  await checkIfExists('username', userData.username, 'Username already taken');
+
   return await userRepository.createUser(userData);
 };
 
 const getAllUsers = async (filters) => {
-  return await userRepository.findAllUsers(filters);
+  const users = await userRepository.findAllUsers(filters);
+
+  if (filters.username && users.length === 0) {
+    throw new Error(`User with username "${filters.username}" not found`);
+  }
+
+  return users;
 };
 
 const getUserById = async (id) => {
