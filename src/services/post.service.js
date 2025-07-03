@@ -5,7 +5,7 @@ const createPost = async (data) => {
 };
 
 const getAllPosts = async () => {
-    return await postRepository.getAllPosts();
+    return postRepository.getAllPosts();
 };
 
 const getPostById = async (id) => {
@@ -26,10 +26,37 @@ const deletePost = async (id) => {
     return result;
 };
 
+const addCommentToPost = async (postId, commentData) => {
+    const post = await postRepository.getPostById(postId);
+    if (!post) throw new Error('Post not found');
+
+    if (!commentData.content || commentData.content.trim() === '') {
+        throw new Error('Comment content is required');
+    }
+
+    return await postRepository.addComment(postId, commentData);
+};
+
+const deleteCommentFromPost = async (postId, userId, createdAt) => {
+    const post = await postRepository.getPostById(postId);
+    if (!post) throw new Error('Post not found');
+
+    const comment = post.comments.find(
+        (c) =>
+            c.userId.toString() === userId &&
+            new Date(c.createdAt).getTime() === new Date(createdAt).getTime()
+    );
+
+    if (!comment) throw new Error('Comment not found or already deleted');
+
+    return await postRepository.removeComment(postId, userId, createdAt);
+};
 module.exports = {
     createPost,
     getAllPosts,
     getPostById,
     updatePost,
     deletePost,
+    addCommentToPost,
+    deleteCommentFromPost
 };
