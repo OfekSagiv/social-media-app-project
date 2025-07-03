@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>FriendZone - Login</title>
+    <link rel="stylesheet" href="/styles/login.css" />
+    <link rel="icon" href="/img/favicon.png" />
+  </head>
+  <body>
+
+    <main class="friendzone-container">
+      <div class="left-panel">
+        <div class="logo-container">
+            <img src="/img/logo.png" alt="FriendZone Logo" class="logo-img" />
+        </div>
+        <h1 class="brand-title">FRIENDZONE</h1>
+        <p class="brand-subtitle">Connect with friends and share your moments</p>
+      </div>
+
+      <div class="right-panel">
+        <h2 class="welcome-title">Welcome to friendzone!</h2>
+        <p class="welcome-sub">Please sign in to your account</p>
+
+        <form
+          class="user-form"
+          id="friendzone-form"
+          action="/login"
+          method="POST"
+          onsubmit="login(event)"
+        >
+          <div class="input-box">
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="input-box">
+            <label for="password">Password: 
+              <a href="#" class="forgot-link">Forgot password?</a>
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter password"
+              required
+            />
+          </div>
+
+          <div class="checkbox-box">
+            <input type="checkbox" id="remember" />
+            <label for="remember">Remember me</label>
+          </div>
+
+          <button class="btn btn-login" type="submit">Sign in</button>
+
+          <p class="sign-option">
+            Don’t have an account?
+            <a class="main-link" href="/register">Sign up</a>
+          </p>
+        </form>
+      </div>
+    </main>
+
+    <script src="/Scripts/log-in.js"></script>
+  </body>
+</html>
