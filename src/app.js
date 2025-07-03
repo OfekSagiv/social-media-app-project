@@ -15,7 +15,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/groups', groupRoutes);
 
 app.get('/login', (req, res) => {
-  res.render('login');  // מציג את ה-login.ejs
+  res.render('login'); 
 });
 
 app.get('/', (req, res) => {
