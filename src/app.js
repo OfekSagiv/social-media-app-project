@@ -6,6 +6,7 @@ const groupRoutes = require('./routes/group.routes');
 const notificationRoutes = require('./routes/notification.routes');
 const authRoutes = require('./routes/auth.routes');
 const { sessionMiddleware } = require('./middleware/auth');
+const { isLoggedIn } = require('./middleware/auth');
 
 const app = express();
 
@@ -33,6 +34,10 @@ app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
     res.send('API is running...');
+});
+
+app.get('/home', isLoggedIn, (req, res) => {
+    res.render('home', { fullName: req.session.fullName });
 });
 
 module.exports = app;
