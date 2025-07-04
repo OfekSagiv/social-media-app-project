@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<!--this is an EJS template for the home page-->
+<html lang="en">
+<head>
+    <title>Welcome</title>
+</head>
+<body>
+<h1>Welcome, <%= fullName %>!</h1>
+<form method="POST" action="/api/auth/logout">
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>
