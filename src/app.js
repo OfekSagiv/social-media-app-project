@@ -17,7 +17,11 @@ app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/groups', groupRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use(express.static('src/public'));
 
+app.get('/signup', (req, res) => {
+  res.render('signup'); 
+});
 
 app.get('/login', (req, res) => {
   res.render('login'); 

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet" />
+  <title>FriendZone - Sign Up</title>
+  <link rel="stylesheet" href="/styles/signup.css" />
+  <link rel="icon" href="/img/favicon.png" />
+</head>
+<body>
+  <main class="signup-container">
+    <div class="signup-left">
+      <div class="signup-logo-box">
+        <img src="/img/logo.png" alt="FriendZone Logo" class="signup-logo-img" />
+      </div>
+      <h1 class="signup-brand-title">FRIENDZONE</h1>
+      <p class="signup-subtitle">Connect with friends and share your moments</p>
+    </div>
+
+    <div class="signup-right">
+      <h2 class="signup-welcome">Create your account</h2>
+      <p class="signup-sub">Sign up to join the community</p>
+
+      <form id="signup-form" class="signup-form" method="POST" action="/register">
+        <div class="signup-input-box">
+          <label for="firstName">First Name:</label>
+          <input type="text" id="firstName" name="firstName" placeholder="First name" required />
+        </div>
+
+        <div class="signup-input-box">
+          <label for="lastName">Last Name:</label>
+          <input type="text" id="lastName" name="lastName" placeholder="Last name" required />
+        </div>
+
+        <div class="signup-input-box">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required />
+        </div>
+
+        <div class="signup-input-box">
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="password" placeholder="Create password" required />
+        </div>
+
+        <div class="signup-input-box">
+          <label for="confirmPassword">Confirm Password:</label>
+          <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required />
+        </div>
+
+        <button class="signup-btn" type="submit">Sign up</button>
+
+        <p class="signup-login-option">
+          Already have an account?
+          <a class="signup-link" href="/login">Sign in</a>
+        </p>
+      </form>
+    </div>
+  </main>
+</body>
+</html>
