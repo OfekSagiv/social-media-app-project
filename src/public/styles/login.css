@@ -1,0 +1,154 @@
+body {
+  background-color: #f0f4ff;
+  background-image: url("/img/logo.png");
+  background-repeat: repeat;
+  background-size: 350px;
+  background-position: center;
+  font-family: 'Rubik', sans-serif;
+  margin: 0;
+}
+
+.friendzone-container {
+  display: flex;
+  width: 80%;
+  max-width: 1100px;
+  margin: 100px auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.left-panel {
+  flex: 1;
+  background: #eaf1ff;
+  text-align: center;
+  padding: 60px 30px;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  width: 120px;
+  height: auto;
+  max-width: 100%;
+}
+
+.brand-title {
+    color: #4285f4;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.brand-subtitle {
+  font-size: 14px;
+  color: #333;
+  margin-top: 10px;
+}
+
+.right-panel {
+  flex: 1;
+  background-color: #fff;
+  padding: 50px 40px;
+  position: relative;
+}
+
+.welcome-title {
+  color: #4285f4;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.welcome-sub {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.user-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-box {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 6px;
+}
+
+.forgot-link {
+  float: right;
+  font-size: 12px;
+  text-decoration: none;
+  color: #4285f4;
+}
+
+.checkbox-box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  font-size: 14px;
+}
+
+.checkbox-box input {
+  margin-right: 10px;
+}
+
+.btn-login {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.btn-login:hover {
+  background-color: #3367d6;
+}
+
+.sign-option {
+  font-size: 14px;
+  text-align: center;
+}
+
+.main-link {
+  color: #4285f4;
+  text-decoration: none;
+  font-weight: 500;
+}
+ 
+.main-link:hover , .forgot-link:hover {
+  text-decoration: underline;
+}
+
+.loginMessage {
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: center;
+  display: none;
+}
+
+.loginMessage.error {
+  color: #e53935;
+}
+
+.loginMessage.success {
+  color: #43a047;
+}
