@@ -33,11 +33,19 @@ app.get('/login', (req, res) => {
 app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
-    res.send('API is running...');
+    const user = req.session?.user;
+    if (user) {
+        return res.redirect('/home');
+    }
+    res.redirect('/login');
 });
 
 app.get('/home', isLoggedIn, (req, res) => {
-    res.render('home', { fullName: req.session.fullName });
+    const user = req.session.user;
+    res.render('home', {
+        fullName: user.fullName,
+        user
+    });
 });
 
 module.exports = app;

@@ -1,0 +1,43 @@
+<nav class="navbar">
+    <div class="navbar-left">
+        <a href="/home" class="navbar-logo">
+            <img src="/img/logo.png" alt="FriendZone Logo" class="navbar-logo-img" />
+            <span class="navbar-brand">FRIENDZONE</span>
+        </a>
+    </div>
+
+
+    <div class="navbar-center">
+        <input type="text" class="glass-input" placeholder="Search users or groups..." />
+    </div>
+
+    <div class="navbar-links">
+        <div class="navbar-dropdown">
+            <button class="glass-button dropdown-toggle">My Space</button>
+            <ul class="dropdown-menu">
+                <li><a href="/my-posts">My Posts</a></li>
+                <li><a href="/my-friends">My Friends</a></li>
+                <li><a href="/my-groups">My Groups</a></li>
+            </ul>
+        </div>
+
+        <a href="/notifications" class="glass-button">Notifications</a>
+    </div>
+
+    <div class="navbar-user">
+        <img src="<%= user.profileImage || '/img/default-avatar.png' %>" alt="Avatar" class="navbar-avatar" />
+        <div class="navbar-dropdown">
+            <span class="navbar-username"><%= user.firstName %></span>
+            <ul class="dropdown-menu">
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/settings">Settings</a></li>
+                <li><button type="submit" form="logoutForm">Logout</button></li>
+            </ul>
+        </div>
+    </div>
+
+    <form id="logoutForm" action="/api/auth/logout" method="POST" style="display: none;"></form>
+
+</nav>
+
+

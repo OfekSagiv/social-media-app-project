@@ -10,8 +10,8 @@ const sessionMiddleware = session({
 });
 
 function isLoggedIn(req, res, next) {
-    if (req.session.userId) return next();
-    res.status(401).json({ message: 'You must be logged in' });
+    if (req.session.user) return next();
+    res.redirect('/login');
 }
 
 function isLoggedOut(req, res, next) {
