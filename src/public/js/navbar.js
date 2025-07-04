@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const allDropdowns = document.querySelectorAll('.navbar-dropdown');
 
     allDropdowns.forEach(dropdown => {
-        const toggle = dropdown.querySelector('.dropdown-toggle') || dropdown.previousElementSibling; // תופס גם את האווטאר
+        const toggle = dropdown.querySelector('.dropdown-toggle') || dropdown.previousElementSibling;
         const menu = dropdown.querySelector('.dropdown-menu');
 
         if (!toggle || !menu) return;

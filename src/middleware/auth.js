@@ -11,6 +11,14 @@ const sessionMiddleware = session({
 
 function isLoggedIn(req, res, next) {
     if (req.session.user) return next();
+
+    const acceptsJSON = req.headers.accept && req.headers.accept.includes('application/json');
+    const isApiRequest = req.originalUrl.startsWith('/api/');
+
+    if (acceptsJSON || isApiRequest || req.xhr) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
     res.redirect('/login');
 }
 
