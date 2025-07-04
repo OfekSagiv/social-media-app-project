@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('friendzone-form');
+    const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
 
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
