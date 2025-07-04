@@ -1,0 +1,195 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    gap: 16px;
+    background-color: #eaf1ff;
+    padding: 12px 24px;
+    margin: 20px 0;
+    width: 90%;
+    max-width: 1400px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.navbar-center {
+    display: flex;
+    align-items: center;
+    margin-left: 16px;
+}
+
+.navbar-user {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    position: relative;
+}
+
+.navbar-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.navbar-logo-img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.navbar-brand {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4285f4;
+}
+
+.navbar-links {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    list-style: none;
+    margin: 0;
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: #2e2e2e;
+    font-weight: 500;
+}
+
+.navbar-links a:hover {
+    color: inherit;
+}
+
+.navbar-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.navbar-username {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.navbar-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    padding: 8px 0;
+    list-style: none;
+    min-width: 160px;
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu li {
+    padding: 10px 20px;
+    white-space: nowrap;
+}
+
+.dropdown-menu li:hover {
+    background-color: rgba(234, 241, 255, 0.8);
+}
+
+.dropdown-menu li a,
+.dropdown-menu li button {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    text-decoration: none;
+    font-family: 'Rubik', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #2e2e2e;
+    cursor: pointer;
+    padding: 0;
+}
+
+.dropdown-menu li a:hover,
+.dropdown-menu li button:hover {
+    color: inherit;
+}
+
+.navbar-links .navbar-dropdown .dropdown-menu {
+    left: 0;
+    right: auto;
+}
+
+.navbar-user .navbar-dropdown .dropdown-menu {
+    right: 0;
+    left: auto;
+    top: calc(100% + 17px);
+}
+
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.08);
+    color: black;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    outline: none;
+    font-size: 14px;
+}
+
+.glass-input::placeholder {
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.glass-button,
+.glass-button:link,
+.glass-button:visited {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Rubik', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 8px 16px;
+    color: #2e2e2e;
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.glass-button:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
