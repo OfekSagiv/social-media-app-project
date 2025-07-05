@@ -44,16 +44,21 @@ const deletePost = async (req, res) => {
         res.status(400).json({error: err.message});
     }
 };
+
 const addComment = async (req, res) => {
     try {
+        const userId = req.session.user?._id;
+        const fullName = req.session.user?.fullName;
+        if (!userId) return res.status(401).json({ error: 'Not authenticated' });
+
         const comment = {
-            //todo: replace with session userId
-            userId: req.body.userId,
-            content: req.body.content,
+            userId,
+            content: req.body.text,
         };
 
-        const updatedPost = await postService.addCommentToPost(req.params.id, comment);
-        res.status(201).json(updatedPost);
+        await postService.addCommentToPost(req.params.id, comment);
+
+        res.status(201).json({ text: comment.content, authorName: fullName });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -61,12 +66,26 @@ const addComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
     try {
-        //todo: replace with session userId
-        const { createdAt, userId } = req.body;
+        const {createdAt} = req.body;
+        const userId = req.session.user?._id;
         const postId = req.params.id;
 
         const updatedPost = await postService.deleteCommentFromPost(postId, userId, createdAt);
         res.status(200).json(updatedPost);
+    } catch (err) {
+        res.status(400).json({error: err.message});
+    }
+};
+
+const likePost = async (req, res) => {
+    try {
+        const userId = req.session.user?._id;
+        if (!userId) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+
+        const updatedPost = await postService.toggleLike(req.params.id, userId);
+        res.status(200).json({ likes: updatedPost.likes.length });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }
@@ -79,5 +98,6 @@ module.exports = {
     updatePost,
     deletePost,
     addComment,
-    deleteComment
+    deleteComment,
+    likePost
 };

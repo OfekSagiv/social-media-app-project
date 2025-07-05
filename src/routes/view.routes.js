@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { isLoggedIn } = require('../middleware/auth');
+const {getAllPosts} = require("../services/post.service");
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -16,11 +17,14 @@ router.get('/', (req, res) => {
     res.redirect('/login');
 });
 
-router.get('/home', isLoggedIn, (req, res) => {
+router.get('/home', isLoggedIn, async (req, res) => {
     const user = req.session.user;
+    const posts = await getAllPosts();
+
     res.render('home', {
         fullName: user.fullName,
-        user
+        user,
+        posts
     });
 });
 
