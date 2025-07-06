@@ -1,14 +1,15 @@
 .new-post-form textarea {
-    width: 100%;
-    border: none;
-    border-radius: 12px;
-    padding: 10px;
-    resize: vertical;
-    min-height: 80px;
-    margin-bottom: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    color: #2e2e2e;
-    font-size: 14px;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+  color: #2e2e2e;
+  font-size: 14px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
 }
 
 .new-post-form input[type="file"] {
@@ -18,16 +19,12 @@
     color: #2e2e2e;
 }
 
-.new-post-form .glass-button {
-    padding: 6px 12px;
-    border-radius: 20px;
-    border: none;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    transition: all 0.2s ease;
+.form-title {
+  font-size: 20px;
+  color: #007bff;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: left;
+  text-align: center;
 }
 
-.new-post-form .glass-button:hover {
-    background: rgba(255, 255, 255, 0.3);
-}

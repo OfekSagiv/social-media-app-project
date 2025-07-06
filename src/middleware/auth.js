@@ -23,7 +23,7 @@ async function attachUser(req, res, next) {
 }
 
 function isLoggedIn(req, res, next) {
-    if (req.session.user) return next();
+    if (req.user || req.session.user) return next();
 
     const acceptsJSON = req.headers.accept && req.headers.accept.includes('application/json');
     const isApiRequest = req.originalUrl.startsWith('/api/');
@@ -36,7 +36,7 @@ function isLoggedIn(req, res, next) {
 }
 
 function isLoggedOut(req, res, next) {
-    if (!req.session.userId) return next();
+    if (!req.user && !req.session.user) return next();
     res.status(403).json({ message: 'Already logged in' });
 }
 
