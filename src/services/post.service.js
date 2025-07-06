@@ -41,16 +41,25 @@ const deleteCommentFromPost = async (postId, userId, createdAt) => {
     const post = await postRepository.getPostById(postId);
     if (!post) throw new Error('Post not found');
 
-    const comment = post.comments.find(
-        (c) =>
-            c.userId.toString() === userId &&
-            new Date(c.createdAt).getTime() === new Date(createdAt).getTime()
-    );
-
-    if (!comment) throw new Error('Comment not found or already deleted');
+    const comment = await postRepository.getComment(postId, userId, createdAt);
+    if (!comment) throw new Error('Comment not found');
 
     return await postRepository.removeComment(postId, userId, createdAt);
 };
+
+const toggleLike = async (postId, userId) => {
+    const post = await postRepository.getPostById(postId);
+    if (!post) throw new Error('Post not found');
+
+    const hasLiked = post.likes.includes(userId);
+
+    if (hasLiked) {
+        return await postRepository.removeLike(postId, userId);
+    } else {
+        return await postRepository.addLike(postId, userId);
+    }
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -58,5 +67,6 @@ module.exports = {
     updatePost,
     deletePost,
     addCommentToPost,
-    deleteCommentFromPost
+    deleteCommentFromPost,
+    toggleLike
 };
