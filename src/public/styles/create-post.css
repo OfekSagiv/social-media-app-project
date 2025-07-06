@@ -1,0 +1,33 @@
+.new-post-form textarea {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 10px;
+    resize: vertical;
+    min-height: 80px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #2e2e2e;
+    font-size: 14px;
+}
+
+.new-post-form input[type="file"] {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #2e2e2e;
+}
+
+.new-post-form .glass-button {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
+}
+
+.new-post-form .glass-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}

@@ -1,4 +1,5 @@
 const session = require('express-session');
+const User = require('../models/User');
 
 const sessionMiddleware = session({
     secret: process.env.SESSION_SECRET || 'yourSecretKey',
@@ -8,6 +9,18 @@ const sessionMiddleware = session({
         maxAge: 24 * 60 * 60 * 1000,
     },
 });
+
+async function attachUser(req, res, next) {
+    if (req.session?.user) {
+        try {
+            const user = await User.findById(req.session.user);
+            if (user) req.user = user;
+        } catch (err) {
+            console.error('Error loading user from session:', err.message);
+        }
+    }
+    next();
+}
 
 function isLoggedIn(req, res, next) {
     if (req.session.user) return next();
@@ -31,4 +44,5 @@ module.exports = {
     sessionMiddleware,
     isLoggedIn,
     isLoggedOut,
+    attachUser,
 };
