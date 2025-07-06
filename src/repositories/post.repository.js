@@ -41,7 +41,10 @@ const removeComment = async (postId, userId, createdAt) => {
             $pull: {
                 comments: {
                     userId: userId,
-                    createdAt: new Date(createdAt),
+                    createdAt: {
+                        $gte: new Date(new Date(createdAt).getTime() - 1000),
+                        $lte: new Date(new Date(createdAt).getTime() + 1000)
+                    }
                 },
             },
         },

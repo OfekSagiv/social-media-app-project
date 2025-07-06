@@ -19,13 +19,25 @@ router.get('/', (req, res) => {
 
 router.get('/home', isLoggedIn, async (req, res) => {
     const user = req.session.user;
-    const posts = await getAllPosts();
 
-    res.render('home', {
-        fullName: user.fullName,
-        user,
-        posts
-    });
+    try {
+        const posts = await getAllPosts();
+
+        res.render('home', {
+            fullName: user.fullName,
+            user,
+            posts
+        });
+    } catch (err) {
+        console.error('Error fetching posts:', err.message);
+        res.status(500).render('error', {
+            message: 'Failed to load posts. Please try again later.'
+        });
+    }
+});
+
+router.get('/error-test', (req, res) => {
+    res.status(500).render('error', { message: 'This is a test error page.' });
 });
 
 module.exports = router;

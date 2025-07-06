@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const commentForm = postEl.querySelector('.comment-form');
         const commentInput = postEl.querySelector('.comment-input');
         const commentList = postEl.querySelector('.comment-list');
+        const commentCountEl = postEl.querySelector('.comment-count');
 
         commentToggleBtn?.addEventListener('click', () => {
             commentSection.style.display = commentSection.style.display === 'none' ? 'block' : 'none';
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         likeBtn?.addEventListener('click', async () => {
             try {
-                const res = await fetch(`/api/posts/${postId}/like`, { method: 'POST' });
+                const res = await fetch(`/api/posts/${postId}/like`, {method: 'POST'});
                 const data = await res.json();
                 if (res.ok) {
                     likeCountEl.textContent = data.likes;
@@ -28,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         deletePostBtn?.addEventListener('click', async () => {
-            if (!confirm('למחוק את הפוסט?')) return;
+            if (!confirm('are you sure?')) return;
             try {
-                const res = await fetch(`/api/posts/${postId}`, { method: 'DELETE' });
+                const res = await fetch(`/api/posts/${postId}`, {method: 'DELETE'});
                 if (res.ok) postEl.remove();
             } catch {
                 alert('Error deleting post');
@@ -45,8 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const res = await fetch(`/api/posts/${postId}/comments`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text }),
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({text}),
                 });
                 const data = await res.json();
                 if (res.ok) {
@@ -55,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     li.innerHTML = `<strong>${data.authorName}:</strong> ${data.text}`;
                     commentList.appendChild(li);
                     commentInput.value = '';
+                    commentCountEl.textContent = (parseInt(commentCountEl.textContent) + 1).toString();
                 }
             } catch {
                 alert('Error adding comment');
@@ -67,10 +69,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     const res = await fetch(`/api/posts/${postId}/comments`, {
                         method: 'DELETE',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ createdAt }),
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({createdAt}),
                     });
-                    if (res.ok) btn.closest('li').remove();
+                    if (res.ok) {
+                        btn.closest('li').remove();
+                        commentCountEl.textContent = (parseInt(commentCountEl.textContent) - 1).toString();
+                    }
                 } catch {
                     alert('Error deleting comment');
                 }

@@ -15,7 +15,9 @@
         <button class="like-btn glass-button">
             <span class="like-count"><%= post.likes.length %></span> &nbsp;like
         </button>
-        <button class="comment-toggle-btn glass-button">comments</button>
+        <button class="comment-toggle-btn glass-button">
+            <span class="comment-count"><%= post.comments.length %></span> &nbsp;comments
+        </button>
         <% if (post.author._id.toString() === user._id.toString()) { %>
             <button class="delete-post-btn glass-button">🗑️</button>
         <% } %>
@@ -33,7 +35,7 @@
                     <% if (comment.userId && comment.userId.fullName) { %>
                         <strong><%= comment.userId.fullName %>:</strong> <%= comment.content %>
                         <% if (comment.userId._id.toString() === user._id.toString()) { %>
-                            <button class="delete-comment-btn glass-button" data-created-at="<%= comment.createdAt %>">delete</button>
+                            <button class="delete-comment-btn glass-button" data-created-at="<%= comment.createdAt.toISOString() %>">delete</button>
                         <% } %>
                     <% } else { %>
                         <strong>Unknown:</strong> <%= comment.content %>
