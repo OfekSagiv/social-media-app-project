@@ -13,10 +13,12 @@
 
     <div class="post-actions">
         <button class="like-btn glass-button">
-            <span class="like-count"><%= post.likes.length %></span> &nbsp;like
+            <span class="like-count"><%= post.likes.length %></span>
+            &nbsp;<%= post.likes.length === 1 ? 'like' : 'likes' %>
         </button>
         <button class="comment-toggle-btn glass-button">
-            <span class="comment-count"><%= post.comments.length %></span> &nbsp;comments
+            <span class="comment-count"><%= post.comments.length %></span>
+            &nbsp;<%= post.comments.length === 1 ? 'comment' : 'comments' %>
         </button>
         <% if (post.author._id.toString() === user._id.toString()) { %>
             <button class="delete-post-btn glass-button">🗑️</button>

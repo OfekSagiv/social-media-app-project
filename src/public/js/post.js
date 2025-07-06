@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        postEl.querySelectorAll('.delete-comment-btn')?.forEach(btn => {
+        postEl.querySelectorAll('.delete-comment-btn').forEach(btn => {
             btn.addEventListener('click', async () => {
                 const createdAt = btn.dataset.createdAt;
                 try {
