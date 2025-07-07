@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const { isLoggedIn } = require('../middleware/auth');
 const {getAllPosts} = require("../services/post.service");
+const postController = require('../controllers/post.controller');
+
+router.get('/my-posts', isLoggedIn, postController.getMyPosts);
 
 router.get('/signup', (req, res) => {
     res.render('signup');
