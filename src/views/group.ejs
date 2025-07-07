@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title><%= group.name %> – FriendZone</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/post.css" />
+    <link rel="stylesheet" href="/styles/create-post.css" />
+    <link rel="stylesheet" href="/styles/group.css" />
+</head>
+<body>
+
+<%- include('partials/navbar', { user }) %>
+
+<section class="group-container">
+    <div class="group-card">
+        <div class="group-header">
+            <div>
+                <h1 class="group-title"><%= group.name %></h1>
+                <p class="group-description"><%= group.description %></p>
+            </div>
+            <button id="join-leave-btn" class="glass-button join-leave-btn" data-group-id="<%= group._id %>" data-is-member="<%= isMember %>">
+                <%= isMember ? 'Leave Group' : 'Join Group' %>
+            </button>
+        </div>
+
+        <%- include('partials/create-post', { user, group }) %>
+
+        <ul class="post-list">
+            <% posts.forEach(post => { %>
+                <%- include('partials/post', { post, user }) %>
+            <% }) %>
+        </ul>
+    </div>
+</section>
+
+<script src="/js/navbar.js"></script>
+<script src="/js/post.js" defer></script>
+<script src="/js/group.js" defer></script>
+<script src="/js/create-post.js"></script>
+
+</body>
+</html>

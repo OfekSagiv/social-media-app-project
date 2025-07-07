@@ -2,16 +2,17 @@ const postService = require('../services/post.service');
 
 const createPost = async (req, res) => {
     try {
-        const { content } = req.body;
+        const { content, groupId } = req.body;
 
         const newPost = await postService.createPost({
-        content,
-        author: req.user._id
-      });
+            content,
+            author: req.user._id,
+            groupId: groupId || null,
+        });
 
         res.status(201).json(newPost);
     } catch (err) {
-        res.status(400).json({error: err.message});
+        res.status(400).json({ error: err.message });
     }
 };
 

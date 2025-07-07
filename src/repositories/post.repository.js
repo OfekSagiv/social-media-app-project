@@ -5,6 +5,7 @@ const createPost = (data) => Post.create(data);
 const getAllPosts = () => {
     return Post.find()
         .populate('author', 'fullName')
+        .populate('groupId', 'name')
         .populate('comments.userId', 'fullName')
         .sort({ createdAt: -1 });
 };
@@ -68,6 +69,17 @@ const removeLike = async (postId, userId) => {
     );
 };
 
+
+
+const getPostsByGroup = (groupId) => {
+    return Post.find({ groupId })
+        .populate('author', 'fullName')
+        .populate('groupId', 'name')
+        .populate('comments.userId', 'fullName')
+        .sort({ createdAt: -1 });
+};
+
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -77,5 +89,6 @@ module.exports = {
     addComment,
     removeComment,
     addLike,
-    removeLike
+    removeLike,
+    getPostsByGroup
 };

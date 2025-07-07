@@ -1,6 +1,21 @@
 const postRepository = require('../repositories/post.repository');
-
+const groupRepository = require('../repositories/group.repository');
 const createPost = async (data) => {
+    const { content, author, groupId } = data;
+
+    if (!content || !author) {
+        throw new Error('Missing content or author');
+    }
+
+
+    if (groupId) {
+        const group = await groupRepository.findGroupById(groupId);
+        if (!group) throw new Error('Group not found');
+
+        const isMember = group.members.some((id) => id.equals(author));
+        if (!isMember) throw new Error('Only group members can post to this group');
+    }
+
     return await postRepository.createPost(data);
 };
 
@@ -60,6 +75,11 @@ const toggleLike = async (postId, userId) => {
     }
 };
 
+const getPostsByGroupId = async (groupId) => {
+    const posts = await postRepository.getPostsByGroup(groupId);
+    return posts;
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -68,5 +88,6 @@ module.exports = {
     deletePost,
     addCommentToPost,
     deleteCommentFromPost,
-    toggleLike
+    toggleLike,
+    getPostsByGroupId
 };
