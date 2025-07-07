@@ -1,0 +1,30 @@
+.new-post-form textarea {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 10px;
+  resize: vertical;
+  min-height: 80px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+  color: #2e2e2e;
+  font-size: 14px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.new-post-form input[type="file"] {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: #2e2e2e;
+}
+
+.form-title {
+  font-size: 20px;
+  color: #007bff;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: left;
+  text-align: center;
+}
+
