@@ -8,6 +8,11 @@ body {
     align-items: center;
 }
 
+h2 {
+    text-align: center;
+    color: #007bff;
+}
+
 .feed-container {
     width: 100%;
     max-width: 800px;
@@ -40,3 +45,4 @@ body {
 .glass-button:hover {
     background: rgba(150, 190, 255, 0.3);
 }
+
