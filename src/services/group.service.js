@@ -102,6 +102,10 @@ const changeGroupAdmin = async (groupId, newAdminId) => {
   return await groupRepository.changeGroupAdmin(groupId, newAdminObjectId);
 };
 
+const getGroupsByMember = async (userId) => {
+  return await groupRepository.getGroupsByMember(userId);
+};
+
 module.exports = {
   createGroup,
   getAllGroups,
@@ -112,4 +116,5 @@ module.exports = {
   leaveGroup,
   joinGroup,
   changeGroupAdmin,
+  getGroupsByMember
 };
