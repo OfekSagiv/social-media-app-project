@@ -1,12 +1,15 @@
 const postRepository = require('../repositories/post.repository');
 const groupRepository = require('../repositories/group.repository');
+
 const createPost = async (data) => {
-    const { content, author, groupId } = data;
+    const {content, author, groupId} = data;
 
-    if (!content || !author) {
-        throw new Error('Missing content or author');
+    if (!content) {
+        throw new Error('Missing content');
     }
-
+    if (!author) {
+        throw new Error('Missing author');
+    }
 
     if (groupId) {
         const group = await groupRepository.findGroupById(groupId);

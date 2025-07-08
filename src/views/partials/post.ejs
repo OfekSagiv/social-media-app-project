@@ -1,6 +1,6 @@
 <div class="post-card" data-post-id="<%= post._id %>">
     <div class="post-header">
-        <strong><%= post.author.fullName %></strong>
+        <strong class="post-author"><%= post.author.fullName %></strong>
         <% if (post.groupId) { %>
             <span class="post-group-ref">from <%= post.groupId.name %></span>
         <% } %>
