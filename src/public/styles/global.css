@@ -8,9 +8,14 @@ body {
     align-items: center;
 }
 
-h2 {
-    text-align: center;
-    color: #007bff;
+
+.form-title {
+  font-size: 20px;
+  color: #007bff;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: left;
+  text-align: center;
 }
 
 .feed-container {
@@ -30,7 +35,7 @@ h2 {
     font-size: 14px;
     font-weight: 500;
     padding: 8px 16px;
-    color: #2e2e2e;
+    color: #0c285e;
     background: rgba(255, 255, 255, 0.25);
     border: none;
     border-radius: 12px;
@@ -40,6 +45,7 @@ h2 {
     text-decoration: none;
     cursor: pointer;
     transition: background 0.2s ease;
+    
 }
 
 .glass-button:hover {

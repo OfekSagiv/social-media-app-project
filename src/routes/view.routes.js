@@ -78,4 +78,8 @@ router.get('/group/:id', isLoggedIn, async (req, res) => {
     }
 });
 
+router.get('/create-group', isLoggedIn, (req, res) => {
+  res.render('create-group', { user: req.user });
+});
+
 module.exports = router;
