@@ -8,6 +8,7 @@ body {
     align-items: center;
 }
 
+
 .form-title {
   font-size: 20px;
   color: #007bff;
@@ -50,3 +51,4 @@ body {
 .glass-button:hover {
     background: rgba(150, 190, 255, 0.3);
 }
+

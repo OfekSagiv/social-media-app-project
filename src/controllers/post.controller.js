@@ -106,5 +106,5 @@ module.exports = {
     deletePost,
     addComment,
     deleteComment,
-    likePost
+    likePost,
 };
