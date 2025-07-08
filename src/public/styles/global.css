@@ -9,6 +9,16 @@ body {
     background: rgba(0, 123, 255, 0.337);
 }
 
+
+.form-title {
+  font-size: 20px;
+  color: #007bff;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: left;
+  text-align: center;
+}
+
 .feed-container {
     width: 100%;
     max-width: 800px;
@@ -36,6 +46,7 @@ body {
     text-decoration: none;
     cursor: pointer;
     transition: background 0.2s ease;
+    
 }
 
 .glass-button:hover {
