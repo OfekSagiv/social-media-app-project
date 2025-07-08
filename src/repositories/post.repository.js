@@ -70,9 +70,11 @@ const removeLike = async (postId, userId) => {
 };
 
 const getPostsByAuthor = async (authorId) => {
-  return await Post.find({ author: authorId })
-    .populate('author', 'fullName')
-    .sort({ createdAt: -1 });
+    return await Post.find({ author: authorId })
+        .populate('author', 'fullName')
+        .populate('groupId', 'name')
+        .populate('comments.userId', 'fullName')
+        .sort({ createdAt: -1 });
 };
 
 const getPostsByGroup = (groupId) => {
