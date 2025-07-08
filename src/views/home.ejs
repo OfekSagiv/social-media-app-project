@@ -11,7 +11,7 @@
 <body>
 
 <%- include('partials/navbar', { user }) %>
-<%- include('partials/create-post') %>
+<%- include('partials/create-post', { user, group: null }) %>
 
 <main class="feed-container">
     <% posts.forEach(post => { %>
@@ -21,7 +21,7 @@
 
 <script src="/js/navbar.js"></script>
 <script src="/js/post.js" defer></script>
-<script src="/js/create-post.js"></script>
+<script src="/js/create-post.js" defer></script>
 
 </body>
 </html>

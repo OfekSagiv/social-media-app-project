@@ -1,0 +1,46 @@
+.group-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+.group-card {
+    background-color: #eaf1ff;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 20px;
+}
+
+.group-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+}
+
+.group-description {
+    font-size: 16px;
+    margin: 0;
+    color: #333;
+}
+
+.join-leave-btn {
+    height: fit-content;
+    white-space: nowrap;
+}
+
+.group-post-form {
+    margin-bottom: 30px;
+}
+
+.group-post-form textarea {
+    width: 100%;
+    min-height: 80px;
+    margin-bottom: 10px;
+}

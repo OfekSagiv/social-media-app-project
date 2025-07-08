@@ -1,6 +1,9 @@
 <div class="post-card" data-post-id="<%= post._id %>">
     <div class="post-header">
         <strong class="post-author"><%= post.author.fullName %></strong>
+        <% if (post.groupId) { %>
+            <span class="post-group-ref">from <%= post.groupId.name %></span>
+        <% } %>
         <span class="post-date"><%= post.createdAt.toLocaleString() %></span>
     </div>
 
