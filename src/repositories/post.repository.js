@@ -69,7 +69,11 @@ const removeLike = async (postId, userId) => {
     );
 };
 
-
+const getPostsByAuthor = async (authorId) => {
+  return await Post.find({ author: authorId })
+    .populate('author', 'fullName')
+    .sort({ createdAt: -1 });
+};
 
 const getPostsByGroup = (groupId) => {
     return Post.find({ groupId })
@@ -78,7 +82,6 @@ const getPostsByGroup = (groupId) => {
         .populate('comments.userId', 'fullName')
         .sort({ createdAt: -1 });
 };
-
 
 module.exports = {
     createPost,
@@ -90,5 +93,6 @@ module.exports = {
     removeComment,
     addLike,
     removeLike,
+    getPostsByAuthor,
     getPostsByGroup
 };

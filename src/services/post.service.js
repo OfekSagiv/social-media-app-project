@@ -78,6 +78,15 @@ const toggleLike = async (postId, userId) => {
     }
 };
 
+const getMyPosts = async (authorId) => {
+  try {
+    const posts = await postRepository.getPostsByAuthor(authorId);
+    return posts;
+  } catch (err) {
+    throw new Error('Error fetching posts');
+  }
+};
+
 const getPostsByGroupId = async (groupId) => {
     const posts = await postRepository.getPostsByGroup(groupId);
     return posts;
@@ -92,5 +101,6 @@ module.exports = {
     addCommentToPost,
     deleteCommentFromPost,
     toggleLike,
+    getMyPosts,
     getPostsByGroupId
 };
