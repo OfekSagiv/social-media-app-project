@@ -56,8 +56,11 @@ const getGroupMembers = async (req, res) => {
 
 const joinGroup = async (req, res) => {
   try {
-    const group = await groupService.joinGroup(req.params.id, req.body.userId);
-    res.json(group);
+    const userId = req.user?._id;
+    if (!userId) return res.status(401).json({ error: 'Not authenticated' });
+
+    const group = await groupService.joinGroup(req.params.id, userId);
+    res.status(200).json({ message: 'Joined group', members: group.members });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -65,8 +68,11 @@ const joinGroup = async (req, res) => {
 
 const leaveGroup = async (req, res) => {
   try {
-    const group = await groupService.leaveGroup(req.params.id, req.body.userId);
-    res.json(group);
+    const userId = req.user?._id;
+    if (!userId) return res.status(401).json({ error: 'Not authenticated' });
+
+    const group = await groupService.leaveGroup(req.params.id, userId);
+    res.status(200).json({ message: 'Left group', members: group.members });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
