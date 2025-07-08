@@ -60,6 +60,16 @@ const toggleLike = async (postId, userId) => {
     }
 };
 
+const getMyPosts = async (authorId) => {
+  try {
+    const posts = await postRepository.getPostsByAuthor(authorId);
+    return posts;
+  } catch (err) {
+    throw new Error('Error fetching posts');
+  }
+};
+
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -68,5 +78,6 @@ module.exports = {
     deletePost,
     addCommentToPost,
     deleteCommentFromPost,
-    toggleLike
+    toggleLike,
+    getMyPosts
 };

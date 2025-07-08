@@ -100,10 +100,7 @@ const likePost = async (req, res) => {
 
 const getMyPosts = async (req, res) => {
   try {
-    const posts = await Post.find({ author: req.user._id })
-      .populate('author', 'fullName')
-      .sort({ createdAt: -1 });
-
+    const posts = await postService.getMyPosts(req.user._id);
     res.render('my-posts', {
       posts,
       user: req.user
@@ -111,14 +108,12 @@ const getMyPosts = async (req, res) => {
   } catch (err) {
     console.error('Error loading user posts:', err.message);
     res.status(500).json({
-    message: 'Something went wrong',
-    error: err.message,
-    stack: err.stack,
+      message: 'Something went wrong',
+      error: err.message,
+      stack: err.stack,
     });
-
   }
 };
-
 
 module.exports = {
     createPost,

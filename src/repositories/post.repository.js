@@ -68,6 +68,14 @@ const removeLike = async (postId, userId) => {
     );
 };
 
+const getPostsByAuthor = async (authorId) => {
+  return await Post.find({ author: authorId })
+    .populate('author', 'fullName')
+    .sort({ createdAt: -1 });
+};
+
+
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -77,5 +85,6 @@ module.exports = {
     addComment,
     removeComment,
     addLike,
-    removeLike
+    removeLike,
+    getPostsByAuthor
 };
