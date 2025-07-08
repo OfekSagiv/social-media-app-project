@@ -1,10 +1,19 @@
 <div class="post-card" data-post-id="<%= post._id %>">
+    
+    <% if (post.groupId) { %>
+        <div class="post-group-banner">
+            <span>from <strong><%= post.groupId.name %></strong></span>
+            <hr />
+        </div>
+    <% } %>
+
     <div class="post-header">
         <strong class="post-author"><%= post.author.fullName %></strong>
-        <% if (post.groupId) { %>
-            <span class="post-group-ref">from <%= post.groupId.name %></span>
-        <% } %>
-        <span class="post-date"><%= post.createdAt.toLocaleString() %></span>
+        
+        <span class="post-date">
+            <%= post.createdAt.toLocaleString() %>
+            <i class="bi bi-calendar"></i>
+        </span>
     </div>
 
     <div class="post-content">
@@ -17,14 +26,15 @@
     <div class="post-actions">
         <button class="like-btn glass-button">
             <span class="like-count"><%= post.likes.length %></span>
-            &nbsp;<%= post.likes.length === 1 ? 'like' : 'likes' %>
+            <i class="bi bi-hand-thumbs-up-fill"></i>
         </button>
+
         <button class="comment-toggle-btn glass-button">
             <span class="comment-count"><%= post.comments.length %></span>
-            &nbsp;<%= post.comments.length === 1 ? 'comment' : 'comments' %>
+            <i class="bi bi-chat-heart-fill"></i>
         </button>
         <% if (post.author._id.toString() === user._id.toString()) { %>
-            <button class="delete-post-btn glass-button">🗑️</button>
+            <button class="delete-post-btn glass-button"><i class="bi bi-trash3-fill"></i></button>
         <% } %>
     </div>
 
