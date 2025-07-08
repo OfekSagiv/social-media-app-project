@@ -1,5 +1,4 @@
 const postService = require('../services/post.service');
-const Post = require('../models/Post');
 
 const createPost = async (req, res) => {
     try {
@@ -98,23 +97,6 @@ const likePost = async (req, res) => {
     }
 };
 
-const getMyPosts = async (req, res) => {
-  try {
-    const posts = await postService.getMyPosts(req.user._id);
-    res.render('my-posts', {
-      posts,
-      user: req.user
-    });
-  } catch (err) {
-    console.error('Error loading user posts:', err.message);
-    res.status(500).json({
-      message: 'Something went wrong',
-      error: err.message,
-      stack: err.stack,
-    });
-  }
-};
-
 module.exports = {
     createPost,
     getAllPosts,
@@ -124,5 +106,4 @@ module.exports = {
     addComment,
     deleteComment,
     likePost,
-    getMyPosts
 };

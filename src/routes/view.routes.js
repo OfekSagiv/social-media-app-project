@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { isLoggedIn } = require('../middleware/auth');
+const {isLoggedIn } = require('../middleware/auth');
 const {getAllPosts} = require("../services/post.service");
-const postController = require('../controllers/post.controller');
-
-router.get('/my-posts', isLoggedIn, postController.getMyPosts);
+const {getMyPosts} = require('../services/post.service');
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -41,6 +39,18 @@ router.get('/home', isLoggedIn, async (req, res) => {
 
 router.get('/error-test', (req, res) => {
     res.status(500).render('error', { message: 'This is a test error page.' });
+});
+
+router.get('/my-posts', isLoggedIn, async (req, res) => {
+  try {
+    const posts = await getMyPosts(req.user._id);
+    res.render('my-posts', {
+      posts,
+      user: req.user
+    });
+  } catch (err) {
+    res.status(500).render('error', { message: 'Failed to load posts' });
+  }
 });
 
 module.exports = router;
