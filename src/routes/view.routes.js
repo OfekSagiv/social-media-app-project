@@ -53,6 +53,7 @@ router.get('/my-posts', isLoggedIn, async (req, res) => {
   } catch (err) {
     res.status(500).render('error', { message: 'Failed to load posts' });
   }
+});
 
 router.get('/group/:id', isLoggedIn, async (req, res) => {
     const groupId = req.params.id;
