@@ -6,6 +6,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: rgba(0, 123, 255, 0.337);
 }
 
 
@@ -34,9 +35,9 @@ body {
     font-family: 'Rubik', sans-serif;
     font-size: 14px;
     font-weight: 500;
-    padding: 8px 16px;
-    color: #0c285e;
-    background: rgba(255, 255, 255, 0.25);
+    padding: 10px;
+    color: white;
+    background: rgba(0, 123, 255, 0.337);
     border: none;
     border-radius: 12px;
     backdrop-filter: blur(10px);
@@ -52,3 +53,7 @@ body {
     background: rgba(150, 190, 255, 0.3);
 }
 
+.bi {
+    margin-left: 5px;
+    margin-right: 5px;
+}

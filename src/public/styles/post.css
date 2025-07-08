@@ -71,3 +71,23 @@
     margin-bottom: 6px;
     font-size: 14px;
 }
+
+.post-date {
+    color: #56a4f8;
+}
+
+.post-group-banner {
+    font-weight: bold;
+    color: #4285f4;
+    font-size: 14px;
+    margin-bottom: 12px;
+    padding: 8px 0;
+    text-align: center;
+}
+
+.post-group-banner hr {
+    margin-bottom: 6px;
+    border: none;
+    border-top: 1px solid #ccc;
+    width: 100%;
+}
