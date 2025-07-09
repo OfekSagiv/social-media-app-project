@@ -53,6 +53,10 @@ const changeGroupAdmin = async (groupId, newAdminId) => {
   );
 };
 
+const getGroupsByMember = async (userId) => {
+  return await Group.find({ members: userId });
+};
+
 module.exports = {
   createGroup,
   findAllGroups,
@@ -64,4 +68,5 @@ module.exports = {
   addMemberToGroup,
   removeMemberFromGroup,
   changeGroupAdmin,
+  getGroupsByMember
 };

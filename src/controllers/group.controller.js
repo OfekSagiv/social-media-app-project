@@ -93,6 +93,10 @@ const changeGroupAdmin = async (req, res) => {
   }
 };
 
+const getMyGroups = async (userId) => {
+  return await groupService.getGroupsByMember(userId);
+};
+
 module.exports = {
   createGroup,
   getGroups,
@@ -103,4 +107,5 @@ module.exports = {
   joinGroup,
   leaveGroup,
   changeGroupAdmin,
+  getMyGroups
 };
