@@ -93,14 +93,8 @@ const changeGroupAdmin = async (req, res) => {
   }
 };
 
-const getMyGroups = async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const groups = await groupService.getGroupsByMember(userId);
-    res.render('my-groups', { groups, user: req.user });
-  } catch (err) {
-    res.status(500).render('error', { message: 'Failed to load groups' });
-  }
+const getMyGroups = async (userId) => {
+  return await groupService.getGroupsByMember(userId);
 };
 
 module.exports = {
