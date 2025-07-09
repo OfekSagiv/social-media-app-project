@@ -41,9 +41,9 @@ const login = async (req, res) => {
             fullName: user.fullName,
             email: user.email,
             username: user.username,
+            following: user.following.map(id => id.toString()),
             profileImage: user.profileImage || '/img/default-avatar.png',
         };
-
         res.status(200).json({message: 'Login successful'});
     } catch (err) {
         res.status(401).json({success: false, message: 'Invalid credentials'});

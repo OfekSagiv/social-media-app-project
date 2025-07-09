@@ -8,7 +8,9 @@
     <% } %>
 
     <div class="post-header">
-        <strong class="post-author"><%= post.author.fullName %></strong>
+        <a href="/profile/<%= post.author._id %>" class="post-author">
+            <strong><%= post.author.fullName %></strong>
+        </a>
         
         <span class="post-date">
             <%= post.createdAt.toLocaleString() %>

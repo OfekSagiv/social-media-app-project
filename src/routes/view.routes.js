@@ -3,7 +3,9 @@ const router = express.Router();
 const {isLoggedIn } = require('../middleware/auth');
 const { getAllPosts, getPostsByGroupId ,getMyPosts} = require("../services/post.service");
 const { getGroupById, getGroupMembers } = require("../services/group.service");
+const { getUserById } = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
+
 
 
 router.get('/signup', (req, res) => {
@@ -84,6 +86,43 @@ router.get('/create-group', isLoggedIn, (req, res) => {
   res.render('create-group', { user: req.user });
 });
 
+router.get('/profile', isLoggedIn, async (req, res) => {
+  try {
+    const viewer = req.session.user;
+    const posts = await getMyPosts(viewer._id);
+
+    res.render('profile', {
+      user: viewer,
+      viewer,
+      posts
+    });
+  } catch (err) {
+    res.status(500).render('error', { message: 'Failed to load profile' });
+  }
+});
+
+router.get('/profile/:id', isLoggedIn, async (req, res) => {
+  const viewer = req.session.user;
+  const userId = req.params.id;
+
+  try {
+    const user = await getUserById(userId);
+    if (!user) {
+      return res.status(404).render('error', { message: 'User not found' });
+    }
+
+    const posts = await getMyPosts(userId);
+
+    res.render('profile', {
+      user,    
+      viewer,   
+      posts
+    });
+  } catch (err) {
+    res.status(500).render('error', { message: err.message || 'Failed to load profile' });
+  }
+});
+
 router.get('/my-groups', isLoggedIn, async (req, res) => {
   try {
     const groups = await groupController.getMyGroups(req.user._id);
@@ -92,7 +131,5 @@ router.get('/my-groups', isLoggedIn, async (req, res) => {
     res.status(500).render('error', { message: 'Failed to load groups' });
   }
 });
-
-
 
 module.exports = router;

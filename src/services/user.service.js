@@ -50,10 +50,28 @@ const deleteUser = async (id) => {
   return deleted;
 };
 
+const toggleFollow = async (viewerId, targetUserId) => {
+  if (viewerId.toString() === targetUserId.toString()) {
+    throw new Error("Can't follow yourself");
+  }
+
+  const alreadyFollowing = await userRepository.isFollowing(viewerId, targetUserId);
+
+  if (alreadyFollowing) {
+    await userRepository.removeFollower(targetUserId, viewerId);
+    return { action: 'unfollowed' };
+  } else {
+    await userRepository.addFollower(targetUserId, viewerId);
+    return { action: 'followed' };
+  }
+};
+
+
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
   updateUser,
   deleteUser,
+  toggleFollow
 };
