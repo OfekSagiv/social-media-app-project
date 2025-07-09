@@ -27,7 +27,7 @@ const getAllUsers = async (filters) => {
 };
 
 const getUserById = async (id) => {
-  const user = await userRepository.findUserById(id);
+  const user = await userRepository.findById(id);
   if (!user) {
     throw new Error('User not found');
   }

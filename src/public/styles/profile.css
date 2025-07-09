@@ -1,0 +1,99 @@
+.profile-container {
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.profile-header {
+  width: 100%;
+  margin: 40px auto;
+  background-color: #eaf1ff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.profile-avatar img {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.profile-info h2 {
+  margin: 0 0 4px;
+  font-size: 24px;
+}
+
+.username {
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.profile-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 15px;
+  color: #333;
+}
+
+.profile-stats i {
+  margin-right: 6px;
+  color: #337ab7;
+}
+
+.section-title {
+  font-size: 20px;
+  margin-bottom: 16px;
+  padding-left: 5px;
+}
+
+.empty-msg {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+}
+
+.profile-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 40px; 
+  align-items: start; 
+  align-items: stretch;
+}
+
+.profile-posts-grid .post-card {
+  background-color: #f9f9ff;
+  border-radius: 18px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  padding: 20px;
+  height: 190px;
+  width: 470px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.follow-btn {
+  margin-top: 10px;
+  background-color: #007bff10;
+  border: 1px solid #007bff;
+  color: #007bff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.follow-btn:hover {
+  background-color: #007bff20;
+}
