@@ -1,4 +1,3 @@
-const User = require('../models/User');
 const userService = require('../services/user.service');
 
 const createUser = async (req, res) => {
@@ -59,9 +58,14 @@ const toggleFollow = async (req, res) => {
         const result = await userService.toggleFollow(viewerId, targetUserId);
 
         if (result.action === 'followed') {
+            if (!Array.isArray(req.session.user.following)) {
+                req.session.user.following = [];
+            }
             req.session.user.following.push(targetUserId);
         } else {
-            req.session.user.following = req.session.user.following.filter(id => id !== targetUserId);
+            req.session.user.following = Array.isArray(req.session.user.following)
+                ? req.session.user.following.filter(id => id !== targetUserId)
+                : [];
         }
 
         req.session.save(err => {
