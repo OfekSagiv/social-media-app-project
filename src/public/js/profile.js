@@ -11,14 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await res.json();
 
             if (res.ok) {
-                const isFollowing = data.following;
+                const isFollowing = data.action === 'followed';
+
                 followBtn.innerHTML = isFollowing
                     ? '<i class="bi bi-person-dash-fill"></i> Unfollow'
                     : '<i class="bi bi-person-plus-fill"></i> Follow';
 
                 if (followersCountEl) {
                     let count = parseInt(followersCountEl.textContent);
-                    followersCountEl.textContent = (isFollowing ? count + 1 : count - 1).toString();
+                    count = isFollowing ? count + 1 : Math.max(count - 1, 0);
+                    followersCountEl.textContent = count.toString();
                 }
             } else {
                 alert(data.error || 'Follow request failed');

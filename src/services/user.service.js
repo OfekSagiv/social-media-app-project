@@ -59,10 +59,10 @@ const toggleFollow = async (viewerId, targetUserId) => {
 
   if (alreadyFollowing) {
     await userRepository.removeFollower(targetUserId, viewerId);
-    return { following: false };
+    return { action: 'unfollowed' };
   } else {
     await userRepository.addFollower(targetUserId, viewerId);
-    return { following: true };
+    return { action: 'followed' };
   }
 };
 

@@ -13,7 +13,7 @@ const findUserById = async (id) => {
 };
 
 const findUserByEmail = async (email) => {
-    return await User.findOne({email});
+    return await User.findOne({ email }).populate('following', '_id');
 };
 
 const updateUser = async (id, updateData) => {

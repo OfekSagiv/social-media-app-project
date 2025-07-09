@@ -1,3 +1,4 @@
+const User = require('../models/User');
 const userService = require('../services/user.service');
 
 const createUser = async (req, res) => {
@@ -45,19 +46,31 @@ const deleteUser = async (req, res) => {
     }
 };
 
+
 const toggleFollow = async (req, res) => {
     try {
         const viewerId = req.session.user?._id;
         const targetUserId = req.params.id;
 
         if (!viewerId) {
-            return res.status(401).json({error: 'Not authenticated'});
+            return res.status(401).json({ error: 'Not authenticated' });
         }
 
         const result = await userService.toggleFollow(viewerId, targetUserId);
+
+        if (result.action === 'followed') {
+            req.session.user.following.push(targetUserId);
+        } else {
+            req.session.user.following = req.session.user.following.filter(id => id !== targetUserId);
+        }
+
+        req.session.save(err => {
+            if (err) console.error('Failed to save session:', err.message);
+        });
+
         res.json(result);
     } catch (err) {
-        res.status(400).json({error: err.message});
+        res.status(400).json({ error: err.message });
     }
 };
 
