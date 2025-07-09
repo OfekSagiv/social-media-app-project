@@ -60,7 +60,7 @@ const joinGroup = async (groupId, userId) => {
   const group = await groupRepository.findGroupById(groupId);
   if (!group) throw new Error('Group not found');
 
-  const user = await userRepository.findById(userId);
+  const user = await userRepository.findUserById(userId);
   if (!user) throw new Error('User not found');
 
   const userObjectId = new mongoose.Types.ObjectId(userId);

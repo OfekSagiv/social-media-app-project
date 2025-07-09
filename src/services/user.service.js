@@ -27,7 +27,7 @@ const getAllUsers = async (filters) => {
 };
 
 const getUserById = async (id) => {
-  const user = await userRepository.findById(id);
+  const user = await userRepository.findUserById(id);
   if (!user) {
     throw new Error('User not found');
   }
@@ -50,10 +50,28 @@ const deleteUser = async (id) => {
   return deleted;
 };
 
+const toggleFollow = async (viewerId, targetUserId) => {
+  if (viewerId === targetUserId) {
+    throw new Error("Can't follow yourself");
+  }
+
+  const alreadyFollowing = await userRepository.isFollowing(viewerId, targetUserId);
+
+  if (alreadyFollowing) {
+    await userRepository.removeFollower(targetUserId, viewerId);
+    return { following: false };
+  } else {
+    await userRepository.addFollower(targetUserId, viewerId);
+    return { following: true };
+  }
+};
+
+
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
   updateUser,
   deleteUser,
+  toggleFollow
 };
