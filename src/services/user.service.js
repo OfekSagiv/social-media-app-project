@@ -51,7 +51,7 @@ const deleteUser = async (id) => {
 };
 
 const toggleFollow = async (viewerId, targetUserId) => {
-  if (viewerId === targetUserId) {
+  if (viewerId.toString() === targetUserId.toString()) {
     throw new Error("Can't follow yourself");
   }
 
