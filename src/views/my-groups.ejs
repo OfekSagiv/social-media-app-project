@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Groups</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="/styles/navbar.css">
+  <link rel="stylesheet" href="/styles/group.css">
+</head>
+<body>
+  <%- include('partials/navbar', { user }) %>
+
+  <main class="group-container">
+  <h2 class="form-title">My Groups</h2>
+
+  <% if (groups.length === 0) { %>
+    <p>You haven't joined any groups yet.</p>
+  <% } else { %>
+    <div class="group-list">
+      <% groups.forEach(group => { %>
+        <div class="group-card">
+          <div class="group-header">
+            <div>
+              <h3 class="form-title"><%= group.name %></h3>
+              <p class="group-description"><%= group.description %></p>
+            </div>
+            <a href="/group/<%= group._id %>" class="glass-button join-leave-btn">
+              View Group
+            </a>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</main>
+
+
+  <script src="/js/navbar.js" defer></script>
+</body>
+</html>

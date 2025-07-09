@@ -3,6 +3,8 @@ const router = express.Router();
 const {isLoggedIn } = require('../middleware/auth');
 const { getAllPosts, getPostsByGroupId ,getMyPosts} = require("../services/post.service");
 const { getGroupById, getGroupMembers } = require("../services/group.service");
+const groupController = require('../controllers/group.controller');
+
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -81,5 +83,16 @@ router.get('/group/:id', isLoggedIn, async (req, res) => {
 router.get('/create-group', isLoggedIn, (req, res) => {
   res.render('create-group', { user: req.user });
 });
+
+router.get('/my-groups', isLoggedIn, async (req, res) => {
+  try {
+    const groups = await groupController.getMyGroups(req.user._id);
+    res.render('my-groups', { groups, user: req.user });
+  } catch (err) {
+    res.status(500).render('error', { message: 'Failed to load groups' });
+  }
+});
+
+
 
 module.exports = router;
