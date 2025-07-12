@@ -26,3 +26,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const showBtn = document.getElementById('show-members-btn');
+  const modal = document.getElementById('members-modal');
+  const closeBtn = document.querySelector('.close-modal');
+
+  if (showBtn && modal && closeBtn) {
+    showBtn.addEventListener('click', () => {
+      modal.classList.remove('hidden');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.classList.add('hidden');
+    });
+
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.add('hidden');
+      }
+    });
+  }
+});

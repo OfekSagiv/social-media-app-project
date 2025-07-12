@@ -20,9 +20,14 @@
                 <h1 class="group-title"><%= group.name %></h1>
                 <p class="group-description"><%= group.description %></p>
             </div>
-            <button id="join-leave-btn" class="glass-button join-leave-btn" data-group-id="<%= group._id %>" data-is-member="<%= isMember %>">
-                <%= isMember ? 'Leave Group' : 'Join Group' %>
-            </button>
+            <div class="group-buttons">
+                <button id="show-members-btn" class="glass-button show-members-btn">
+                    View Members
+                </button>
+                <button id="join-leave-btn" class="glass-button join-leave-btn" data-group-id="<%= group._id %>" data-is-member="<%= isMember %>">
+                    <%= isMember ? 'Leave Group' : 'Join Group' %>
+                </button>
+            </div>
         </div>
 
         <%- include('partials/create-post', { user, group }) %>
@@ -34,6 +39,23 @@
         </ul>
     </div>
 </section>
+
+<div id="members-modal" class="modal hidden">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h3>Group Members</h3>
+    <ul class="member-list">
+      <% members.forEach(member => { %>
+        <li class="member-item">
+          <a href="/profile/<%= member._id %>">
+            <img src="<%= member.profileImageUrl || '/img/default-avatar.jpg' %>" class="member-avatar" alt="avatar">
+            <span><%= member.fullName || member.username %></span>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</div>
 
 <script src="/js/navbar.js" defer></script>
 <script src="/js/post.js" defer></script>

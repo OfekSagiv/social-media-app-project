@@ -76,6 +76,7 @@ router.get('/group/:id', isLoggedIn, async (req, res) => {
             user,
             fullName: user.fullName,
             isMember,
+            members,
         });
     } catch (err) {
         res.status(404).render('error', { message: err.message });
