@@ -39,6 +39,12 @@ const isFollowing = async (viewerId, targetUserId) => {
     return viewer?.following?.some(id => id.equals(targetUserId));
 };
 
+const findUserWithFollowersAndFollowing = async (userId) => {
+    return User.findById(userId).select('-password')
+        .populate('followers', 'fullName username profileImageUrl')
+        .populate('following', 'fullName username profileImageUrl');
+};
+
 module.exports = {
     createUser,
     findAllUsers,
@@ -49,4 +55,5 @@ module.exports = {
     addFollower,
     removeFollower,
     isFollowing,
+    findUserWithFollowersAndFollowing
 };

@@ -5,6 +5,7 @@ const { getAllPosts, getPostsByGroupId ,getMyPosts} = require("../services/post.
 const { getGroupById, getGroupMembers } = require("../services/group.service");
 const { getUserById } = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
+const userController = require('../controllers/user.controller');
 
 
 
@@ -115,8 +116,8 @@ router.get('/profile/:id', isLoggedIn, async (req, res) => {
     const posts = await getMyPosts(userId);
 
     res.render('profile', {
-      user,    
-      viewer,   
+      user,
+      viewer,
       posts
     });
   } catch (err) {
@@ -132,5 +133,7 @@ router.get('/my-groups', isLoggedIn, async (req, res) => {
     res.status(500).render('error', { message: 'Failed to load groups' });
   }
 });
+
+router.get('/my-following-followers', isLoggedIn, userController.getMyFollowersAndFollowing);
 
 module.exports = router;

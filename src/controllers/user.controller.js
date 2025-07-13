@@ -78,11 +78,29 @@ const toggleFollow = async (req, res) => {
     }
 };
 
+
+const getMyFollowersAndFollowing = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const populatedUser = await userService.getUserWithFollowersAndFollowing(userId);
+
+        res.render('my-following-followers', {
+            user: populatedUser,
+            followers: populatedUser.followers,
+            following: populatedUser.following
+        });
+    } catch (err) {
+        console.error('Failed to load followers/following:', err);
+        res.status(500).render('error', { message: 'Failed to load followers/following' });
+    }
+};
+
 module.exports = {
     createUser,
     getUsers,
     getUserById,
     updateUser,
     deleteUser,
-    toggleFollow
+    toggleFollow,
+    getMyFollowersAndFollowing
 };
