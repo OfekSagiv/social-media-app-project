@@ -40,7 +40,7 @@ const isFollowing = async (viewerId, targetUserId) => {
 };
 
 const findUserWithFollowersAndFollowing = async (userId) => {
-    return User.findById(userId)
+    return User.findById(userId).select('-password')
         .populate('followers', 'fullName username profileImageUrl')
         .populate('following', 'fullName username profileImageUrl');
 };

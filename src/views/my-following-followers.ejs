@@ -21,7 +21,7 @@
                 <% following.forEach(f => { %>
                     <li class="followers-item">
                         <a href="/profile/<%= f._id %>">
-                            <img src="<%= f.profileImageUrl || '/img/default-avatar.jpg' %>" alt="Avatar" class="followers-avatar" />
+                            <img src="<%= f.profileImageUrl || '/img/default-avatar.jpg' %>" alt="<%= f.fullName %>'s avatar" class="followers-avatar" />
                             <%= f.fullName %> (@<%= f.username %>)
                         </a>
                     </li>
