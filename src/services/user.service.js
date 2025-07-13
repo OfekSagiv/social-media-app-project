@@ -65,6 +65,11 @@ const toggleFollow = async (viewerId, targetUserId) => {
     return { action: 'followed' };
   }
 };
+const getUserWithFollowersAndFollowing = async (userId) => {
+  const user = await userRepository.findUserWithFollowersAndFollowing(userId);
+  if (!user) throw new Error('User not found');
+  return user;
+};
 
 
 module.exports = {
@@ -73,5 +78,6 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
-  toggleFollow
+  toggleFollow,
+  getUserWithFollowersAndFollowing
 };
