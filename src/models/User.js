@@ -35,6 +35,24 @@ const userSchema = new mongoose.Schema({
         maxlength: 160,
         default: '',
     },
+    website: {
+        type: String,
+        default: '',
+        match: /^https?:\/\/.+/i,
+    },
+    dateOfBirth: {
+        type: Date,
+    },
+    canBeFollowedBy: {
+        type: String,
+        enum: ['everyone', 'approved_only'],
+        default: 'everyone',
+    },
+    canBeCommentedBy: {
+        type: String,
+        enum: ['everyone', 'followers', 'no_one'],
+        default: 'everyone',
+    },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

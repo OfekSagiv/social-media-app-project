@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Account Settings</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/styles/global.css">
+    <link rel="stylesheet" href="/styles/navbar.css">
+    <link rel="stylesheet" href="/styles/settings.css">
+</head>
+<body>
+<%- include('./partials/navbar', { user }) %>
+
+<main class="settings-container">
+    <h2 class="form-title">Account Settings</h2>
+
+    <form id="settings-form" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="fullName">Full Name</label>
+            <input type="text" name="fullName" id="fullName" value="<%= user.fullName %>" required />
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Bio</label>
+            <textarea name="bio" id="bio" maxlength="150"><%= user.bio %></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="website">Website</label>
+            <input type="url" name="website" id="website" value="<%= user.website || '' %>" />
+        </div>
+
+        <div class="form-group">
+            <label for="dateOfBirth">Date of Birth</label>
+            <input type="date" name="dateOfBirth" id="dateOfBirth" value="<%= user.dateOfBirth ? user.dateOfBirth.toISOString().substring(0,10) : '' %>" />
+        </div>
+
+        <div class="form-group">
+            <label for="profileImage">Profile Image</label>
+            <input type="file" name="profileImage" id="profileImage" />
+            <% if (user.profileImageUrl) { %>
+                <img src="<%= user.profileImageUrl || '/img/default-avatar.jpg' %>" alt="Profile Image" class="profile-preview" />
+            <% } %>
+        </div>
+        <div class="form-group">
+            <label for="canBeFollowedBy">Who can follow you?</label>
+            <select name="canBeFollowedBy" id="canBeFollowedBy">
+                <option value="everyone" <%= user.canBeFollowedBy === 'everyone' ? 'selected' : '' %>>Everyone</option>
+                <option value="approved_only" <%= user.canBeFollowedBy === 'approved_only' ? 'selected' : '' %>>Approved Only</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="canBeCommentedBy">Who can comment on your posts?</label>
+            <select name="canBeCommentedBy" id="canBeCommentedBy">
+                <option value="everyone" <%= user.canBeCommentedBy === 'everyone' ? 'selected' : '' %>>Everyone</option>
+                <option value="followers" <%= user.canBeCommentedBy === 'followers' ? 'selected' : '' %>>Followers</option>
+                <option value="no_one" <%= user.canBeCommentedBy === 'no_one' ? 'selected' : '' %>>No One</option>
+            </select>
+        </div>
+
+        <button type="submit" class="glass-button">Save Changes</button>
+    </form>
+</main>
+
+<script src="/js/settings.js" defer></script>
+</body>
+</html>

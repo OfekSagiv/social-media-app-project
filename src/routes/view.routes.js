@@ -6,6 +6,7 @@ const { getGroupById, getGroupMembers } = require("../services/group.service");
 const { getUserById } = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
 const userController = require('../controllers/user.controller');
+const viewController = require('../controllers/view.controller');
 
 
 
@@ -135,5 +136,8 @@ router.get('/my-groups', isLoggedIn, async (req, res) => {
 });
 
 router.get('/my-following-followers', isLoggedIn, userController.getMyFollowersAndFollowing);
+
+router.get('/settings', isLoggedIn, viewController.renderSettingsPage);
+
 
 module.exports = router;

@@ -57,3 +57,5 @@ temp/
 
 .nyc_output/
 test-results/
+
+/uploads
