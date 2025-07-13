@@ -2,15 +2,22 @@
     
     <% if (post.groupId) { %>
         <div class="post-group-banner">
-            <span>from <strong><%= post.groupId.name %></strong></span>
+            <span>from 
+                <a href="/group/<%= post.groupId._id %>" class="group-link">
+                    <strong><%= post.groupId.name %></strong>
+                </a>
+            </span>
             <hr />
         </div>
     <% } %>
 
     <div class="post-header">
-        <a href="/profile/<%= post.author._id %>" class="post-author">
-            <strong><%= post.author.fullName %></strong>
-        </a>
+        <div class="post-author-info">
+            <img class="author-avatar" src="<%= post.author.profileImageUrl || '/img/default-avatar.jpg' %>" alt="Author Avatar">
+            <a href="/profile/<%= post.author._id %>" class="post-author">
+                <strong><%= post.author.fullName %></strong>
+            </a>
+        </div>
         
         <span class="post-date">
             <%= post.createdAt.toLocaleString() %>

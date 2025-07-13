@@ -98,3 +98,31 @@
     font-weight: bold;
     cursor: pointer;
 }
+
+.group-link {
+  color: #4e8cff;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.group-link:hover,
+.post-author-info:hover {
+  border-radius: 5px;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.post-author-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.author-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 5px;
+}

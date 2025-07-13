@@ -1,6 +1,8 @@
 const groupRepository = require('../repositories/group.repository');
 const userRepository = require('../repositories/user.repository');
 const mongoose = require('mongoose');
+const Group = require('../models/Group');
+
 
 const checkIfExists = async (field, value, message) => {
   const query = {};
@@ -25,7 +27,7 @@ const getAllGroups = async (filters) => {
 };
 
 const getGroupById = async (id) => {
-  const group = await groupRepository.findGroupById(id);
+  const group = await Group.findById(id).populate('members');
   if (!group) {
     throw new Error('Group not found');
   }

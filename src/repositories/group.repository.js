@@ -24,9 +24,9 @@ const deleteGroup = async (id) => {
   return await Group.findByIdAndDelete(id);
 };
 
-const getGroupMembers = async (id) => {
-  const group = await Group.findById(id);
-  return group ? group.members : null;
+const getGroupMembers = async (groupId) => {
+  const group = await Group.findById(groupId).populate('members', 'fullName username profileImageUrl');
+  return group ? group.members : [];
 };
 
 const addMemberToGroup = async (groupId, userId) => {
