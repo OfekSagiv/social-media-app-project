@@ -97,7 +97,9 @@ const countPostsByUser = async (userId) => {
   return await countPostsByUserRepo(userId);
 };
 
-
+const deletePostsByUser = async (userId) => {
+  return await postRepository.deletePostsByAuthor(userId);
+};
 
 module.exports = {
     createPost,
@@ -110,5 +112,6 @@ module.exports = {
     toggleLike,
     getMyPosts,
     getPostsByGroupId,
-    countPostsByUser
+    countPostsByUser,
+    deletePostsByUser
 };

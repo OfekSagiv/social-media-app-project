@@ -168,4 +168,6 @@
     color: rgba(0, 0, 0, 0.4);
 }
 
-
+.danger-button {
+    color: rgb(229, 39, 39);
+}

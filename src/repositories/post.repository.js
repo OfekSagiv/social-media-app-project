@@ -105,6 +105,10 @@ const countPostsByUser = async (userId) => {
   return result[0]?.totalPosts || 0;
 };
 
+const deletePostsByAuthor = async (authorId) => {
+  return await Post.deleteMany({ author: authorId });
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -117,5 +121,6 @@ module.exports = {
     removeLike,
     getPostsByAuthor,
     getPostsByGroup,
-    countPostsByUser
+    countPostsByUser,
+    deletePostsByAuthor
 };

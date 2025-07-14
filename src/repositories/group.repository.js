@@ -57,6 +57,10 @@ const getGroupsByMember = async (userId) => {
   return await Group.find({ members: userId });
 };
 
+const deleteGroupsByAdmin = async (adminId) => {
+  return await Group.deleteMany({ adminId });
+};
+
 module.exports = {
   createGroup,
   findAllGroups,
@@ -68,5 +72,6 @@ module.exports = {
   addMemberToGroup,
   removeMemberFromGroup,
   changeGroupAdmin,
-  getGroupsByMember
+  getGroupsByMember,
+  deleteGroupsByAdmin
 };

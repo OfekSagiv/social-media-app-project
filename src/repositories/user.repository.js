@@ -45,6 +45,17 @@ const findUserWithFollowersAndFollowing = async (userId) => {
         .populate('following', 'fullName username profileImageUrl');
 };
 
+const removeUserFromFollowersAndFollowing = async (userId) => {
+  await User.updateMany(
+    { following: userId },
+    { $pull: { following: userId } }
+  );
+  await User.updateMany(
+    { followers: userId },
+    { $pull: { followers: userId } }
+  );
+};
+
 module.exports = {
     createUser,
     findAllUsers,
@@ -55,5 +66,6 @@ module.exports = {
     addFollower,
     removeFollower,
     isFollowing,
-    findUserWithFollowersAndFollowing
+    findUserWithFollowersAndFollowing,
+    removeUserFromFollowersAndFollowing
 };

@@ -1,4 +1,8 @@
 const userService = require('../services/user.service');
+const postService = require('../services/post.service');
+const groupService = require('../services/group.service');
+const fs = require('fs');
+const path = require('path');
 
 const createUser = async (req, res) => {
     try {
@@ -98,6 +102,34 @@ const getMyFollowersAndFollowing = async (req, res) => {
     }
 };
 
+const deleteMyAccount = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    if (!userId) return res.status(401).json({ error: 'Not authenticated' });
+
+    await postService.deletePostsByUser(userId);
+    await groupService.deleteGroupsByAdmin(userId);
+    await userService.removeUserFromAllFollowersAndFollowing(userId);
+
+    const user = await userService.getUserById(userId);
+    if (user.profileImageUrl && !user.profileImageUrl.includes('default-avatar.jpg')) {
+      const imagePath = path.join(__dirname, '..', '..', 'public', user.profileImageUrl);
+      fs.unlink(imagePath, (err) => {
+        if (err) console.warn('Could not delete image:', err.message);
+      });
+    }
+
+    await userService.deleteUser(userId);
+
+    req.session.destroy(() => {
+      res.status(200).json({ message: 'Account deleted' });
+    });
+  } catch (err) {
+    console.error('Failed to delete account:', err);
+    res.status(500).json({ error: 'Failed to delete account' });
+  }
+};
+
 module.exports = {
     createUser,
     getUsers,
@@ -106,4 +138,5 @@ module.exports = {
     deleteUser,
     toggleFollow,
     getMyFollowersAndFollowing,
+    deleteMyAccount
 };

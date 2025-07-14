@@ -7,7 +7,7 @@ const groupController = require('../controllers/group.controller');
 const userController = require('../controllers/user.controller');
 const viewController = require('../controllers/view.controller');
 const { getAllPosts, getPostsByGroupId, getMyPosts} = require("../services/post.service");
-
+const { countPostsByUser } = require('../repositories/post.repository');
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -59,7 +59,10 @@ router.get('/my-posts', isLoggedIn, async (req, res) => {
         res.status(500).render('error', {message: 'Failed to load posts'});
     }
 });
-const { countPostsByUser } = require('../repositories/post.repository');
+
+router.get('/create-group', isLoggedIn, (req, res) => {
+  res.render('create-group', { user: req.user });
+});
 
 router.get('/profile', isLoggedIn, async (req, res) => {
     try {

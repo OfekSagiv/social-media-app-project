@@ -71,6 +71,9 @@ const getUserWithFollowersAndFollowing = async (userId) => {
   return user;
 };
 
+const removeUserFromAllFollowersAndFollowing = async (userId) => {
+  await userRepository.removeUserFromFollowersAndFollowing(userId);
+};
 
 module.exports = {
   createUser,
@@ -79,5 +82,6 @@ module.exports = {
   updateUser,
   deleteUser,
   toggleFollow,
-  getUserWithFollowersAndFollowing
+  getUserWithFollowersAndFollowing,
+  removeUserFromAllFollowersAndFollowing
 };
