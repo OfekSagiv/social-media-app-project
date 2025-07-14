@@ -24,7 +24,6 @@ async function attachUser(req, res, next) {
                     fullName: user.fullName,
                     username: user.username,
                     email: user.email,
-                    profileImage: user.profileImage,
                     profileImageUrl: user.profileImageUrl,
                     following: user.following.map(f => f._id.toString())
                 };

@@ -4,8 +4,6 @@ const buildValidatedUpdateData = (body, file) => {
         bio,
         website,
         dateOfBirth,
-        canBeFollowedBy,
-        canBeCommentedBy,
     } = body;
 
     const updateData = {};
@@ -19,9 +17,15 @@ const buildValidatedUpdateData = (body, file) => {
         updateData.website = website;
     }
 
-    if (dateOfBirth) updateData.dateOfBirth = new Date(dateOfBirth);
-    if (canBeFollowedBy) updateData.canBeFollowedBy = canBeFollowedBy;
-    if (canBeCommentedBy) updateData.canBeCommentedBy = canBeCommentedBy;
+    if (dateOfBirth) {
+        const parsedDate = new Date(dateOfBirth);
+        const isValidDate = !isNaN(parsedDate.getTime()) && parsedDate.getFullYear() > 1900 && parsedDate < new Date();
+        if (isValidDate) {
+            updateData.dateOfBirth = parsedDate;
+        } else {
+            throw new Error('Invalid date of birth');
+        }
+    }
 
     if (file) {
         updateData.profileImageUrl = `/uploads/profiles/${file.filename}`;
