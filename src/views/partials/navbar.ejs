@@ -28,7 +28,8 @@
     </div>
 
     <div class="navbar-user">
-        <img src="<%= user.profileImage || '/img/default-avatar.jpg' %>" alt="Avatar" class="navbar-avatar" />
+
+        <img src="<%= user.profileImageUrl || '/img/default-avatar.jpg' %>" alt="Avatar" class="navbar-avatar" />
         <div class="navbar-dropdown">
             <span class="navbar-username"><%= user.firstName %></span>
             <ul class="dropdown-menu">

@@ -91,7 +91,7 @@
     border-top: 1px solid #ccc;
     width: 100%;
 }
- 
+
 .post-author {
     text-decoration: none;
     color: inherit;
@@ -109,7 +109,6 @@
 .group-link:hover,
 .post-author-info:hover {
   border-radius: 5px;
-  padding: 3px;
   cursor: pointer;
 }
 

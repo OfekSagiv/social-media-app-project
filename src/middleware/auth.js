@@ -13,11 +13,21 @@ const sessionMiddleware = session({
 async function attachUser(req, res, next) {
     if (req.session?.user) {
         try {
-            const user = await User.findById(req.session.user._id).populate('following', '_id');
+            const user = await User.findById(req.session.user._id)
+                .populate('following', '_id');
 
             if (user) {
                 req.user = user;
-                req.session.user.following = user.following.map(f => f._id.toString());
+
+                req.session.user = {
+                    _id: user._id,
+                    fullName: user.fullName,
+                    username: user.username,
+                    email: user.email,
+                    profileImage: user.profileImage,
+                    profileImageUrl: user.profileImageUrl,
+                    following: user.following.map(f => f._id.toString())
+                };
             }
         } catch (err) {
             console.error('Error loading user from session:', err.message);

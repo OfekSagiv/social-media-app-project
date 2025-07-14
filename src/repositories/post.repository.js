@@ -4,13 +4,18 @@ const createPost = (data) => Post.create(data);
 
 const getAllPosts = () => {
     return Post.find()
-        .populate('author', 'fullName')
+        .populate('author', 'fullName profileImageUrl')
         .populate('groupId', 'name')
         .populate('comments.userId', 'fullName')
         .sort({ createdAt: -1 });
 };
 
-const getPostById = (id) => Post.findById(id);
+const getPostById = (id) => {
+    return Post.findById(id)
+        .populate('author', 'fullName profileImageUrl')
+        .populate('groupId', 'name')
+        .populate('comments.userId', 'fullName');
+};
 
 const updatePostById = (id, updateData) => Post.findByIdAndUpdate(id, updateData, {new: true});
 
@@ -31,7 +36,7 @@ const addComment = async (postId, comment) => {
     );
 
     return Post.findById(postId)
-        .populate('author', 'fullName')
+        .populate('author', 'fullName profileImageUrl')
         .populate('comments.userId', 'fullName');
 };
 
@@ -71,7 +76,7 @@ const removeLike = async (postId, userId) => {
 
 const getPostsByAuthor = async (authorId) => {
     return await Post.find({ author: authorId })
-        .populate('author', 'fullName')
+        .populate('author', 'fullName profileImageUrl')
         .populate('groupId', 'name')
         .populate('comments.userId', 'fullName')
         .sort({ createdAt: -1 });
@@ -79,7 +84,7 @@ const getPostsByAuthor = async (authorId) => {
 
 const getPostsByGroup = (groupId) => {
     return Post.find({ groupId })
-        .populate('author', 'fullName')
+        .populate('author', 'fullName profileImageUrl')
         .populate('groupId', 'name')
         .populate('comments.userId', 'fullName')
         .sort({ createdAt: -1 });
