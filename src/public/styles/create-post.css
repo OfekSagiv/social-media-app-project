@@ -19,5 +19,27 @@
     color: #2e2e2e;
 }
 
+#selected-files-list {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background-color: #f5f8ff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    font-size: 14px;
+    color: #2e2e2e;
+}
 
+#selected-files-list .placeholder {
+    color: rgba(0, 0, 0, 0.4);
+    font-style: italic;
+}
+
+#selected-files-list div {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+#selected-files-list div:last-child {
+    border-bottom: none;
+}
 

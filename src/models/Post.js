@@ -17,6 +17,18 @@ const commentSchema = new mongoose.Schema({
     },
 }, { _id: false });
 
+const mediaSchema = new mongoose.Schema({
+    mediaUrl: {
+        type: String,
+        required: true,
+    },
+    mediaType: {
+        type: String,
+        enum: ['image', 'video'],
+        required: true,
+    }
+}, { _id: false });
+
 const postSchema = new mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
@@ -32,12 +44,7 @@ const postSchema = new mongoose.Schema({
         required: true,
         maxlength: 1000,
     },
-    imageUrl: {
-        type: String,
-    },
-    videoUrl: {
-        type: String,
-    },
+    media: [mediaSchema],
     likes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

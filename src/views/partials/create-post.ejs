@@ -1,17 +1,26 @@
 <div class="post-card new-post-form">
-  <h2 class="form-title">Create a new post</h2>
+    <h2 class="form-title">Create a new post</h2>
 
-  <form id="create-post-form">
-    <div class="post-header">
-      <strong><%= user.fullName %></strong>
-    </div>
+    <form id="create-post-form" enctype="multipart/form-data">
+        <div class="post-header">
+            <strong><%= user.fullName %></strong>
+        </div>
 
-    <div class="post-content">
-      <textarea name="content" class="comment-input" placeholder="What's on your mind?" required></textarea>
-    </div>
+        <div class="post-content">
+            <textarea name="content" class="comment-input" placeholder="What's on your mind?" required></textarea>
+        </div>
 
-    <div class="post-actions">
-      <button type="submit" class="glass-button">Post</button>
-    </div>
-  </form>
+        <div class="form-group">
+            <label for="media">Upload your media (Optional) </label>
+            <input type="file" id="media" accept="image/*,video/*" multiple style="display: none" />
+            <label for="media" class="glass-button">Choose Files</label>
+            <div id="selected-files-list">
+                <p class="placeholder">No chosen file</p>
+            </div>
+        </div>
+
+        <div class="post-actions">
+            <button type="submit" class="glass-button">Post</button>
+        </div>
+    </form>
 </div>
