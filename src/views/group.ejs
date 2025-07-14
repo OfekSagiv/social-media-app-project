@@ -17,9 +17,21 @@
     <div class="group-card">
         <div class="group-header">
             <div>
-                <h1 class="group-title"><%= group.name %></h1>
-                <p class="group-description"><%= group.description %></p>
+              <h1 class="group-title editable-group-field" data-field="name">
+                <%= group.name %>
+                <% if (user._id.toString() === group.adminId._id.toString()) { %>
+                  <i class="bi bi-pencil-square edit-icon" data-edit-target="name"></i>
+                <% } %>
+              </h1>
+
+              <p class="group-description editable-group-field" data-field="description">
+                <%= group.description %>
+                <% if (user._id.toString() === group.adminId._id.toString()) { %>
+                  <i class="bi bi-pencil-square edit-icon" data-edit-target="description"></i>
+                <% } %>
+              </p>
             </div>
+
             <div class="group-buttons">
                 <button id="show-members-btn" class="glass-button show-members-btn">
                     View Members

@@ -48,3 +48,65 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+function attachEditHandler(icon) {
+  icon.addEventListener("click", () => {
+    const field = icon.dataset.editTarget;
+    const container = icon.closest(`.editable-group-field`);
+
+    const oldValue = container.childNodes[0].textContent.trim();
+    const input = document.createElement("textarea");
+
+    input.value = oldValue;
+    input.className = "group-edit-input";
+
+    const saveBtn = document.createElement("button");
+    saveBtn.textContent = "Save";
+    saveBtn.className = "glass-button small";
+
+    container.innerHTML = "";
+    container.appendChild(input);
+    container.appendChild(saveBtn);
+
+    saveBtn.addEventListener("click", async () => {
+      const newValue = input.value.trim();
+      if (newValue === oldValue || !newValue) {
+        container.innerHTML = `
+          ${oldValue}
+          <i class="bi bi-pencil-square edit-icon" data-edit-target="${field}"></i>
+        `;
+        const newIcon = container.querySelector(".edit-icon");
+        attachEditHandler(newIcon);
+        return;
+      }
+
+
+      try {
+        const groupId = document.getElementById("join-leave-btn").dataset.groupId;
+        const res = await fetch(`/api/groups/${groupId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ [field]: newValue }),
+        });
+
+        if (!res.ok) throw new Error("Update failed");
+
+        container.innerHTML = `
+          ${newValue}
+          <i class="bi bi-pencil-square edit-icon" data-edit-target="${field}"></i>
+        `;
+
+        const newIcon = container.querySelector(".edit-icon");
+        attachEditHandler(newIcon);
+
+      } catch (err) {
+        alert("Error updating group");
+        console.error(err);
+      }
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".edit-icon").forEach(attachEditHandler);
+});
