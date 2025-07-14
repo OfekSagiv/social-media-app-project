@@ -10,7 +10,20 @@ const getAllPosts = () => {
         .sort({ createdAt: -1 });
 };
 
-const getPostById = (id) => Post.findById(id);
+const getPostById = (id) => {
+  return Post.findById(id)
+    .populate('author', 'fullName')
+    .populate({
+      path: 'groupId',
+      select: 'name adminId',
+      populate: {
+        path: 'adminId',
+        model: 'User',
+        select: '_id'
+      }
+    })
+    .populate('comments.userId', 'fullName');
+};
 
 const updatePostById = (id, updateData) => Post.findByIdAndUpdate(id, updateData, {new: true});
 
@@ -76,14 +89,23 @@ const getPostsByAuthor = async (authorId) => {
         .populate('comments.userId', 'fullName')
         .sort({ createdAt: -1 });
 };
-
 const getPostsByGroup = (groupId) => {
     return Post.find({ groupId })
-        .populate('author', 'fullName')
-        .populate('groupId', 'name')
+        .populate('author', 'fullName') 
+        .populate({
+            path: 'groupId',
+            select: 'name adminId',
+            populate: {
+                path: 'adminId',
+                model: 'User', 
+                select: '_id'
+            }
+        })
+
         .populate('comments.userId', 'fullName')
         .sort({ createdAt: -1 });
 };
+
 
 module.exports = {
     createPost,
