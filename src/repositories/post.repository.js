@@ -106,6 +106,9 @@ const getPostsByGroup = (groupId) => {
         .sort({ createdAt: -1 });
 };
 
+const deletePostsByGroupId = async (groupId) => {
+  return await Post.deleteMany({ groupId });
+};
 
 module.exports = {
     createPost,
@@ -118,5 +121,6 @@ module.exports = {
     addLike,
     removeLike,
     getPostsByAuthor,
-    getPostsByGroup
+    getPostsByGroup,
+    deletePostsByGroupId
 };

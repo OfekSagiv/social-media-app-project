@@ -110,3 +110,23 @@ function attachEditHandler(icon) {
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".edit-icon").forEach(attachEditHandler);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const deleteBtn = document.getElementById('delete-group-btn');
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', async () => {
+      if (!confirm('Are you sure you want to delete this group?')) return;
+
+      const groupId = document.getElementById("join-leave-btn").dataset.groupId;
+      try {
+        const res = await fetch(`/api/groups/${groupId}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Failed to delete group');
+
+        window.location.href = '/my-groups';
+      } catch (err) {
+        alert('Error deleting group');
+        console.error(err);
+      }
+    });
+  }
+});

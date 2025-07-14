@@ -33,6 +33,9 @@
             </div>
 
             <div class="group-buttons">
+              <% if (user._id.toString() === group.adminId._id.toString()) { %>
+                <button id="delete-group-btn" class="glass-button danger">Delete Group</button>
+              <% } %>
                 <button id="show-members-btn" class="glass-button show-members-btn">
                     View Members
                 </button>
