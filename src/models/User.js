@@ -35,6 +35,14 @@ const userSchema = new mongoose.Schema({
         maxlength: 160,
         default: '',
     },
+    website: {
+        type: String,
+        default: '',
+        match: /^https?:\/\/.+/i,
+    },
+    dateOfBirth: {
+        type: Date,
+    },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
