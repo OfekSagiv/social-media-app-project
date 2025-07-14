@@ -30,9 +30,14 @@ const getUserById = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const updatedUser = await userService.updateUser(req.params.id, req.body);
+
+        if (req.session.user && req.session.user._id.toString() === updatedUser._id.toString()) {
+            req.session.user = updatedUser;
+        }
+
         res.json(updatedUser);
     } catch (err) {
-        res.status(400).json({error: err.message});
+        res.status(400).json({ error: err.message });
     }
 };
 

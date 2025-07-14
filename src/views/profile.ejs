@@ -19,8 +19,18 @@
             <img src="<%= user.profileImageUrl || '/img/default-avatar.jpg' %>" alt="Profile Image" class="profile-preview" />
         </div>
         <div class="profile-info">
-            <h2><%= isMyProfile ? "My Profile" : user.fullName %></h2>
-            <p class="username">@<%= user.username %></p>
+                <h2><%= isMyProfile ? "My Profile" : user.fullName %></h2>
+                <p class="username">@<%= user.username %></p>
+
+                <% if (user.bio) { %>
+                    <p class="profile-bio"><i class="bi bi-info-circle-fill"></i> <%= user.bio %></p>
+                <% } %>
+
+                <% if (user.dateOfBirth) { %>
+                    <p class="profile-dob"><i class="bi bi-cake2-fill"></i>
+                        <%= new Date(user.dateOfBirth).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                    </p>
+                <% } %>
 
             <div class="profile-stats">
                 <div><i class="bi bi-stickies-fill"></i> <%= posts.length %> Posts</div>
