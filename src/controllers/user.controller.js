@@ -50,7 +50,6 @@ const deleteUser = async (req, res) => {
     }
 };
 
-
 const toggleFollow = async (req, res) => {
     try {
         const viewerId = req.session.user?._id;
@@ -83,7 +82,6 @@ const toggleFollow = async (req, res) => {
     }
 };
 
-
 const getMyFollowersAndFollowing = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -107,5 +105,5 @@ module.exports = {
     updateUser,
     deleteUser,
     toggleFollow,
-    getMyFollowersAndFollowing
+    getMyFollowersAndFollowing,
 };

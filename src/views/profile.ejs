@@ -33,12 +33,13 @@
                 <% } %>
 
             <div class="profile-stats">
-                <div><i class="bi bi-stickies-fill"></i> <%= posts.length %> Posts</div>
+                <div><i class="bi bi-stickies-fill"></i> <%= postCount %> Posts</div>
                 <div><i class="bi bi-people-fill"></i> <span
                             id="followers-count"><%= (user.followers || []).length %></span> Followers
                 </div>
                 <div><i class="bi bi-person-fill-add"></i> <%= (user.following || []).length %> Following</div>
             </div>
+            
         </div>
 
         <% if (!isMyProfile) { %>

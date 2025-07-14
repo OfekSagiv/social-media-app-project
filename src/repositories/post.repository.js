@@ -1,4 +1,5 @@
 const Post = require('../models/Post');
+const mongoose = require('mongoose');
 
 const createPost = (data) => Post.create(data);
 
@@ -90,6 +91,20 @@ const getPostsByGroup = (groupId) => {
         .sort({ createdAt: -1 });
 };
 
+const countPostsByUser = async (userId) => {
+  const objectId = new mongoose.Types.ObjectId(userId);
+  const result = await Post.aggregate([
+    { $match: { author: objectId } },
+    {
+      $group: {
+        _id: '$author',
+        totalPosts: { $sum: 1 }
+      }
+    }
+  ]);
+  return result[0]?.totalPosts || 0;
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -101,5 +116,6 @@ module.exports = {
     addLike,
     removeLike,
     getPostsByAuthor,
-    getPostsByGroup
+    getPostsByGroup,
+    countPostsByUser
 };
