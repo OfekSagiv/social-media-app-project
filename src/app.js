@@ -3,6 +3,7 @@ const path = require('path');
 const viewRoutes = require('./routes/view.routes');
 const apiRoutes = require('./routes/api.routes');
 const { sessionMiddleware, attachUser } = require('./middleware/auth');
+const userRoutes = require('./routes/user.routes');
 
 const app = express();
 
@@ -14,9 +15,10 @@ app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.use(sessionMiddleware);
 app.use(attachUser);
-app.use(express.json());
+app.use(express.json()); 
 
 app.use('/', viewRoutes);
 app.use('/api', apiRoutes);
+app.use('/users', userRoutes);
 
 module.exports = app;

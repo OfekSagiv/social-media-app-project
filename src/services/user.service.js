@@ -1,4 +1,7 @@
 const userRepository = require('../repositories/user.repository');
+const postService = require('./post.service');
+const groupService = require('./group.service');
+const cleanupUserDataFromPosts = require('../repositories/post.repository').cleanupUserDataFromPosts; 
 
 const checkIfExists = async (field, value, message) => {
   const query = {};
@@ -71,6 +74,38 @@ const getUserWithFollowersAndFollowing = async (userId) => {
   return user;
 };
 
+const deleteUserCompletely = async (userId) => {
+  
+  const posts = await postService.getMyPosts(userId);
+  for (const post of posts) {
+    await postService.deletePost(post._id, userId);
+  }
+
+  const allGroups = await groupService.getAllGroups({});
+  const adminGroups = allGroups.filter(group => group.adminId.toString() === userId.toString());
+
+  for (const group of adminGroups) {
+    await groupService.deleteGroup(group._id, userId);
+  }
+
+  const userGroups = await groupService.getGroupsByMember(userId);
+  for (const group of userGroups) {
+    try {
+      await groupService.leaveGroup(group._id, userId);
+    } catch (_) {
+    }
+  }
+
+  await cleanupUserDataFromPosts(userId);
+
+  const allUsers = await userRepository.findAllUsers({});
+  for (const otherUser of allUsers) {
+    await userRepository.removeFollower(otherUser._id, userId); 
+    await userRepository.removeFollower(userId, otherUser._id); 
+  }
+
+  await userRepository.deleteUser(userId);
+};
 
 module.exports = {
   createUser,
@@ -79,5 +114,6 @@ module.exports = {
   updateUser,
   deleteUser,
   toggleFollow,
-  getUserWithFollowersAndFollowing
+  getUserWithFollowersAndFollowing,
+  deleteUserCompletely
 };
