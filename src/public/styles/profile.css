@@ -47,7 +47,7 @@
 
 .profile-stats i {
   margin-right: 6px;
-  color: #337ab7;
+  color: #007bff;
 }
 
 .section-title {
@@ -84,3 +84,16 @@
 .follow-btn:hover {
   background-color: #007bff20;
 }
+
+.profile-bio,
+ .profile-dob {
+   margin-top: 6px;
+   font-size: 0.95rem;
+   color: #444;
+ }
+
+ .profile-dob i,
+ .profile-bio i {
+   margin-right: 6px;
+   color: rgba(0, 123, 255, 0.337);
+ }
