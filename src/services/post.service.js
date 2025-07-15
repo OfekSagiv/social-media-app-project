@@ -38,11 +38,24 @@ const updatePost = async (id, updateData) => {
     return post;
 };
 
-const deletePost = async (id) => {
-    const result = await postRepository.deletePostById(id);
-    if (!result) throw new Error('Post not found or delete failed');
-    return result;
+const deletePost = async (postId, userId) => {
+    const post = await postRepository.getPostById(postId);
+    if (!post) throw new Error('Post not found');
+
+    if (post.author.equals(userId)) {
+        return await postRepository.deletePostById(postId);
+    }
+
+    if (post.groupId) {
+        const group = await groupRepository.findGroupById(post.groupId);
+        if (group && group.adminId.equals(userId)) {
+            return await postRepository.deletePostById(postId);
+        }
+    }
+
+    throw new Error("You are not authorized to delete this post");
 };
+
 
 const addCommentToPost = async (postId, commentData) => {
     const post = await postRepository.getPostById(postId);

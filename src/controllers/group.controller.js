@@ -44,9 +44,17 @@ const updateGroup = async (req, res) => {
 
 const deleteGroup = async (req, res) => {
   try {
-    await groupService.deleteGroup(req.params.id);
+    const group = await groupService.getGroupById(req.params.id);
+    if (!group) return res.status(404).json({ error: 'Group not found' });
+
+    if (group.adminId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ error: 'Only admin can delete group' });
+    }
+
+    await groupService.deleteGroup(req.params.id, req.user._id);
     res.status(204).end();
   } catch (err) {
+    console.error('Delete group failed:', err.message);
     res.status(400).json({ error: err.message });
   }
 };
