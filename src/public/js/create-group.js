@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       alert('Group created successfully!');
-      window.location.href = '/my-groups';
+      window.location.href = `/group/${data._id}`;
+
 
     } catch (err) {
       console.error(err);

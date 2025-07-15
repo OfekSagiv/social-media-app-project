@@ -61,7 +61,10 @@
             <span class="comment-count"><%= post.comments.length %></span>
             <i class="bi bi-chat-heart-fill"></i>
         </button>
-        <% if (post.author._id.toString() === user._id.toString()) { %>
+        <% if (
+            post.author._id.toString() === user._id.toString() ||
+            (post.groupId && post.groupId.adminId && post.groupId.adminId._id.toString() === user._id.toString())
+        ) { %>
             <button class="delete-post-btn glass-button"><i class="bi bi-trash3-fill"></i></button>
         <% } %>
     </div>

@@ -47,12 +47,29 @@ const updatePost = async (req, res) => {
 };
 
 const deletePost = async (req, res) => {
-    try {
-        await postService.deletePost(req.params.id);
-        res.status(204).send();
-    } catch (err) {
-        res.status(400).json({error: err.message});
+  try {
+    const userId = req.user._id;
+    const post = await postService.getPostById(req.params.id);
+
+    if (!post) return res.status(404).json({ error: 'Post not found' });
+
+    const isAuthor = post.author._id.toString() === userId.toString();
+
+    let isGroupAdmin = false;
+    if (post.groupId && post.groupId.adminId) {
+    isGroupAdmin = post.groupId.adminId._id.toString() === userId.toString();
     }
+
+    if (!isAuthor && !isGroupAdmin) {
+      return res.status(403).json({ error: 'Unauthorized to delete this post' });
+    }
+
+    await postService.deletePost(post._id, userId);
+    return res.status(204).end();
+  } catch (err) {
+    console.error('Failed to delete post:', err.message);
+    return res.status(500).json({ error: 'Failed to delete post' });
+  }
 };
 
 const addComment = async (req, res) => {
