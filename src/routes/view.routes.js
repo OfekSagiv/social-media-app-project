@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const {isLoggedIn } = require('../middleware/auth');
-const { getAllPosts, getPostsByGroupId ,getMyPosts} = require("../services/post.service");
-const { getGroupById, getGroupMembers } = require("../services/group.service");
-const { getUserById } = require('../services/user.service');
+const {isLoggedIn} = require('../middleware/auth');
+const {getAllPosts, getPostsByGroupId, getMyPosts} = require("../services/post.service");
+const {getGroupById, getGroupMembers} = require("../services/group.service");
+const {getUserById} = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
 const userController = require('../controllers/user.controller');
-
+const viewController = require('../controllers/view.controller');
 
 
 router.get('/signup', (req, res) => {
@@ -45,19 +45,19 @@ router.get('/home', isLoggedIn, async (req, res) => {
 });
 
 router.get('/error-test', (req, res) => {
-    res.status(500).render('error', { message: 'This is a test error page.' });
+    res.status(500).render('error', {message: 'This is a test error page.'});
 });
 
 router.get('/my-posts', isLoggedIn, async (req, res) => {
-  try {
-    const posts = await getMyPosts(req.user._id);
-    res.render('my-posts', {
-      posts,
-      user: req.user
-    });
-  } catch (err) {
-    res.status(500).render('error', { message: 'Failed to load posts' });
-  }
+    try {
+        const posts = await getMyPosts(req.user._id);
+        res.render('my-posts', {
+            posts,
+            user: req.user
+        });
+    } catch (err) {
+        res.status(500).render('error', {message: 'Failed to load posts'});
+    }
 });
 
 router.get('/group/:id', isLoggedIn, async (req, res) => {
@@ -80,60 +80,63 @@ router.get('/group/:id', isLoggedIn, async (req, res) => {
             members,
         });
     } catch (err) {
-        res.status(404).render('error', { message: err.message });
+        res.status(404).render('error', {message: err.message});
     }
 });
 
 router.get('/create-group', isLoggedIn, (req, res) => {
-  res.render('create-group', { user: req.user });
+    res.render('create-group', {user: req.user});
 });
 
 router.get('/profile', isLoggedIn, async (req, res) => {
-  try {
-    const viewer = req.session.user;
-    const posts = await getMyPosts(viewer._id);
+    try {
+        const viewer = req.session.user;
+        const posts = await getMyPosts(viewer._id);
 
-    res.render('profile', {
-      user: viewer,
-      viewer,
-      posts
-    });
-  } catch (err) {
-    res.status(500).render('error', { message: 'Failed to load profile' });
-  }
+        res.render('profile', {
+            user: viewer,
+            viewer,
+            posts
+        });
+    } catch (err) {
+        res.status(500).render('error', {message: 'Failed to load profile'});
+    }
 });
 
 router.get('/profile/:id', isLoggedIn, async (req, res) => {
-  const viewer = req.session.user;
-  const userId = req.params.id;
+    const viewer = req.session.user;
+    const userId = req.params.id;
 
-  try {
-    const user = await getUserById(userId);
-    if (!user) {
-      return res.status(404).render('error', { message: 'User not found' });
+    try {
+        const user = await getUserById(userId);
+        if (!user) {
+            return res.status(404).render('error', {message: 'User not found'});
+        }
+
+        const posts = await getMyPosts(userId);
+
+        res.render('profile', {
+            user,
+            viewer,
+            posts
+        });
+    } catch (err) {
+        res.status(500).render('error', {message: err.message || 'Failed to load profile'});
     }
-
-    const posts = await getMyPosts(userId);
-
-    res.render('profile', {
-      user,
-      viewer,
-      posts
-    });
-  } catch (err) {
-    res.status(500).render('error', { message: err.message || 'Failed to load profile' });
-  }
 });
 
 router.get('/my-groups', isLoggedIn, async (req, res) => {
-  try {
-    const groups = await groupController.getMyGroups(req.user._id);
-    res.render('my-groups', { groups, user: req.user });
-  } catch (err) {
-    res.status(500).render('error', { message: 'Failed to load groups' });
-  }
+    try {
+        const groups = await groupController.getMyGroups(req.user._id);
+        res.render('my-groups', {groups, user: req.user});
+    } catch (err) {
+        res.status(500).render('error', {message: 'Failed to load groups'});
+    }
 });
 
 router.get('/my-following-followers', isLoggedIn, userController.getMyFollowersAndFollowing);
+
+router.get('/settings', isLoggedIn, viewController.renderSettingsPage);
+
 
 module.exports = router;

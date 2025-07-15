@@ -16,7 +16,7 @@
 <main class="profile-container">
     <section class="profile-header">
         <div class="profile-avatar">
-            <img src="<%= user.profileImageUrl || '/img/default-avatar.jpg' %>" alt="Profile Image">
+            <img src="<%= user.profileImageUrl || '/img/default-avatar.jpg' %>" alt="Profile Image" class="profile-preview" />
         </div>
         <div class="profile-info">
             <h2><%= isMyProfile ? "My Profile" : user.fullName %></h2>
