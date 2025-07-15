@@ -1,5 +1,6 @@
 const postRepository = require('../repositories/post.repository');
 const groupRepository = require('../repositories/group.repository');
+ const { countPostsByUser: countPostsByUserRepo } = require('../repositories/post.repository');
 
 const createPost = async (data) => {
     const {content, author, groupId} = data;
@@ -102,6 +103,10 @@ const getPostsByGroupId = async (groupId) => {
     return posts;
 };
 
+const countPostsByUser = async (userId) => {
+   return await countPostsByUserRepo(userId);
+ };
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -112,5 +117,6 @@ module.exports = {
     deleteCommentFromPost,
     toggleLike,
     getMyPosts,
-    getPostsByGroupId
+    getPostsByGroupId,
+    countPostsByUser
 };

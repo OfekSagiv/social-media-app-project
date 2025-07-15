@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const {isLoggedIn} = require('../middleware/auth');
-const {getAllPosts, getPostsByGroupId, getMyPosts} = require("../services/post.service");
+const {getAllPosts, getPostsByGroupId, getMyPosts, countPostsByUser} = require("../services/post.service");
 const {getGroupById, getGroupMembers} = require("../services/group.service");
 const {getUserById} = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
 const userController = require('../controllers/user.controller');
 const viewController = require('../controllers/view.controller');
-
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -92,11 +91,13 @@ router.get('/profile', isLoggedIn, async (req, res) => {
     try {
         const viewer = req.session.user;
         const posts = await getMyPosts(viewer._id);
+        const postCount = await countPostsByUser(viewer._id);
 
         res.render('profile', {
             user: viewer,
             viewer,
-            posts
+            posts,
+            postCount
         });
     } catch (err) {
         res.status(500).render('error', {message: 'Failed to load profile'});
@@ -114,11 +115,13 @@ router.get('/profile/:id', isLoggedIn, async (req, res) => {
         }
 
         const posts = await getMyPosts(userId);
+        const postCount = await countPostsByUser(userId); 
 
         res.render('profile', {
             user,
             viewer,
-            posts
+            posts,
+            postCount
         });
     } catch (err) {
         res.status(500).render('error', {message: err.message || 'Failed to load profile'});
