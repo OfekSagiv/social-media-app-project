@@ -14,7 +14,6 @@ const storage = multer.diskStorage({
             folder += 'misc/';
         }
 
-        fs.mkdirSync(folder, { recursive: true });
         cb(null, folder);
     },
     filename: (req, file, cb) => {

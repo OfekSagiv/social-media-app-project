@@ -31,12 +31,20 @@
             <div class="post-media-grid">
                 <% post.media.forEach((item) => { %>
                     <% if (item.mediaType === 'image') { %>
-                        <img src="<%= item.mediaUrl %>" class="media-item" />
+                        <div class="media-wrapper">
+                            <img
+                                    src="<%= item.mediaUrl %>"
+                                    class="media-item"
+                                    alt="<%= item.description || 'User uploaded image' %>"
+                            />
+                        </div>
                     <% } else if (item.mediaType === 'video') { %>
-                        <video class="media-item" controls>
-                            <source src="<%= item.mediaUrl %>" type="<%= item.mediaUrl.endsWith('.webm') ? 'video/webm' : 'video/mp4' %>">
-                            Your browser does not support the video tag.
-                        </video>
+                        <div class="media-wrapper">
+                            <video class="media-item" controls>
+                                <source src="<%= item.mediaUrl %>" type="<%= item.mediaUrl.endsWith('.webm') ? 'video/webm' : item.mediaUrl.endsWith('.mov') ? 'video/quicktime' : 'video/mp4' %>">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
                     <% } %>
                 <% }) %>
             </div>
