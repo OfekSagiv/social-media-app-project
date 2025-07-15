@@ -12,10 +12,18 @@ const getAllPosts = () => {
 };
 
 const getPostById = (id) => {
-    return Post.findById(id)
-        .populate('author', 'fullName profileImageUrl')
-        .populate('groupId', 'name')
-        .populate('comments.userId', 'fullName');
+  return Post.findById(id)
+    .populate('author', 'fullName')
+    .populate({
+      path: 'groupId',
+      select: 'name adminId',
+      populate: {
+        path: 'adminId',
+        model: 'User',
+        select: '_id'
+      }
+    })
+    .populate('comments.userId', 'fullName');
 };
 
 const updatePostById = (id, updateData) => Post.findByIdAndUpdate(id, updateData, {new: true});
@@ -82,31 +90,22 @@ const getPostsByAuthor = async (authorId) => {
         .populate('comments.userId', 'fullName')
         .sort({ createdAt: -1 });
 };
-
 const getPostsByGroup = (groupId) => {
     return Post.find({ groupId })
+        .populate('author', 'fullName') 
+        .populate({
+            path: 'groupId',
+            select: 'name adminId',
+            populate: {
+                path: 'adminId',
+                model: 'User', 
+                select: '_id'
+            }
+        })
         .populate('author', 'fullName profileImageUrl')
         .populate('groupId', 'name')
         .populate('comments.userId', 'fullName')
         .sort({ createdAt: -1 });
-};
-
-const countPostsByUser = async (userId) => {
-  const objectId = new mongoose.Types.ObjectId(userId);
-  const result = await Post.aggregate([
-    { $match: { author: objectId } },
-    {
-      $group: {
-        _id: '$author',
-        totalPosts: { $sum: 1 }
-      }
-    }
-  ]);
-  return result[0]?.totalPosts || 0;
-};
-
-const deletePostsByAuthor = async (authorId) => {
-  return await Post.deleteMany({ author: authorId });
 };
 
 module.exports = {
@@ -120,7 +119,5 @@ module.exports = {
     addLike,
     removeLike,
     getPostsByAuthor,
-    getPostsByGroup,
-    countPostsByUser,
-    deletePostsByAuthor
+    getPostsByGroup
 };

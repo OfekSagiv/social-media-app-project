@@ -2,6 +2,7 @@ const groupRepository = require('../repositories/group.repository');
 const userRepository = require('../repositories/user.repository');
 const mongoose = require('mongoose');
 const Group = require('../models/Group');
+const postRepository = require('../repositories/post.repository');
 
 
 const checkIfExists = async (field, value, message) => {
@@ -42,12 +43,13 @@ const updateGroup = async (id, updateData) => {
   return updated;
 };
 
-const deleteGroup = async (id) => {
-  const deleted = await groupRepository.deleteGroup(id);
-  if (!deleted) {
-    throw new Error('Group not found or delete failed');
-  }
-  return deleted;
+const deleteGroup = async (groupId, userId) => {
+  const group = await groupRepository.findGroupById(groupId);
+  if (!group) throw new Error('Group not found');
+  if (!group.adminId.equals(userId)) return false;
+
+  await postRepository.deletePostsByGroupId(groupId);
+  return await Group.findByIdAndDelete(groupId);
 };
 
 const getGroupMembers = async (id) => {
