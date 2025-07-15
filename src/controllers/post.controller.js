@@ -1,13 +1,16 @@
 const postService = require('../services/post.service');
+const { parseUploadedFiles } = require('../utils/mediaParser');
 
 const createPost = async (req, res) => {
     try {
         const { content, groupId } = req.body;
+        const media = req.files && req.files.length > 0 ? parseUploadedFiles(req.files) : [];
 
         const newPost = await postService.createPost({
             content,
             author: req.user._id,
             groupId: groupId || null,
+            media,
         });
 
         res.status(201).json(newPost);

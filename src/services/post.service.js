@@ -72,9 +72,6 @@ const deleteCommentFromPost = async (postId, userId, createdAt) => {
     const post = await postRepository.getPostById(postId);
     if (!post) throw new Error('Post not found');
 
-    const comment = await postRepository.getComment(postId, userId, createdAt);
-    if (!comment) throw new Error('Comment not found');
-
     return await postRepository.removeComment(postId, userId, createdAt);
 };
 

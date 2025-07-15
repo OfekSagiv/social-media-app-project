@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return alert(data.error || 'Failed to create group');
       }
 
+      alert('Group created successfully!');
       window.location.href = `/group/${data._id}`;
+
 
     } catch (err) {
       console.error(err);

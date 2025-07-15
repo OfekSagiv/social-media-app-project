@@ -1,8 +1,8 @@
 <div class="post-card" data-post-id="<%= post._id %>">
-    
+
     <% if (post.groupId) { %>
         <div class="post-group-banner">
-            <span>from 
+            <span>from
                 <a href="/group/<%= post.groupId._id %>" class="group-link">
                     <strong><%= post.groupId.name %></strong>
                 </a>
@@ -18,7 +18,7 @@
                 <strong><%= post.author.fullName %></strong>
             </a>
         </div>
-        
+
         <span class="post-date">
             <%= post.createdAt.toLocaleString() %>
             <i class="bi bi-calendar"></i>
@@ -27,8 +27,27 @@
 
     <div class="post-content">
         <p><%= post.content %></p>
-        <% if (post.imageUrl) { %>
-            <img src="<%= post.imageUrl %>" class="post-image" />
+        <% if (post.media && post.media.length > 0) { %>
+            <div class="post-media-grid">
+                <% post.media.forEach((item) => { %>
+                    <% if (item.mediaType === 'image') { %>
+                        <div class="media-wrapper">
+                            <img
+                                    src="<%= item.mediaUrl %>"
+                                    class="media-item"
+                                    alt="<%= item.description || 'User uploaded image' %>"
+                            />
+                        </div>
+                    <% } else if (item.mediaType === 'video') { %>
+                        <div class="media-wrapper">
+                            <video class="media-item" controls>
+                                <source src="<%= item.mediaUrl %>" type="<%= item.mediaUrl.endsWith('.webm') ? 'video/webm' : item.mediaUrl.endsWith('.mov') ? 'video/quicktime' : 'video/mp4' %>">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    <% } %>
+                <% }) %>
+            </div>
         <% } %>
     </div>
 
