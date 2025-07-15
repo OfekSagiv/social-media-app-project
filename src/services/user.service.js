@@ -43,6 +43,7 @@ const updateUser = async (id, updateData) => {
 };
 
 const deleteUser = async (id) => {
+  await userRepository.removeUserFromFollowersAndFollowing(id);
   const deleted = await userRepository.deleteUser(id);
   if (!deleted) {
     throw new Error('User not found or delete failed');

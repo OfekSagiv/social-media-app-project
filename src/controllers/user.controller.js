@@ -110,6 +110,7 @@ const deleteMyAccount = async (req, res) => {
     await postService.deletePostsByUser(userId);
     await groupService.deleteGroupsByAdmin(userId);
     await userService.removeUserFromAllFollowersAndFollowing(userId);
+    await postService.cleanupUserDataFromPosts(userId);
 
     const user = await userService.getUserById(userId);
     if (user.profileImageUrl && !user.profileImageUrl.includes('default-avatar.jpg')) {

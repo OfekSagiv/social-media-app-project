@@ -12,6 +12,5 @@ router.get('/:id', userController.getUserById);
 router.put('/:id', userController.updateUser);
 router.post('/:id/follow', isLoggedIn, userController.toggleFollow);
 router.delete('/me', isLoggedIn, userController.deleteMyAccount); 
-router.delete('/:id', userController.deleteUser); 
 
 module.exports = router;

@@ -1,6 +1,7 @@
 const postRepository = require('../repositories/post.repository');
 const groupRepository = require('../repositories/group.repository');
 const { countPostsByUser: countPostsByUserRepo } = require('../repositories/post.repository');
+const Post = require('../models/Post');
 
 const createPost = async (data) => {
     const {content, author, groupId} = data;
@@ -101,6 +102,11 @@ const deletePostsByUser = async (userId) => {
   return await postRepository.deletePostsByAuthor(userId);
 };
 
+const cleanupUserDataFromPosts = async (userId) => {
+  await Post.updateMany({}, { $pull: { comments: { userId } } });
+  await Post.updateMany({}, { $pull: { likes: userId } });
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -113,5 +119,6 @@ module.exports = {
     getMyPosts,
     getPostsByGroupId,
     countPostsByUser,
-    deletePostsByUser
+    deletePostsByUser,
+    cleanupUserDataFromPosts
 };
