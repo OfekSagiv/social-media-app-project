@@ -19,6 +19,5 @@ app.use(express.json());
 
 app.use('/', viewRoutes);
 app.use('/api', apiRoutes);
-app.use('/users', userRoutes);
 
 module.exports = app;

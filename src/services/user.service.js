@@ -92,7 +92,8 @@ const deleteUserCompletely = async (userId) => {
   for (const group of userGroups) {
     try {
       await groupService.leaveGroup(group._id, userId);
-    } catch (_) {
+    } catch (err) {
+      console.warn(`Skipping group ${group._id} for user ${userId}: ${err.message}`);
     }
   }
 

@@ -44,19 +44,13 @@ const deleteUser = async (req, res) => {
         const userId = req.params.id;
         const sessionUserId = req.session.user?._id;
 
-        if (!sessionUserId || userId.toString() !== sessionUserId.toString()) {
-            return res.status(403).json({ error: 'Unauthorized' });
-        }
-
         await userService.deleteUserCompletely(userId);
         req.session.destroy();
         res.status(200).json({ message: 'User deleted' });
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to delete user' });
+        return res.status(400).json({ error: err.message });
     }
 };
-
 
 const toggleFollow = async (req, res) => {
     try {
