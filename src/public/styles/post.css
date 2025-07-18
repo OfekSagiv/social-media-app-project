@@ -173,3 +173,21 @@
     border-radius: 12px;
     background-color: #ccc;
 }
+
+.hidden {
+  display: none !important;
+}
+
+.edit-post-textarea {
+  width: 95%;
+  min-height: 80px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  resize: vertical;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  margin-top: 10px;
+  transition: border 0.2s ease;
+}
