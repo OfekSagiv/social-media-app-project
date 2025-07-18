@@ -126,6 +126,11 @@ const countPostsByUser = async (userId) => {
   return result[0]?.totalPosts || 0;
 };
 
+const cleanupUserDataFromPosts = async (userId) => {
+    await Post.updateMany({}, { $pull: { comments: { userId } } });
+    await Post.updateMany({}, { $pull: { likes: userId } });
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -139,5 +144,6 @@ module.exports = {
     getPostsByAuthor,
     getPostsByGroup,
     deletePostsByGroupId,
-    countPostsByUser
+    countPostsByUser,
+    cleanupUserDataFromPosts
 };

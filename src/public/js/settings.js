@@ -32,3 +32,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const deleteButton = document.getElementById('delete-account-button');
+
+    deleteButton.addEventListener('click', async () => {
+        if (!confirm('Are you sure you want to delete your account?')) return;
+
+        try {
+            const userId = deleteButton.dataset.userid;
+
+            const response = await fetch(`/api/users/${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                
+                window.location.href = '/login';
+            } else {
+                alert('Failed to delete account');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Error occurred while deleting account');
+        }
+    });
+});

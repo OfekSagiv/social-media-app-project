@@ -41,13 +41,16 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
     try {
-        await userService.deleteUser(req.params.id);
-        res.status(204).end();
+        const userId = req.params.id;
+        const sessionUserId = req.session.user?._id;
+
+        await userService.deleteUserCompletely(userId);
+        req.session.destroy();
+        res.status(200).json({ message: 'User deleted' });
     } catch (err) {
-        res.status(400).json({error: err.message});
+        return res.status(400).json({ error: err.message });
     }
 };
-
 
 const toggleFollow = async (req, res) => {
     try {

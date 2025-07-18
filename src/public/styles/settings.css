@@ -42,3 +42,12 @@
     border-radius: 50%;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
+.delete-button {
+    background-color: rgb(217, 45, 45);
+    margin-top: 20px;
+}
+
+.delete-button:hover {
+    background-color: rgb(255, 95, 95);
+}
