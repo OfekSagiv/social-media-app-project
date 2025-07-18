@@ -1,10 +1,11 @@
-module.exports = (req, res, next) => {
-    const sessionUserId = req.session?.user?._id;
-    const targetUserId = req.params.id;
+function isSelf(req, res, next) {
+  const sessionUserId = req.session?.user?._id;
+  const userId = req.params.id;
 
-    if (!sessionUserId || sessionUserId.toString() !== targetUserId.toString()) {
-        return res.status(403).json({ error: 'Unauthorized: You can only act on your own account.' });
-    }
+  if (!sessionUserId || String(sessionUserId) !== String(userId)) {
+  return res.status(403).json({ error: 'Unauthorized' });
+}
+  next();
+}
 
-    next();
-};
+module.exports = { isSelf };

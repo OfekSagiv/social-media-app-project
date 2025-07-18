@@ -4,7 +4,7 @@ const userController = require('../controllers/user.controller');
 const { isLoggedIn } = require('../middleware/auth');
 const viewController = require('../controllers/view.controller');
 const upload = require('../middleware/upload');
-const isSelf = require('../middleware/isSelf');
+const { isSelf } = require('../middleware/isSelf');
 
 router.put('/settings', isLoggedIn, upload.single('profileImage'), viewController.updateSettings);
 router.post('/', userController.createUser);
