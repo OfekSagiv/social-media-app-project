@@ -1,4 +1,5 @@
 const groupService = require('../services/group.service');
+const postService = require('../services/post.service');
 
 const createGroup = async (req, res) => {
   try {
@@ -27,9 +28,22 @@ const getGroups = async (req, res) => {
 const getGroupById = async (req, res) => {
   try {
     const group = await groupService.getGroupById(req.params.id);
-    res.json(group);
+    const posts = await postService.getPostsByGroupId(req.params.id);
+    const members = await groupService.getGroupMembers(req.params.id);
+    const postCount = await postService.countPostsInGroupByMembers(req.params.id);
+
+    const isMember = group.members.some((m) => m._id.toString() === req.user._id.toString());
+
+    res.render('group', {
+      user: req.user,
+      group,
+      members,
+      posts,
+      isMember,
+      postCount
+    });
   } catch (err) {
-    res.status(404).json({ error: err.message });
+    res.status(404).render('error', { message: err.message });
   }
 };
 

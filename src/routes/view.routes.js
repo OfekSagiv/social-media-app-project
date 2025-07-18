@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {isLoggedIn} = require('../middleware/auth');
-const {getAllPosts, getPostsByGroupId, getMyPosts, countPostsByUser} = require("../services/post.service");
+const {getAllPosts, getPostsByGroupId, getMyPosts, countPostsByUser, countPostsInGroupByMembers} = require("../services/post.service");
 const {getGroupById, getGroupMembers} = require("../services/group.service");
 const {getUserById} = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
@@ -67,6 +67,7 @@ router.get('/group/:id', isLoggedIn, async (req, res) => {
         const group = await getGroupById(groupId);
         const members = await getGroupMembers(groupId);
         const posts = await getPostsByGroupId(groupId);
+        const postCount = await countPostsInGroupByMembers(groupId);
 
         const isMember = members.some(member => member._id.toString() === user._id);
 
@@ -77,6 +78,7 @@ router.get('/group/:id', isLoggedIn, async (req, res) => {
             fullName: user.fullName,
             isMember,
             members,
+            postCount
         });
     } catch (err) {
         res.status(404).render('error', {message: err.message});

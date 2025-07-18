@@ -131,6 +131,20 @@ const cleanupUserDataFromPosts = async (userId) => {
     await Post.updateMany({}, { $pull: { likes: userId } });
 };
 
+const countPostsInGroupByMembers = async (groupId) => {
+  const objectId = new mongoose.Types.ObjectId(groupId);
+  const result = await Post.aggregate([
+    { $match: { groupId: objectId } },
+    {
+      $group: {
+        _id: '$groupId',
+        totalPosts: { $sum: 1 }
+      }
+    }
+  ]);
+  return result[0]?.totalPosts || 0;
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -145,5 +159,6 @@ module.exports = {
     getPostsByGroup,
     deletePostsByGroupId,
     countPostsByUser,
-    cleanupUserDataFromPosts
+    cleanupUserDataFromPosts,
+    countPostsInGroupByMembers
 };
