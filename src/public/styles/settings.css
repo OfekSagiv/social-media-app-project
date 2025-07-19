@@ -51,3 +51,35 @@
 .delete-button:hover {
     background-color: rgb(255, 95, 95);
 }
+
+.modal.hidden {
+    display: none;
+}
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    min-width: 300px;
+    text-align: center;
+}
+.cancel-button {
+    background: transparent;
+    color: #333;
+}
+
+.change-pass {
+    margin-top: 20px;
+    background-color: #71c78a;
+}
+
+.change-pass:hover {
+    background-color: #a3edb8;
+}

@@ -101,6 +101,22 @@ const getMyFollowersAndFollowing = async (req, res) => {
     }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { password } = req.body;
+
+    if (!password || password.length < 4) {
+      return res.status(400).json({ message: 'Password too short' });
+    }
+
+    const updatedUser = await userService.updateUser(userId, { password });
+    res.status(200).json({ message: 'Password updated', user: updatedUser });
+  } catch (err) {
+    res.status(500).json({ message: err.message || 'Failed to change password' });
+  }
+};
+
 module.exports = {
     createUser,
     getUsers,
@@ -108,5 +124,6 @@ module.exports = {
     updateUser,
     deleteUser,
     toggleFollow,
-    getMyFollowersAndFollowing
+    getMyFollowersAndFollowing,
+    changePassword
 };

@@ -11,6 +11,7 @@
 <%- include('./partials/navbar', { user }) %>
 
 <main class="settings-container">
+
     <h2 class="form-title">Account Settings</h2>
 
     <form id="settings-form" enctype="multipart/form-data">
@@ -45,6 +46,18 @@
 
         <button type="submit" class="glass-button">Save Changes</button>
     </form>
+
+    <div><button type="button" id="change-password-btn" class="glass-button change-pass">Change Password</button>
+
+        <div id="password-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Change Password</h3>
+                <input type="password" id="new-password-input" placeholder="Enter new password" />
+                <button id="submit-password-btn" class="glass-button">Save</button>
+                <button id="close-password-btn" class="glass-button cancel-button">Cancel</button>
+            </div>
+        </div>
+    </div>
 
     <button type="button" id="delete-account-button" class="glass-button delete-button" data-userid="<%= user._id %>">
         Delete Account

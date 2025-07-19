@@ -61,3 +61,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('password-modal');
+    const openBtn = document.getElementById('change-password-btn');
+    const closeBtn = document.getElementById('close-password-btn');
+    const submitBtn = document.getElementById('submit-password-btn');
+    const input = document.getElementById('new-password-input');
+
+    openBtn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        input.value = '';
+    });
+
+    submitBtn.addEventListener('click', async () => {
+        const password = input.value.trim();
+        if (!password) return alert('Password cannot be empty.');
+
+        submitBtn.disabled = true;
+
+        try {
+            const res = await fetch('/api/users/change-password', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include', 
+                body: JSON.stringify({ password }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                alert('Password updated!');
+                modal.classList.add('hidden');
+                input.value = '';
+            } else {
+                alert(data.message || 'Failed to update password');
+            }
+        } catch (err) {
+            alert('Error updating password');
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+});
+

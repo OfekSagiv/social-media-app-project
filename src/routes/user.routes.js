@@ -9,6 +9,7 @@ const { isSelf } = require('../middleware/isSelf');
 router.put('/settings', isLoggedIn, upload.single('profileImage'), viewController.updateSettings);
 router.post('/', userController.createUser);
 router.get('/', userController.getUsers);
+router.put('/change-password', isLoggedIn, userController.changePassword);
 router.get('/:id', userController.getUserById);
 router.put('/:id', userController.updateUser);
 router.delete('/:id', isLoggedIn, isSelf, userController.deleteUser);
