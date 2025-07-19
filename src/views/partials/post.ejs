@@ -25,8 +25,11 @@
         </span>
     </div>
 
-    <div class="post-content">
-        <p><%= post.content %></p>
+    <div class="post-content editable-post-field" data-post-id="<%= post._id %>">
+        <p class="post-text"><%= post.content %></p>
+        <textarea class="edit-post-textarea hidden"><%= post.content %></textarea>
+        <button class="save-post-btn glass-button small hidden">Save</button>
+       
         <% if (post.media && post.media.length > 0) { %>
             <div class="post-media-grid">
                 <% post.media.forEach((item) => { %>
@@ -65,6 +68,7 @@
             post.author._id.toString() === user._id.toString() ||
             (post.groupId && post.groupId.adminId && post.groupId.adminId._id.toString() === user._id.toString())
         ) { %>
+            <button class="edit-post-btn glass-button"><i class="bi bi-pencil-square"></i></button>
             <button class="delete-post-btn glass-button"><i class="bi bi-trash3-fill"></i></button>
         <% } %>
     </div>

@@ -38,12 +38,12 @@ const getPostById = async (req, res) => {
 };
 
 const updatePost = async (req, res) => {
-    try {
-        const updatedPost = await postService.updatePost(req.params.id, req.body);
-        res.status(200).json(updatedPost);
-    } catch (err) {
-        res.status(400).json({error: err.message});
-    }
+  try {
+    const updatedPost = await postService.updatePost(req.params.id, req.body, req.user._id);
+    res.status(200).json(updatedPost);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };
 
 const deletePost = async (req, res) => {
