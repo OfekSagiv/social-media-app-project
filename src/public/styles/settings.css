@@ -83,3 +83,11 @@
 .change-pass:hover {
     background-color: #a3edb8;
 }
+
+.pass-input {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    height: 30px;
+    font-size: 14px;
+    padding-left: 10px;
+}
