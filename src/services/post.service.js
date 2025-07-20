@@ -107,6 +107,10 @@ const countPostsByUser = async (userId) => {
    return await countPostsByUserRepo(userId);
  };
 
+const countPostsInGroupByMembers = async (groupId) => {
+    return await postRepository.countPostsInGroupByMembers(groupId);
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -119,5 +123,5 @@ module.exports = {
     getMyPosts,
     getPostsByGroupId,
     countPostsByUser,
-    
+    countPostsInGroupByMembers
 };
