@@ -33,10 +33,25 @@ const getPostById = async (id) => {
     return post;
 };
 
-const updatePost = async (id, updateData) => {
-    const post = await postRepository.updatePostById(id, updateData);
-    if (!post) throw new Error('Post not found or update failed');
-    return post;
+const updatePost = async (postId, updateData, userId) => {
+  const post = await postRepository.getPostById(postId);
+  if (!post) throw new Error('Post not found');
+
+  const isAuthor = post.author.equals(userId);
+  let isGroupAdmin = false;
+
+  if (post.groupId) {
+    const group = await groupRepository.findGroupById(post.groupId);
+    if (group && group.adminId.equals(userId)) {
+      isGroupAdmin = true;
+    }
+  }
+
+  if (!isAuthor && !isGroupAdmin) {
+    throw new Error('Unauthorized to edit this post');
+  }
+
+  return await postRepository.updatePostById(postId, updateData);
 };
 
 const deletePost = async (postId, userId) => {

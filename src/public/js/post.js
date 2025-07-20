@@ -83,3 +83,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.edit-post-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const postCard = btn.closest('.post-card');
+      const postId = postCard.dataset.postId;
+      const textEl = postCard.querySelector('.post-text');
+      const textarea = postCard.querySelector('.edit-post-textarea');
+      const saveBtn = postCard.querySelector('.save-post-btn');
+
+      textarea.classList.remove('hidden');
+      saveBtn.classList.remove('hidden');
+      textEl.classList.add('hidden');
+
+      saveBtn.addEventListener('click', async () => {
+        const newText = textarea.value.trim();
+        if (!newText) return;
+
+        try {
+          const res = await fetch(`/api/posts/${postId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: newText }),
+          });
+
+          if (!res.ok) throw new Error('Failed to update post');
+          const data = await res.json();
+
+          textEl.textContent = data.content;
+          textEl.classList.remove('hidden');
+          textarea.classList.add('hidden');
+          saveBtn.classList.add('hidden');
+        } catch (err) {
+          alert('Error updating post');
+          console.error(err);
+        }
+      }, { once: true }); 
+    });
+  });
+});
