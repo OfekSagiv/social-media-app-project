@@ -2,6 +2,7 @@ const userRepository = require('../repositories/user.repository');
 const postService = require('./post.service');
 const groupService = require('./group.service');
 const cleanupUserDataFromPosts = require('../repositories/post.repository').cleanupUserDataFromPosts; 
+const bcrypt = require('bcrypt');
 
 const checkIfExists = async (field, value, message) => {
   const query = {};
@@ -38,6 +39,11 @@ const getUserById = async (id) => {
 };
 
 const updateUser = async (id, updateData) => {
+  if (updateData.password) {
+    const hashedPassword = await bcrypt.hash(updateData.password, 10);
+    updateData.password = hashedPassword;
+  }
+
   const updated = await userRepository.updateUser(id, updateData);
   if (!updated) {
     throw new Error('User not found or update failed');
