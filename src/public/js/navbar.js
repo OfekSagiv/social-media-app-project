@@ -25,3 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  const selector = document.getElementById('search-type-selector');
+
+  selector.addEventListener('change', () => {
+    const type = selector.value;
+    if (type) {
+      window.location.href = `/search/${type}`;
+    }
+  });
+});
+
+
+

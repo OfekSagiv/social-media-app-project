@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Search Users</title>
+  <link rel="stylesheet" href="/styles/global.css" />
+  <link rel="stylesheet" href="/styles/navbar.css" />
+  <link rel="stylesheet" href="/styles/search.css" />
+</head>
+<body>
+<%- include('../partials/navbar', { user }) %>
+
+<main class="search-page-container">
+  <h2 class="form-title">Search Users</h2>
+
+  <form class="search-form" method="GET" action="/search/users">
+    <input type="text" name="fullName" placeholder="Full Name" value="<%= filters?.fullName || '' %>" />
+    
+    <textarea name="bio" placeholder="Bio contains..."><%= filters?.bio || '' %></textarea>
+
+    <label>Date of Birth Range:</label>
+    <div class="dob-range">
+      <input type="date" name="dobFrom" value="<%= filters?.dobFrom || '' %>" />
+      <span>to</span>
+      <input type="date" name="dobTo" value="<%= filters?.dobTo || '' %>" />
+    </div>
+
+    <button type="submit" class="glass-button">Search</button>
+  </form>
+
+  <% if (results && results.length > 0) { %>
+     <ul class="member-list">
+      <% results.forEach(user => { %>
+        <li class="member-item">
+          <a href="/profile/<%= user._id %>">
+            <img src="<%= user.profileImageUrl || '/img/default-avatar.jpg' %>" class="member-avatar" alt="avatar">
+            <span class="member-name"><%= user.fullName || user.username %></span>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  <% } else if (results) { %>
+    <p>No users found.</p>
+  <% } %>
+</main>
+
+<script src="/js/navbar.js" defer></script>
+</body>
+</html>

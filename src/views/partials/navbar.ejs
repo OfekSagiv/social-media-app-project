@@ -6,9 +6,17 @@
         </a>
     </div>
 
-
     <div class="navbar-center">
-        <input type="text" class="glass-input" placeholder="Search users or groups..." />
+        <form id="search-selector-form">
+            <div class="search-wrapper">
+            <select id="search-type-selector" class="glass-input select-inside">
+                <option value="" disabled selected>Search for...</option>
+                <option value="users">Users</option>
+                <option value="groups">Groups</option>
+                <option value="posts">Posts</option>
+            </select>
+            </div>
+        </form>
     </div>
 
     <div class="navbar-links">

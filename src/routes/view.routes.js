@@ -143,5 +143,7 @@ router.get('/my-following-followers', isLoggedIn, userController.getMyFollowersA
 
 router.get('/settings', isLoggedIn, viewController.renderSettingsPage);
 
+router.get('/search/users', isLoggedIn, viewController.searchUsersView);
+
 
 module.exports = router;

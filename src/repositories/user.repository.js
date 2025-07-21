@@ -4,8 +4,33 @@ const createUser = async (userData) => {
     return await User.create(userData);
 };
 
-const findAllUsers = async (filters = {}) => {
-    return await User.find(filters);
+const findAllUsers = async ({ fullName, bio, dobFrom, dobTo } = {}) => {
+  const query = {};
+
+  if (fullName) {
+    query.fullName = { $regex: fullName, $options: 'i' };
+  }
+
+  if (bio) {
+    query.bio = { $regex: bio, $options: 'i' };
+  }
+
+  if (dobFrom || dobTo) {
+    query.dateOfBirth = {};
+    if (dobFrom) {
+      const from = new Date(dobFrom);
+      if (!isNaN(from)) query.dateOfBirth.$gte = from;
+    }
+    if (dobTo) {
+      const to = new Date(dobTo);
+      if (!isNaN(to)) {
+        to.setHours(23, 59, 59, 999);
+        query.dateOfBirth.$lte = to;
+      }
+    }
+  }
+
+  return await User.find(query).select('-password');
 };
 
 const findUserById = async (id) => {
@@ -45,6 +70,7 @@ const findUserWithFollowersAndFollowing = async (userId) => {
         .populate('following', 'fullName username profileImageUrl');
 };
 
+
 module.exports = {
     createUser,
     findAllUsers,
@@ -55,5 +81,5 @@ module.exports = {
     addFollower,
     removeFollower,
     isFollowing,
-    findUserWithFollowersAndFollowing
+    findUserWithFollowersAndFollowing,
 };

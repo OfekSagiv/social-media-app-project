@@ -1,0 +1,29 @@
+.search-page-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.search-form input, .search-form textarea {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: 'Rubik', sans-serif;
+}
+
+.dob-range {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
