@@ -7,16 +7,16 @@
     </div>
 
     <div class="navbar-center">
-        <form id="search-selector-form">
-            <div class="search-wrapper">
-            <select id="search-type-selector" class="glass-input select-inside">
-                <option value="" disabled selected>Search for...</option>
-                <option value="users">Users</option>
-                <option value="groups">Groups</option>
-                <option value="posts">Posts</option>
-            </select>
-            </div>
-        </form>
+        <div class="navbar-dropdown" id="search-dropdown">
+            <button class="drop-button dropdown-toggle" type="button" id="search-dropdown-btn">
+            <i class="bi bi-search"></i> <span id="search-dropdown-label">Search For...</span>
+            </button>
+            <ul class="dropdown-menu" id="search-dropdown-menu">
+            <li><button type="button" data-type="users">Users</button></li>
+            <li><button type="button" data-type="groups">Groups</button></li>
+            <li><button type="button" data-type="posts">Posts</button></li>
+            </ul>
+        </div>
     </div>
 
     <div class="navbar-links">

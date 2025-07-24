@@ -24,9 +24,7 @@ const updateSettings = async (req, res) => {
 
 const searchUsersView = async (req, res) => {
   try {
-    const { fullName, bio, dobFrom, dobTo } = req.query;
-
-    const filters = { fullName, bio, dobFrom, dobTo };
+    const filters = (({ fullName, bio, dobFrom, dobTo }) => ({ fullName, bio, dobFrom, dobTo }))(req.query);
 
     const results = await userService.getAllUsers(filters);
 

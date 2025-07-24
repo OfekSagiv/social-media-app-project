@@ -169,6 +169,15 @@
   height: 30px
 }
 
+.drop-button {
+    background-color: white;
+    border-radius: 30px;
+    height: 35px;
+    border-style: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    color: #4e4e4e;
+    padding-right: 10px;
+}
 
 
 
