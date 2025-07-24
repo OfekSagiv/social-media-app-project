@@ -7,6 +7,7 @@ const {getUserById} = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
 const userController = require('../controllers/user.controller');
 const viewController = require('../controllers/view.controller');
+const { getFeedPostsForUser } = require('../services/post.service');
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -26,19 +27,17 @@ router.get('/home', isLoggedIn, async (req, res) => {
     const user = req.session.user;
 
     try {
-        const posts = await getAllPosts();
-
+        const posts = await getFeedPostsForUser(user._id);
 
         res.render('home', {
             fullName: user.fullName,
             user,
             posts
         });
-
     } catch (err) {
-        console.error('Error fetching posts:', err.message);
+        console.error('Error fetching feed:', err.message);
         res.status(500).render('error', {
-            message: 'Failed to load posts. Please try again later.'
+            message: 'Failed to load feed. Please try again later.'
         });
     }
 });

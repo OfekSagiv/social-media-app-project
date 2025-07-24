@@ -1,6 +1,8 @@
 const postRepository = require('../repositories/post.repository');
 const groupRepository = require('../repositories/group.repository');
+const userRepository = require('../repositories/user.repository');
 const { countPostsByUser: countPostsByUserRepo } = require('../repositories/post.repository');
+const Post = require('../models/Post');
 
 const createPost = async (data) => {
     const {content, author, groupId} = data;
@@ -126,6 +128,40 @@ const countPostsInGroupByMembers = async (groupId) => {
     return await postRepository.countPostsInGroupByMembers(groupId);
 };
 
+const getFeedPostsForUser = async (userId) => {
+    const myPosts = await postRepository.getPostsByAuthor(userId);
+
+    const user = await userRepository.findUserById(userId);
+    if (!user) throw new Error('User not found');
+
+    const followingIds = user.following || [];
+    const followedPosts = await Post.find({ author: { $in: followingIds } })
+        .populate('author', 'fullName profileImageUrl')
+        .populate('groupId', 'name')
+        .populate('comments.userId', 'fullName')
+        .sort({ createdAt: -1 });
+
+    const groups = await groupRepository.getGroupsByMember(userId) || [];
+    const groupIds = groups.map(g => g._id);
+    const groupPosts = await Post.find({ groupId: { $in: groupIds } })
+        .populate('author', 'fullName profileImageUrl')
+        .populate('groupId', 'name')
+        .populate('comments.userId', 'fullName')
+        .sort({ createdAt: -1 });
+
+    const allPosts = [...myPosts, ...followedPosts, ...groupPosts];
+
+    const uniquePostsMap = new Map();
+    allPosts.forEach(post => {
+        uniquePostsMap.set(post._id.toString(), post);
+    });
+
+    const uniquePosts = Array.from(uniquePostsMap.values());
+    uniquePosts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    return uniquePosts;
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -138,5 +174,6 @@ module.exports = {
     getMyPosts,
     getPostsByGroupId,
     countPostsByUser,
-    countPostsInGroupByMembers
+    countPostsInGroupByMembers,
+    getFeedPostsForUser
 };
