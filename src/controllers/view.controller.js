@@ -1,4 +1,5 @@
 const viewService = require('../services/view.service');
+const userService = require('../services/user.service');
 
 const renderSettingsPage = async (req, res) => {
     try {
@@ -21,7 +22,20 @@ const updateSettings = async (req, res) => {
     }
 };
 
+const searchUsersView = async (req, res) => {
+  try {
+    const filters = (({ fullName, bio, dobFrom, dobTo }) => ({ fullName, bio, dobFrom, dobTo }))(req.query);
+
+    const results = await userService.getAllUsers(filters);
+
+    res.render('search/users', { user: req.user, results, filters: req.query });
+  } catch (err) {
+    res.status(500).render('error', { message: err.message });
+  }
+};
+
 module.exports = {
     renderSettingsPage,
-    updateSettings
+    updateSettings,
+    searchUsersView
 };

@@ -6,9 +6,17 @@
         </a>
     </div>
 
-
     <div class="navbar-center">
-        <input type="text" class="glass-input" placeholder="Search users or groups..." />
+        <div class="navbar-dropdown" id="search-dropdown">
+            <button class="drop-button dropdown-toggle" type="button" id="search-dropdown-btn">
+            <i class="bi bi-search"></i> <span id="search-dropdown-label">Search For...</span>
+            </button>
+            <ul class="dropdown-menu" id="search-dropdown-menu">
+            <li><button type="button" data-type="users">Users</button></li>
+            <li><button type="button" data-type="groups">Groups</button></li>
+            <li><button type="button" data-type="posts">Posts</button></li>
+            </ul>
+        </div>
     </div>
 
     <div class="navbar-links">

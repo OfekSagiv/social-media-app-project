@@ -117,6 +117,22 @@ const changePassword = async (req, res) => {
   }
 };
 
+const searchUsers = async (req, res) => {
+  try {
+    const filters = {
+      fullName: req.query.fullName,
+      bio: req.query.bio,
+      dobFrom: req.query.dobFrom,
+      dobTo: req.query.dobTo
+    };
+
+    const users = await userService.getAllUsers(filters);
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
 module.exports = {
     createUser,
     getUsers,
@@ -125,5 +141,6 @@ module.exports = {
     deleteUser,
     toggleFollow,
     getMyFollowersAndFollowing,
-    changePassword
+    changePassword,
+    searchUsers
 };
