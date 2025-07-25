@@ -4,10 +4,50 @@ const createGroup = async (groupData) => {
   return await Group.create(groupData);
 };
 
-const findAllGroups = async (filters = {}) => {
-  return await Group.find(filters);
-};
 
+const findAllGroups = async ({ name, description, membersMin, membersMax, createdFrom, createdTo } = {}) => {
+  const query = {};
+
+  if (name) {
+    query.name = { $regex: name, $options: 'i' };
+  }
+
+  if (description) {
+    query.description = { $regex: description, $options: 'i' };
+  }
+
+  const exprConditions = [];
+  const min = parseInt(membersMin);
+  const max = parseInt(membersMax);
+
+  if (!isNaN(min)) {
+    exprConditions.push({ $gte: [{ $size: "$members" }, min] });
+  }
+  if (!isNaN(max)) {
+    exprConditions.push({ $lte: [{ $size: "$members" }, max] });
+  }
+
+  if (exprConditions.length > 0) {
+    query.$expr = { $and: exprConditions };
+  }
+
+  if (createdFrom || createdTo) {
+    query.createdAt = {};
+    if (createdFrom) {
+      const from = new Date(createdFrom);
+      if (!isNaN(from)) query.createdAt.$gte = from;
+    }
+    if (createdTo) {
+      const to = new Date(createdTo);
+      if (!isNaN(to)) {
+        to.setHours(23, 59, 59, 999);
+        query.createdAt.$lte = to;
+      }
+    }
+  }
+
+  return await Group.find(query).populate('adminId', 'fullName');
+};
 const findGroupById = async (groupId) => {
   return await Group.findById(groupId);
 };

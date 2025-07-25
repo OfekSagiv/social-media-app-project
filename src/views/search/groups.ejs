@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Search Groups</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/search.css" />
+</head>
+<body>
+<%- include('../partials/navbar', { user }) %>
+
+<main class="search-page-container">
+    <h2 class="form-title">Search Groups</h2>
+
+    <form class="search-form" method="GET" action="/search/groups">
+        <input type="text" name="name" placeholder="Group Name" value="<%= filters?.name || '' %>" />
+
+        <textarea name="description" placeholder="Description contains..."><%= filters?.description || '' %></textarea>
+
+        <label>Number of Members:</label>
+        <div class="dob-range">
+            <input type="number" name="membersMin" placeholder="Min" value="<%= filters?.membersMin || '' %>" />
+            <span>to</span>
+            <input type="number" name="membersMax" placeholder="Max" value="<%= filters?.membersMax || '' %>" />
+        </div>
+
+        <label>Created At:</label>
+        <div class="dob-range">
+            <input type="date" name="createdFrom" value="<%= filters?.createdFrom || '' %>" />
+            <span>to</span>
+            <input type="date" name="createdTo" value="<%= filters?.createdTo || '' %>" />
+        </div>
+
+        <button type="submit" class="glass-button">Search</button>
+    </form>
+
+    <% if (results && results.length > 0) { %>
+        <ul class="member-list">
+            <% results.forEach(group => { %>
+                <li class="member-item">
+                    <a href="/group/<%= group._id %>">
+                        <img src="<%= group.imageUrl || '/img/default-avatar.jpg' %>" class="member-avatar" alt="avatar">
+                        <div>
+                            <div><%= group.name %></div>
+                            <div style="font-weight: normal; font-size: 14px;"><%= group.description %></div>
+                            <div style="font-size: 13px; color: #666;">Members: <%= group.members?.length || 0 %></div>
+                        </div>
+                    </a>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else if (results) { %>
+        <p>No groups found.</p>
+    <% } %>
+</main>
+
+<script src="/js/navbar.js" defer></script>
+</body>
+</html>

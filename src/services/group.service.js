@@ -20,11 +20,7 @@ const createGroup = async (groupData) => {
 };
 
 const getAllGroups = async (filters) => {
-  const groups = await groupRepository.findAllGroups(filters);
-  if (filters.name && groups.length === 0) {
-    throw new Error(`Group with name "${filters.name}" not found`);
-  }
-  return groups;
+  return await groupRepository.findAllGroups(filters);
 };
 
 const getGroupById = async (id) => {
