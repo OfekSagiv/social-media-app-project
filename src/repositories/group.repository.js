@@ -1,19 +1,22 @@
 const Group = require('../models/Group');
+const sanitize = require('../utils/sanitize');
 
 const createGroup = async (groupData) => {
   return await Group.create(groupData);
 };
 
-
 const findAllGroups = async ({ name, description, membersMin, membersMax, createdFrom, createdTo } = {}) => {
   const query = {};
 
-  if (name) {
-    query.name = { $regex: name, $options: 'i' };
+  const cleanName = sanitize(name);
+  const cleanDescription = sanitize(description);
+
+  if (cleanName) {
+    query.name = { $regex: cleanName, $options: 'i' };
   }
 
-  if (description) {
-    query.description = { $regex: description, $options: 'i' };
+  if (cleanDescription) {
+    query.description = { $regex: cleanDescription, $options: 'i' };
   }
 
   const exprConditions = [];
@@ -48,6 +51,7 @@ const findAllGroups = async ({ name, description, membersMin, membersMax, create
 
   return await Group.find(query).populate('adminId', 'fullName');
 };
+
 const findGroupById = async (groupId) => {
   return await Group.findById(groupId);
 };
