@@ -116,7 +116,7 @@ router.get('/profile/:id', isLoggedIn, async (req, res) => {
         }
 
         const posts = await getMyPosts(userId);
-        const postCount = await countPostsByUser(userId); 
+        const postCount = await countPostsByUser(userId);
 
         res.render('profile', {
             user,
@@ -144,5 +144,5 @@ router.get('/settings', isLoggedIn, viewController.renderSettingsPage);
 
 router.get('/search/users', isLoggedIn, viewController.searchUsersView);
 
-
+router.get('/search/groups', isLoggedIn, viewController.searchGroupsView);
 module.exports = router;

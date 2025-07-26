@@ -1,5 +1,6 @@
 const viewService = require('../services/view.service');
 const userService = require('../services/user.service');
+const groupService = require('../services/group.service');
 
 const renderSettingsPage = async (req, res) => {
     try {
@@ -34,8 +35,31 @@ const searchUsersView = async (req, res) => {
   }
 };
 
+const searchGroupsView = async (req, res) => {
+    try {
+        const { name, description, membersMin, membersMax, createdFrom, createdTo } = req.query;
+        const filters = { name, description, membersMin, membersMax, createdFrom, createdTo };
+
+        const results = await groupService.getAllGroups(filters);
+
+        res.render('search/groups', {
+            user: req.user,
+            results,
+            filters
+        });
+    } catch (err) {
+        console.error('Error rendering group search:', err);
+        res.status(500).render('error', {
+            message: err.message || 'Failed to search groups',
+            user: req.user
+        });
+    }
+};
+
+
 module.exports = {
     renderSettingsPage,
     updateSettings,
-    searchUsersView
+    searchUsersView,
+    searchGroupsView
 };
