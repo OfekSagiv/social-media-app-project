@@ -37,14 +37,8 @@ const searchUsersView = async (req, res) => {
 
 const searchGroupsView = async (req, res) => {
     try {
-        const filters = (({ name, description, membersMin, membersMax, createdFrom, createdTo }) => ({
-            name,
-            description,
-            membersMin,
-            membersMax,
-            createdFrom,
-            createdTo
-        }))(req.query);
+        const { name, description, membersMin, membersMax, createdFrom, createdTo } = req.query;
+        const filters = { name, description, membersMin, membersMax, createdFrom, createdTo };
 
         const results = await groupService.getAllGroups(filters);
 
@@ -55,7 +49,10 @@ const searchGroupsView = async (req, res) => {
         });
     } catch (err) {
         console.error('Error rendering group search:', err);
-        res.status(500).render('error', { message: 'Failed to search groups' });
+        res.status(500).render('error', {
+            message: err.message || 'Failed to search groups',
+            user: req.user
+        });
     }
 };
 

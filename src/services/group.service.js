@@ -20,6 +20,31 @@ const createGroup = async (groupData) => {
 };
 
 const getAllGroups = async (filters) => {
+  const {
+    membersMin,
+    membersMax,
+    createdFrom,
+    createdTo
+  } = filters;
+
+  const min = parseInt(membersMin);
+  const max = parseInt(membersMax);
+
+  if (!isNaN(min) && !isNaN(max) && min > max) {
+    throw new Error('membersMin cannot be greater than membersMax');
+  }
+
+  const fromDate = createdFrom ? new Date(createdFrom) : null;
+  const toDate = createdTo ? new Date(createdTo) : null;
+
+  if (
+      fromDate && toDate &&
+      !isNaN(fromDate) && !isNaN(toDate) &&
+      fromDate > toDate
+  ) {
+    throw new Error('Start date cannot be later than end date.');
+  }
+
   return await groupRepository.findAllGroups(filters);
 };
 

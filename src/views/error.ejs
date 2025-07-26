@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Error</title>
-    <link rel="stylesheet" href="/css/error.css">
+    <meta charset="UTF-8" />
+    <title>Error - FriendZone</title>
+    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/post.css" />
 </head>
 <body>
-<div class="error-container">
-    <h1>⚠️ Error</h1>
-    <p><%= message %></p>
-    <a href="/home">Back to Home</a>
-</div>
+
+<%- include('partials/navbar', { user }) %>
+
+<main class="feed-container">
+    <div class="post-card" style="text-align: center;">
+        <h2 style="color: #4285f4;">Oops! Something went wrong.</h2>
+        <p style="margin-top: 12px;"><%= message %></p>
+        <a href="/home" class="group-link" style="display: inline-block; margin-top: 20px;">Back to Home</a>
+    </div>
+</main>
+
+<script src="/js/navbar.js" defer></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 const Group = require('../models/Group');
 const sanitize = require('../utils/sanitize');
+const isValidISODate = require('../utils/validateDate');
 
 const createGroup = async (groupData) => {
   return await Group.create(groupData);
@@ -19,33 +20,30 @@ const findAllGroups = async ({ name, description, membersMin, membersMax, create
     query.description = { $regex: cleanDescription, $options: 'i' };
   }
 
-  const exprConditions = [];
   const min = parseInt(membersMin);
   const max = parseInt(membersMax);
-
   if (!isNaN(min)) {
-    exprConditions.push({ $gte: [{ $size: "$members" }, min] });
+    query.memberCount = { ...query.memberCount, $gte: min };
   }
   if (!isNaN(max)) {
-    exprConditions.push({ $lte: [{ $size: "$members" }, max] });
-  }
-
-  if (exprConditions.length > 0) {
-    query.$expr = { $and: exprConditions };
+    query.memberCount = { ...query.memberCount, $lte: max };
   }
 
   if (createdFrom || createdTo) {
     query.createdAt = {};
-    if (createdFrom) {
-      const from = new Date(createdFrom);
-      if (!isNaN(from)) query.createdAt.$gte = from;
+
+    if (createdFrom && isValidISODate(createdFrom)) {
+      query.createdAt.$gte = new Date(createdFrom);
     }
-    if (createdTo) {
+
+    if (createdTo && isValidISODate(createdTo)) {
       const to = new Date(createdTo);
-      if (!isNaN(to)) {
-        to.setHours(23, 59, 59, 999);
-        query.createdAt.$lte = to;
-      }
+      to.setHours(23, 59, 59, 999);
+      query.createdAt.$lte = to;
+    }
+
+    if (Object.keys(query.createdAt).length === 0) {
+      delete query.createdAt;
     }
   }
 
