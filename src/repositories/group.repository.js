@@ -22,11 +22,15 @@ const findAllGroups = async ({ name, description, membersMin, membersMax, create
 
   const min = parseInt(membersMin);
   const max = parseInt(membersMax);
-  if (!isNaN(min)) {
-    query.memberCount = { ...query.memberCount, $gte: min };
-  }
-  if (!isNaN(max)) {
-    query.memberCount = { ...query.memberCount, $lte: max };
+
+  if (!isNaN(min) || !isNaN(max)) {
+    query.$expr = { $and: [] };
+    if (!isNaN(min)) {
+      query.$expr.$and.push({ $gte: [{ $size: "$members" }, min] });
+    }
+    if (!isNaN(max)) {
+      query.$expr.$and.push({ $lte: [{ $size: "$members" }, max] });
+    }
   }
 
   if (createdFrom || createdTo) {
