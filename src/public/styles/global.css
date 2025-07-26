@@ -121,3 +121,28 @@ body {
 .member-item a:hover {
   text-decoration: none;
 }
+
+#background-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+}
+
+.main-footer {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: #777;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-top: 1px solid #ddd;
+  margin-top: 50px;
+}
+
+
+
+
+
