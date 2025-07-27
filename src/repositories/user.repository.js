@@ -20,13 +20,15 @@ const findAllUsers = async ({ fullName, bio, dobFrom, dobTo } = {}) => {
     if (cleanBio) {
         query.bio = { $regex: cleanBio, $options: 'i' };
     }
+    
 
     if (cleanDobFrom || cleanDobTo) {
         query.dateOfBirth = {};
         if (cleanDobFrom) query.dateOfBirth.$gte = cleanDobFrom;
         if (cleanDobTo) {
-            cleanDobTo.setHours(23, 59, 59, 999);
-            query.dateOfBirth.$lte = cleanDobTo;
+            const endOfDay = new Date(cleanDobTo);
+            endOfDay.setHours(23, 59, 59, 999);
+            query.dateOfBirth.$lte = endOfDay;
         }
 
         if (Object.keys(query.dateOfBirth).length === 0) {
