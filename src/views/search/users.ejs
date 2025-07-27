@@ -15,7 +15,7 @@
 
   <form class="search-form" method="GET" action="/search/users">
     <input type="text" name="fullName" placeholder="Full Name" value="<%= filters?.fullName || '' %>" />
-    
+
     <textarea name="bio" placeholder="Bio contains..."><%= filters?.bio || '' %></textarea>
 
     <label>Date of Birth Range:</label>
@@ -34,7 +34,19 @@
         <li class="member-item">
           <a href="/profile/<%= user._id %>">
             <img src="<%= user.profileImageUrl || '/img/default-avatar.jpg' %>" class="member-avatar" alt="avatar">
-            <span class="member-name"><%= user.fullName || user.username %></span>
+            <div>
+              <div><%= user.fullName || user.username %></div>
+
+              <% if (user.bio) { %>
+                <div style="font-weight: normal; font-size: 14px;"><%= user.bio %></div>
+              <% } %>
+
+              <% if (user.dateOfBirth) { %>
+                <div style="font-size: 13px; color: #666;">
+                  Date of Birth: <%= new Date(user.dateOfBirth).toLocaleDateString() %>
+                </div>
+              <% } %>
+            </div>
           </a>
         </li>
       <% }) %>

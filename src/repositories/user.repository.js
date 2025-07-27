@@ -1,36 +1,42 @@
 const User = require('../models/User');
+const { sanitizeString, sanitizeDate } = require('../utils/sanitize');
 
 const createUser = async (userData) => {
     return await User.create(userData);
 };
 
 const findAllUsers = async ({ fullName, bio, dobFrom, dobTo } = {}) => {
-  const query = {};
+    const query = {};
 
-  if (fullName) {
-    query.fullName = { $regex: fullName, $options: 'i' };
-  }
+    const cleanFullName = sanitizeString(fullName);
+    const cleanBio = sanitizeString(bio);
+    const cleanDobFrom = sanitizeDate(dobFrom);
+    const cleanDobTo = sanitizeDate(dobTo);
 
-  if (bio) {
-    query.bio = { $regex: bio, $options: 'i' };
-  }
-
-  if (dobFrom || dobTo) {
-    query.dateOfBirth = {};
-    if (dobFrom) {
-      const from = new Date(dobFrom);
-      if (!isNaN(from)) query.dateOfBirth.$gte = from;
+    if (cleanFullName) {
+        query.fullName = { $regex: cleanFullName, $options: 'i' };
     }
-    if (dobTo) {
-      const to = new Date(dobTo);
-      if (!isNaN(to)) {
-        to.setHours(23, 59, 59, 999);
-        query.dateOfBirth.$lte = to;
-      }
-    }
-  }
 
-  return await User.find(query).select('-password');
+    if (cleanBio) {
+        query.bio = { $regex: cleanBio, $options: 'i' };
+    }
+    
+
+    if (cleanDobFrom || cleanDobTo) {
+        query.dateOfBirth = {};
+        if (cleanDobFrom) query.dateOfBirth.$gte = cleanDobFrom;
+        if (cleanDobTo) {
+            const endOfDay = new Date(cleanDobTo);
+            endOfDay.setHours(23, 59, 59, 999);
+            query.dateOfBirth.$lte = endOfDay;
+        }
+
+        if (Object.keys(query.dateOfBirth).length === 0) {
+            delete query.dateOfBirth;
+        }
+    }
+
+    return await User.find(query).select('-password');
 };
 
 const findUserById = async (id) => {
