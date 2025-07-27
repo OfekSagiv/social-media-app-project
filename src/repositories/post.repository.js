@@ -92,13 +92,13 @@ const getPostsByAuthor = async (authorId) => {
 };
 const getPostsByGroup = (groupId) => {
     return Post.find({ groupId })
-        .populate('author', 'fullName') 
+        .populate('author', 'fullName')
         .populate({
             path: 'groupId',
             select: 'name adminId',
             populate: {
                 path: 'adminId',
-                model: 'User', 
+                model: 'User',
                 select: '_id'
             }
         })
@@ -145,6 +145,85 @@ const countPostsInGroupByMembers = async (groupId) => {
   return result[0]?.totalPosts || 0;
 };
 
+const findPostsByFilters = async (filters) => {
+    const pipeline = [];
+
+    pipeline.push({
+        $lookup: {
+            from: 'users',
+            localField: 'author',
+            foreignField: '_id',
+            as: 'author'
+        }
+    }, {
+        $unwind: '$author'
+    });
+
+
+    pipeline.push({
+        $lookup: {
+            from: 'groups',
+            localField: 'groupId',
+            foreignField: '_id',
+            as: 'group'
+        }
+    }, {
+        $unwind: {
+            path: '$group',
+            preserveNullAndEmptyArrays: true
+        }
+    });
+
+
+    const match = {};
+
+    if (filters.content) {
+        match.content = { $regex: filters.content, $options: 'i' };
+    }
+
+    if (filters.createdFrom || filters.createdTo) {
+        match.createdAt = {};
+        if (filters.createdFrom) match.createdAt.$gte = filters.createdFrom;
+        if (filters.createdTo) match.createdAt.$lte = filters.createdTo;
+    }
+
+    if (Object.keys(match).length > 0) {
+        pipeline.push({ $match: match });
+    }
+
+    if (filters.authorName) {
+        pipeline.push({
+            $match: {
+                'author.fullName': { $regex: filters.authorName, $options: 'i' }
+            }
+        });
+    }
+
+    if (filters.groupName) {
+        pipeline.push({
+            $match: {
+                'group.name': { $regex: filters.groupName, $options: 'i' }
+            }
+        });
+    }
+
+    pipeline.push({
+        $project: {
+            content: 1,
+            createdAt: 1,
+            media: 1,
+            group: { _id: 1, name: 1 },
+            author: { _id: 1, fullName: 1, profileImageUrl: 1 },
+            likes: 1,
+            comments: 1
+        }
+    });
+
+    return Post.aggregate(pipeline);
+};
+
+
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -160,5 +239,6 @@ module.exports = {
     deletePostsByGroupId,
     countPostsByUser,
     cleanupUserDataFromPosts,
+    findPostsByFilters,
     countPostsInGroupByMembers
 };
