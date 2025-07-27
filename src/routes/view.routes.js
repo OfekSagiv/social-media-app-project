@@ -8,6 +8,7 @@ const groupController = require('../controllers/group.controller');
 const userController = require('../controllers/user.controller');
 const viewController = require('../controllers/view.controller');
 const { getFeedPostsForUser } = require('../services/post.service');
+const fetch = require('node-fetch');
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -21,25 +22,30 @@ router.get('/', (req, res) => {
     const user = req.session?.user;
     if (user) return res.redirect('/home');
     res.redirect('/login');
-});
+}); 
 
 router.get('/home', isLoggedIn, async (req, res) => {
-    const user = req.session.user;
+  const user = req.session.user;
 
-    try {
-        const posts = await getFeedPostsForUser(user._id);
+  try {
+    const posts = await getFeedPostsForUser(user._id);
 
-        res.render('home', {
-            fullName: user.fullName,
-            user,
-            posts
-        });
-    } catch (err) {
-        console.error('Error fetching feed:', err.message);
-        res.status(500).render('error', {
-            message: 'Failed to load feed. Please try again later.'
-        });
-    }
+    const historyRes = await fetch('https://history.muffinlabs.com/date');
+    const historyData = await historyRes.json();
+    const historyEvents = historyData?.data?.Events?.slice(0, 5) || [];
+
+    res.render('home', {
+      fullName: user.fullName,
+      user,
+      posts,
+      historyEvents
+    });
+  } catch (err) {
+    console.error('Error fetching feed:', err.message);
+    res.status(500).render('error', {
+      message: 'Failed to load feed. Please try again later.'
+    });
+  }
 });
 
 router.get('/error-test', (req, res) => {

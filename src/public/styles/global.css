@@ -121,3 +121,11 @@ body {
 .member-item a:hover {
   text-decoration: none;
 }
+
+.content-wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+}
