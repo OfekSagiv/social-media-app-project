@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     const allDropdowns = document.querySelectorAll('.navbar-dropdown');
 
     allDropdowns.forEach(dropdown => {
@@ -23,29 +24,30 @@ document.addEventListener('DOMContentLoaded', () => {
             menu.classList.remove('show');
         });
     }
-});
 
-document.addEventListener('DOMContentLoaded', () => {
-  const selector = document.getElementById('search-type-selector');
+    const dropdownMenu = document.getElementById('search-dropdown-menu');
+    const label = document.getElementById('search-dropdown-label');
 
-  selector.addEventListener('change', () => {
-    const type = selector.value;
-    if (type) {
-      window.location.href = `/search/${type}`;
+    if (dropdownMenu && label) {
+        dropdownMenu.querySelectorAll('button[data-type]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const type = btn.getAttribute('data-type');
+                label.textContent = btn.textContent;
+                if (type) {
+                    window.location.href = `/search/${type}`;
+                }
+            });
+        });
     }
-  });
 
-});document.addEventListener('DOMContentLoaded', () => {
-  const dropdownMenu = document.getElementById('search-dropdown-menu');
-  const label = document.getElementById('search-dropdown-label');
+    const selector = document.getElementById('search-type-selector');
 
-  dropdownMenu.querySelectorAll('button[data-type]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const type = btn.getAttribute('data-type');
-      label.textContent = btn.textContent;
-      if (type) {
-        window.location.href = `/search/${type}`;
-      }
-    });
-  });
+    if (selector) {
+        selector.addEventListener('change', () => {
+            const type = selector.value;
+            if (type) {
+                window.location.href = `/search/${type}`;
+            }
+        });
+    }
 });

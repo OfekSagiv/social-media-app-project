@@ -1,5 +1,5 @@
 const Group = require('../models/Group');
-const sanitize = require('../utils/sanitize');
+const { sanitizeString } = require('../utils/sanitize');
 const isValidISODate = require('../utils/validateDate');
 
 const createGroup = async (groupData) => {
@@ -9,8 +9,8 @@ const createGroup = async (groupData) => {
 const findAllGroups = async ({ name, description, membersMin, membersMax, createdFrom, createdTo } = {}) => {
   const query = {};
 
-  const cleanName = sanitize(name);
-  const cleanDescription = sanitize(description);
+  const cleanName = sanitizeString(name);
+  const cleanDescription = sanitizeString(description);
 
   if (cleanName) {
     query.name = { $regex: cleanName, $options: 'i' };
