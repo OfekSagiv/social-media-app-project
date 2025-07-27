@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Statistics</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/styles/global.css" />
+  <link rel="stylesheet" href="/styles/statistics.css" />
+  <link rel="stylesheet" href="/styles/navbar.css" />
+</head>
+<body>
+
+   <header class="stats-header">
+        <div class="stats-header-left">
+            <a class="glass-button" href="/home">
+            <i class="bi bi-house-fill"></i> Home
+            </a>
+        </div>
+        <div class="stats-header-center">
+            <h1>Network Activity</h1>
+            <p>Live stats about posts and signups</p>
+        </div>
+        <div class="stats-header-right">
+            <img src="<%= user.profileImageUrl || '/img/default-avatar.jpg' %>" alt="Avatar" class="navbar-avatar" />
+        </div>
+    </header>
+
+
+  <div class="charts-container">
+    <section class="chart-box">
+      <h2>Posts Per Day</h2>
+      <svg id="postsChart" width="600" height="300"></svg>
+    </section>
+
+    <section class="chart-box">
+      <h2>New Users Per Day</h2>
+      <svg id="usersChart" width="600" height="300"></svg>
+    </section>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="/js/statistics.js" defer></script>
+</body>
+</html>

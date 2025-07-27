@@ -8,6 +8,7 @@ const groupController = require('../controllers/group.controller');
 const userController = require('../controllers/user.controller');
 const viewController = require('../controllers/view.controller');
 const { getFeedPostsForUser } = require('../services/post.service');
+const statisticsController = require('../controllers/statistics.controller');
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -144,5 +145,6 @@ router.get('/settings', isLoggedIn, viewController.renderSettingsPage);
 
 router.get('/search/users', isLoggedIn, viewController.searchUsersView);
 
+router.get('/statistics', isLoggedIn, statisticsController.renderStatisticsPage);
 
 module.exports = router;
