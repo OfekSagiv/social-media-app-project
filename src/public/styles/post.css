@@ -191,3 +191,27 @@
   margin-top: 10px;
   transition: border 0.2s ease;
 }
+
+.post-text {
+  line-height: 24px;
+}
+
+.post-text.multi-column {
+  column-count: 2;
+  column-gap: 30px;
+  column-rule: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+@font-face {
+  font-family: 'FiltedCustom';
+  src: url('/fonts/Filted-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.post-author strong {
+  font-family: 'FiltedCustom', sans-serif;
+  font-weight: 600;
+}
+
