@@ -3,6 +3,7 @@ const groupRepository = require('../repositories/group.repository');
 const userRepository = require('../repositories/user.repository');
 const { countPostsByUser: countPostsByUserRepo } = require('../repositories/post.repository');
 const Post = require('../models/Post');
+const { sanitizeString, sanitizeDate } = require('../utils/sanitize');
 
 const createPost = async (data) => {
     const {content, author, groupId} = data;
@@ -162,6 +163,29 @@ const getFeedPostsForUser = async (userId) => {
     return uniquePosts;
 };
 
+const searchPosts = async (filters) => {
+    const sanitized = {
+        content: sanitizeString(filters.content),
+        authorName: sanitizeString(filters.authorName),
+        groupName: sanitizeString(filters.groupName),
+        createdFrom: sanitizeDate(filters.createdFrom),
+        createdTo: sanitizeDate(filters.createdTo)
+    };
+
+    if (sanitized.createdFrom && sanitized.createdTo && sanitized.createdFrom > sanitized.createdTo) {
+        throw new Error('Start date cannot be after end date');
+    }
+
+    if (sanitized.createdTo) {
+
+        const endOfDay = new Date(sanitized.createdTo);
+        endOfDay.setHours(23, 59, 59, 999);
+        sanitized.createdTo = endOfDay;
+    }
+
+    return await postRepository.findPostsByFilters(sanitized);
+};
+
 module.exports = {
     createPost,
     getAllPosts,
@@ -175,5 +199,6 @@ module.exports = {
     getPostsByGroupId,
     countPostsByUser,
     countPostsInGroupByMembers,
-    getFeedPostsForUser
+    getFeedPostsForUser,
+    searchPosts
 };

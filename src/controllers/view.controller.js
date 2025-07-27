@@ -1,6 +1,7 @@
 const viewService = require('../services/view.service');
 const userService = require('../services/user.service');
 const groupService = require('../services/group.service');
+const postService = require('../services/post.service');
 
 const renderSettingsPage = async (req, res) => {
     try {
@@ -56,10 +57,24 @@ const searchGroupsView = async (req, res) => {
     }
 };
 
+const searchPostsView = async (req, res) => {
+    try {
+        const filters = (({ content, authorName, groupName, createdFrom, createdTo }) => ({
+            content, authorName, groupName, createdFrom, createdTo
+        }))(req.query);
+
+        const results = await postService.searchPosts(filters);
+
+        res.render('search/posts', { user: req.user, results, filters });
+    } catch (err) {
+        res.status(500).render('error', { message: err.message });
+    }
+};
 
 module.exports = {
     renderSettingsPage,
     updateSettings,
     searchUsersView,
-    searchGroupsView
+    searchGroupsView,
+    searchPostsView
 };
