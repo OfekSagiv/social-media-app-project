@@ -54,8 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
       particle.x += particle.dx;
       particle.y += particle.dy;
 
-      if (particle.x < 0 || particle.x > canvas.width) particle.dx *= -1;
-      if (particle.y < 0 || particle.y > canvas.height) particle.dy *= -1;
+      if (particle.x < 0 || particle.x > canvas.width) {
+        particle.dx *= -1;
+        particle.x = Math.max(0, Math.min(canvas.width, particle.x));
+      }
+      if (particle.y < 0 || particle.y > canvas.height) {
+        particle.dy *= -1;
+        particle.y = Math.max(0, Math.min(canvas.height, particle.y));
+      }
     }
 
     requestAnimationFrame(draw);
