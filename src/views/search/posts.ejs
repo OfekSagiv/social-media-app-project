@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Search Posts</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/search.css" />
+</head>
+<body>
+<%- include('../partials/navbar', { user }) %>
+
+<main class="search-page-container">
+    <h2 class="form-title">Search Posts</h2>
+
+    <form class="search-form" method="GET" action="/search/posts">
+        <textarea name="content" placeholder="Content contains..."><%= filters?.content || '' %></textarea>
+
+        <input type="text" name="authorName" placeholder="Author Full Name" value="<%= filters?.authorName || '' %>" />
+
+        <input type="text" name="groupName" placeholder="Group Name" value="<%= filters?.groupName || '' %>" />
+
+        <label>Created At:</label>
+        <div class="dob-range">
+            <input type="date" name="createdFrom" value="<%= filters?.createdFrom || '' %>" />
+            <span>to</span>
+            <input type="date" name="createdTo" value="<%= filters?.createdTo || '' %>" />
+        </div>
+
+        <button type="submit" class="glass-button">Search</button>
+    </form>
+
+    <% if (results && results.length > 0) { %>
+        <ul class="member-list">
+            <% results.forEach(post => { %>
+                <li class="member-item">
+                    <a href="/profile/<%= post.author._id %>">
+                        <img src="<%= post.author.profileImageUrl || '/img/default-avatar.jpg' %>" class="member-avatar" alt="avatar">
+                        <div>
+                            <div style="font-weight: bold;"><%= post.author.fullName %></div>
+                            <div style="font-size: 14px; margin: 5px 0;"><%= post.content %></div>
+                            <% if (post.group?.name) { %>
+                                <div style="font-size: 13px; color: #555;">Group: <%= post.group.name %></div>
+                            <% } %>
+                            <div style="font-size: 12px; color: #777;"><%= new Date(post.createdAt).toLocaleString() %></div>
+                        </div>
+                    </a>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else if (results) { %>
+        <p>No posts found.</p>
+    <% } %>
+</main>
+
+<script src="/js/navbar.js" defer></script>
+</body>
+</html>

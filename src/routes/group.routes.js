@@ -6,6 +6,7 @@ const { isLoggedIn } = require('../middleware/auth');
 
 router.post('/', groupController.createGroup);
 router.get('/', groupController.getGroups);
+router.get('/search', groupController.searchGroups);
 router.get('/:id', groupController.getGroupById);
 router.get('/:id/members', groupController.getGroupMembers);
 router.put('/:id', groupController.updateGroup);
