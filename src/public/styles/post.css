@@ -203,11 +203,12 @@
 }
 
 @font-face {
-  font-family: 'FiltedCustom';
-  src: url('/fonts/Filted-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'FiltedCustom';
+    src: local('FiltedCustom'),
+    url('/fonts/Filted.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
 }
 
 .post-author strong {
