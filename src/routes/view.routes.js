@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const {isLoggedIn} = require('../middleware/auth');
-const {getAllPosts, getPostsByGroupId, getMyPosts, countPostsByUser, countPostsInGroupByMembers} = require("../services/post.service");
+const { getPostsByGroupId, getMyPosts, countPostsByUser, countPostsInGroupByMembers} = require("../services/post.service");
 const {getGroupById, getGroupMembers} = require("../services/group.service");
 const {getUserById} = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
 const userController = require('../controllers/user.controller');
 const viewController = require('../controllers/view.controller');
 const { getFeedPostsForUser } = require('../services/post.service');
-const fetch = require('node-fetch');
+
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
     const user = req.session?.user;
     if (user) return res.redirect('/home');
     res.redirect('/login');
-}); 
+});
 
 router.get('/home', isLoggedIn, async (req, res) => {
   const user = req.session.user;
@@ -30,9 +30,20 @@ router.get('/home', isLoggedIn, async (req, res) => {
   try {
     const posts = await getFeedPostsForUser(user._id);
 
-    const historyRes = await fetch('https://history.muffinlabs.com/date');
-    const historyData = await historyRes.json();
-    const historyEvents = historyData?.data?.Events?.slice(0, 5) || [];
+      let historyEvents = [];
+
+      try {
+          const historyRes = await fetch('https://history.muffinlabs.com/date');
+          if (!historyRes.ok) {
+              throw new Error(`History API returned status ${historyRes.status}`);
+          }
+
+          const historyData = await historyRes.json();
+          historyEvents = historyData?.data?.Events?.slice(0, 5) || [];
+      } catch (historyErr) {
+          console.warn('Failed to fetch history events:', historyErr.message);
+          historyEvents = [];
+      }
 
     res.render('home', {
       fullName: user.fullName,
@@ -122,7 +133,7 @@ router.get('/profile/:id', isLoggedIn, async (req, res) => {
         }
 
         const posts = await getMyPosts(userId);
-        const postCount = await countPostsByUser(userId); 
+        const postCount = await countPostsByUser(userId);
 
         res.render('profile', {
             user,
