@@ -1,11 +1,20 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  const [postsData, usersData] = await Promise.all([
-    fetch('/api/statistics/posts-per-day').then(res => res.json()),
-    fetch('/api/statistics/users-per-day').then(res => res.json())
-  ]);
+  try {
+    const postsRes = await fetch('/api/statistics/posts-per-day');
+    if (!postsRes.ok) throw new Error(`Failed to fetch posts data: ${postsRes.statusText}`);
+    const postsData = await postsRes.json();
 
-  drawBarChart(postsData, '#postsChart');
-  drawLineChart(usersData, '#usersChart');
+    const usersRes = await fetch('/api/statistics/users-per-day');
+    if (!usersRes.ok) throw new Error(`Failed to fetch users data: ${usersRes.statusText}`);
+    const usersData = await usersRes.json();
+
+    drawBarChart(postsData, '#postsChart');
+    drawLineChart(usersData, '#usersChart');
+
+  } catch (error) {
+    console.error('Error loading statistics data:', error);
+    alert('Failed to load statistics data. Please try again later.');
+  }
 });
 
 function drawBarChart(data, selector) {
