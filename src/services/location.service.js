@@ -31,6 +31,16 @@ const updateUserLocation = async (userId, address) => {
     return updated;
 };
 
+const deleteUserLocation = async (userId) => {
+    return await locationRepository.updateUserLocation(userId, {
+        address: '',
+        city: '',
+        location: null
+    });
+};
+
+
 module.exports = {
-    updateUserLocation
+    updateUserLocation,
+    deleteUserLocation
 };

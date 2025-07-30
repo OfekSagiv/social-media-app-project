@@ -28,7 +28,25 @@ const saveLocation = async (req, res) => {
     }
 };
 
+const deleteLocation = async (req, res) => {
+    const userId = req.session.user._id;
+
+    try {
+        const updatedUser = await locationService.deleteUserLocation(userId);
+
+        req.session.user.address = '';
+        req.session.user.city = '';
+        req.session.user.location = null;
+
+        res.status(200).json({ message: 'Location deleted successfully' });
+    } catch (err) {
+        console.error('Failed to delete location:', err.message);
+        res.status(500).json({ error: 'Failed to delete location' });
+    }
+};
+
 module.exports = {
     renderEditForm,
-    saveLocation
+    saveLocation,
+    deleteLocation
 };
