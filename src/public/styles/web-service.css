@@ -1,0 +1,28 @@
+
+.history-widget {
+  width: 300px;
+  background: #eaf1ff;
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.history-widget h3 {
+  margin-top: 0;
+  font-size: 18px;
+  color: #2e2e2e;
+  margin-bottom: 12px;
+}
+
+.history-card {
+  background: white;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.history-card strong {
+  color: #007bff;
+}

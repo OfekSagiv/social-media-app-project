@@ -20,12 +20,13 @@ body {
 }
 
 .feed-container {
+    flex: 1;
+    min-width: 0;
     width: 100%;
     max-width: 800px;
     padding: 20px;
     box-sizing: border-box;
 }
-
 .glass-button,
 .glass-button:link,
 .glass-button:visited {
@@ -46,7 +47,7 @@ body {
     text-decoration: none;
     cursor: pointer;
     transition: background 0.2s ease;
-    
+
 }
 
 .glass-button:hover {
@@ -123,6 +124,15 @@ body {
   text-decoration: none;
 }
 
+
+.content-wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 30px;
+  padding: 20px;
+}
+
 #background-canvas {
   position: fixed;
   top: 0;
@@ -142,6 +152,7 @@ body {
   border-top: 1px solid #ddd;
   margin-top: 50px;
 }
+
 
 
 
