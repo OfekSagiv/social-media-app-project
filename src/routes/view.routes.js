@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {isLoggedIn} = require('../middleware/auth');
-const { getPostsByGroupId, getMyPosts, countPostsByUser, countPostsInGroupByMembers} = require("../services/post.service");
+const {getPostsByGroupId, getMyPosts, countPostsByUser, countPostsInGroupByMembers} = require("../services/post.service");
 const {getGroupById, getGroupMembers} = require("../services/group.service");
 const {getUserById} = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
@@ -25,38 +25,45 @@ router.get('/', (req, res) => {
 });
 
 router.get('/home', isLoggedIn, async (req, res) => {
-  const user = req.session.user;
+    const user = req.session.user;
+    const HISTORY_EVENTS_LIMIT = 5;
 
-  try {
-    const posts = await getFeedPostsForUser(user._id);
+    try {
+        const posts = await getFeedPostsForUser(user._id);
 
-      let historyEvents = [];
+        let historyEvents = [];
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 3000);
 
-      try {
-          const historyRes = await fetch('https://history.muffinlabs.com/date');
-          if (!historyRes.ok) {
-              throw new Error(`History API returned status ${historyRes.status}`);
-          }
+        try {
+            const historyRes = await fetch('https://history.muffinlabs.com/date', {
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
 
-          const historyData = await historyRes.json();
-          historyEvents = historyData?.data?.Events?.slice(0, 5) || [];
-      } catch (historyErr) {
-          console.warn('Failed to fetch history events:', historyErr.message);
-          historyEvents = [];
-      }
+            if (!historyRes.ok) {
+                throw new Error(`History API returned status ${historyRes.status}`);
+            }
 
-    res.render('home', {
-      fullName: user.fullName,
-      user,
-      posts,
-      historyEvents
-    });
-  } catch (err) {
-    console.error('Error fetching feed:', err.message);
-    res.status(500).render('error', {
-      message: 'Failed to load feed. Please try again later.'
-    });
-  }
+            const historyData = await historyRes.json();
+            historyEvents = historyData?.data?.Events?.slice(0, HISTORY_EVENTS_LIMIT) || [];
+        } catch (historyErr) {
+            console.warn('Failed to fetch history events:', historyErr.name === 'AbortError' ? 'Request timed out' : historyErr.message);
+            historyEvents = [];
+        }
+
+        res.render('home', {
+            fullName: user.fullName,
+            user,
+            posts,
+            historyEvents
+        });
+    } catch (err) {
+        console.error('Error fetching feed:', err.message);
+        res.status(500).render('error', {
+            message: 'Failed to load feed. Please try again later.'
+        });
+    }
 });
 
 router.get('/error-test', (req, res) => {

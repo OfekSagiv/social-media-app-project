@@ -19,12 +19,13 @@ body {
 }
 
 .feed-container {
+    flex: 1;
+    min-width: 0;
     width: 100%;
     max-width: 800px;
     padding: 20px;
     box-sizing: border-box;
 }
-
 .glass-button,
 .glass-button:link,
 .glass-button:visited {
@@ -45,7 +46,7 @@ body {
     text-decoration: none;
     cursor: pointer;
     transition: background 0.2s ease;
-    
+
 }
 
 .glass-button:hover {

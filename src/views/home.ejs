@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles/post.css" />
     <link rel="stylesheet" href="/styles/create-post.css">
     <link rel="stylesheet" href="/styles/web-service.css">
-    <link rel="stylesheet" href="/styles/error.css">
+
 </head>
 <body>
 
@@ -22,19 +22,19 @@
       <% }) %>
   </main>
 
-  <aside class="history-widget">
-    <h3>On This Day</h3>
-    <% if (historyEvents && historyEvents.length > 0) { %>
-      <% historyEvents.forEach(event => { %>
-        <div class="history-card">
-          <strong><%= event.year %>:</strong>
-          <p><%= event.text %></p>
-        </div>
-      <% }) %>
-    <% } else { %>
-      <p>No events available.</p>
-    <% } %>
-  </aside>
+    <aside class="history-widget">
+        <h3>On This Day</h3>
+        <% if (historyEvents && historyEvents.length > 0) { %>
+            <% historyEvents.forEach(event => { %>
+                <div class="history-card">
+                    <strong><%= event.year %>:</strong>
+                    <p><%= event.text %></p>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No events available.</p>
+        <% } %>
+    </aside>
 </div>
 
 <script src="/js/navbar.js" defer></script>
