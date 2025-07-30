@@ -18,12 +18,12 @@
     <div id="map"></div>
 </main>
 
-<script src="/js/users-map.js" defer></script>
+<script src="/js/users-map.js" ></script>
 <script src="/js/edit-location.js" defer></script>
 <script
         src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_API_KEY %>&callback=initMap"
         async
-
+        defer
 ></script>
 <script src="/js/navbar.js" defer></script>
 

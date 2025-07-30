@@ -25,7 +25,7 @@ function initMap() {
                     content: `
             <strong>${user.fullName}</strong><br/>
             ${user.city}<br/>
-            <a href="/users/${user._id}">View Profile</a>
+            <a href="/profile/${user._id}">View Profile</a>
           `
                 });
 
