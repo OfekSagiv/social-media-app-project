@@ -70,11 +70,15 @@ const searchPostsView = async (req, res) => {
         res.status(500).render('error', { message: err.message });
     }
 };
+const renderUsersMap = (req, res) => {
+    res.render('users-map', { user: req.session.user });
+};
 
 module.exports = {
     renderSettingsPage,
     updateSettings,
     searchUsersView,
     searchGroupsView,
-    searchPostsView
+    searchPostsView,
+    renderUsersMap
 };

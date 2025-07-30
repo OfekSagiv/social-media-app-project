@@ -1,0 +1,32 @@
+<div class="post-card new-post-form">
+    <h2 class="form-title">Update Your Location</h2>
+
+    <div class="current-location-display" style="margin-bottom: 15px;">
+        <strong>Current Address:</strong>
+        <p><%= user.address || 'No address set' %></p>
+    </div>
+
+    <form id="edit-location-form">
+        <div class="post-header">
+            <strong><%= user.fullName %></strong>
+        </div>
+
+        <div class="post-content">
+            <input
+                    type="text"
+                    name="address"
+                    class="comment-input"
+                    placeholder="Enter your full address"
+                    value="<%= user.address || '' %>"
+                    required
+            />
+        </div>
+
+        <div class="post-actions">
+            <button type="submit" class="glass-button">Save Location</button>
+            <button type="button" id="delete-location-btn" class="glass-button">Delete Location</button>
+        </div>
+    </form>
+
+    <div id="location-feedback" style="margin-top: 10px; font-size: 14px;"></div>
+</div>

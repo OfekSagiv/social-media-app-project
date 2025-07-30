@@ -45,7 +45,7 @@ body {
     text-decoration: none;
     cursor: pointer;
     transition: background 0.2s ease;
-    
+
 }
 
 .glass-button:hover {
@@ -120,4 +120,12 @@ body {
 
 .member-item a:hover {
   text-decoration: none;
+}
+
+#location-feedback.success {
+    color: green;
+}
+
+#location-feedback.error {
+    color: red;
 }
