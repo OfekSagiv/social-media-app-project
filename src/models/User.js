@@ -51,6 +51,12 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     }],
+    address: { type: String, default: '' },
+    city: { type: String, default: '' },
+    location: {
+        lat: Number,
+        lng: Number
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

@@ -25,8 +25,10 @@ async function attachUser(req, res, next) {
                     username: user.username,
                     email: user.email,
                     profileImageUrl: user.profileImageUrl,
-                    bio: user.bio,                   
-                    dateOfBirth: user.dateOfBirth, 
+                    bio: user.bio,
+                    dateOfBirth: user.dateOfBirth,
+                    address: user.address,
+                    city: user.city,
                     following: user.following.map(f => f._id.toString())
                 };
             }
