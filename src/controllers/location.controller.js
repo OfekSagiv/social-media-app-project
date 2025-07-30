@@ -21,6 +21,7 @@ const saveLocation = async (req, res) => {
 
         req.session.user.address = updatedUser.address;
         req.session.user.city = updatedUser.city;
+        req.session.user.location = updatedUser.location;
 
         res.status(200).json({ message: 'Location updated successfully' });
     } catch (err) {
@@ -34,6 +35,10 @@ const deleteLocation = async (req, res) => {
     try {
         const updatedUser = await locationService.deleteUserLocation(userId);
 
+        if (!updatedUser) {
+            return res.status(500).json({ error: 'Delete returned null' });
+        }
+
         req.session.user.address = '';
         req.session.user.city = '';
         req.session.user.location = null;
@@ -45,8 +50,21 @@ const deleteLocation = async (req, res) => {
     }
 };
 
+const getUsersWithLocation = async (req, res) => {
+    try {
+        const city = req.query.city;
+        const users = await locationService.getUsersWithLocation(city);
+        res.status(200).json(users);
+    } catch (err) {
+        console.error('Failed to fetch users with location:', err);
+        res.status(500).json({ error: 'Failed to fetch user locations' });
+    }
+};
+
+
 module.exports = {
     renderEditForm,
     saveLocation,
-    deleteLocation
+    deleteLocation,
+    getUsersWithLocation
 };

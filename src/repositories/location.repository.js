@@ -10,6 +10,16 @@ const updateUserLocation = async (userId, updateData) => {
     return updated;
 };
 
+const getUsersWithLocation = async (cityFilter) => {
+    const filter = { location: { $ne: null } };
+    if (cityFilter) filter.city = cityFilter;
+
+    return await User.find(filter)
+        .select('fullName city location')
+        .lean();
+};
+
 module.exports = {
-    updateUserLocation
+    updateUserLocation,
+    getUsersWithLocation
 };

@@ -39,8 +39,12 @@ const deleteUserLocation = async (userId) => {
     });
 };
 
+const getUsersWithLocation = async (city) => {
+    return await locationRepository.getUsersWithLocation(city);
+};
 
 module.exports = {
     updateUserLocation,
-    deleteUserLocation
+    deleteUserLocation,
+    getUsersWithLocation
 };
