@@ -119,6 +119,22 @@ const getMyGroups = async (userId) => {
   return await groupService.getGroupsByMember(userId);
 };
 
+const searchGroups = async (req, res) => {
+  try {
+    const { name, description, membersMin, membersMax, createdFrom, createdTo } = req.query;
+
+    const filters = { name, description, membersMin, membersMax, createdFrom, createdTo };
+
+    const groups = await groupService.getAllGroups(filters);
+
+    res.status(200).json(groups);
+  } catch (error) {
+    console.error('Error searching groups:', error);
+    res.status(500).json({ error: 'Failed to search groups' });
+  }
+};
+
+
 module.exports = {
   createGroup,
   getGroups,
@@ -129,5 +145,6 @@ module.exports = {
   joinGroup,
   leaveGroup,
   changeGroupAdmin,
+  searchGroups,
   getMyGroups
 };

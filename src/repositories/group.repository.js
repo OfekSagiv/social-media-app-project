@@ -1,11 +1,57 @@
 const Group = require('../models/Group');
+const { sanitizeString } = require('../utils/sanitize');
+const isValidISODate = require('../utils/validateDate');
 
 const createGroup = async (groupData) => {
   return await Group.create(groupData);
 };
 
-const findAllGroups = async (filters = {}) => {
-  return await Group.find(filters);
+const findAllGroups = async ({ name, description, membersMin, membersMax, createdFrom, createdTo } = {}) => {
+  const query = {};
+
+  const cleanName = sanitizeString(name);
+  const cleanDescription = sanitizeString(description);
+
+  if (cleanName) {
+    query.name = { $regex: cleanName, $options: 'i' };
+  }
+
+  if (cleanDescription) {
+    query.description = { $regex: cleanDescription, $options: 'i' };
+  }
+
+  const min = parseInt(membersMin);
+  const max = parseInt(membersMax);
+
+  if (!isNaN(min) || !isNaN(max)) {
+    query.$expr = { $and: [] };
+    if (!isNaN(min)) {
+      query.$expr.$and.push({ $gte: [{ $size: "$members" }, min] });
+    }
+    if (!isNaN(max)) {
+      query.$expr.$and.push({ $lte: [{ $size: "$members" }, max] });
+    }
+  }
+
+  if (createdFrom || createdTo) {
+    query.createdAt = {};
+
+    if (createdFrom && isValidISODate(createdFrom)) {
+      query.createdAt.$gte = new Date(createdFrom);
+    }
+
+    if (createdTo && isValidISODate(createdTo)) {
+      const to = new Date(createdTo);
+      to.setHours(23, 59, 59, 999);
+      query.createdAt.$lte = to;
+    }
+
+    if (Object.keys(query.createdAt).length === 0) {
+      delete query.createdAt;
+    }
+  }
+
+  return await Group.find(query).populate('adminId', 'fullName');
 };
 
 const findGroupById = async (groupId) => {

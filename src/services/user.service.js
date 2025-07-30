@@ -1,7 +1,7 @@
 const userRepository = require('../repositories/user.repository');
 const postService = require('./post.service');
 const groupService = require('./group.service');
-const cleanupUserDataFromPosts = require('../repositories/post.repository').cleanupUserDataFromPosts; 
+const cleanupUserDataFromPosts = require('../repositories/post.repository').cleanupUserDataFromPosts;
 const bcrypt = require('bcrypt');
 
 const checkIfExists = async (field, value, message) => {
@@ -21,10 +21,16 @@ const createUser = async (userData) => {
 };
 
 const getAllUsers = async (filters) => {
+  const { username, dobFrom, dobTo } = filters;
+
+  if (dobFrom && dobTo && new Date(dobFrom) > new Date(dobTo)) {
+    throw new Error(`Date of birth "From" cannot be after Date of birth "To"`);
+  }
+
   const users = await userRepository.findAllUsers(filters);
 
-  if (filters.username && users.length === 0) {
-    throw new Error(`User with username "${filters.username}" not found`);
+  if (username && users.length === 0) {
+    throw new Error(`User with username "${username}" not found`);
   }
 
   return users;
@@ -81,7 +87,7 @@ const getUserWithFollowersAndFollowing = async (userId) => {
 };
 
 const deleteUserCompletely = async (userId) => {
-  
+
   const posts = await postService.getMyPosts(userId);
   for (const post of posts) {
     await postService.deletePost(post._id, userId);
@@ -107,8 +113,8 @@ const deleteUserCompletely = async (userId) => {
 
   const allUsers = await userRepository.findAllUsers({});
   for (const otherUser of allUsers) {
-    await userRepository.removeFollower(otherUser._id, userId); 
-    await userRepository.removeFollower(userId, otherUser._id); 
+    await userRepository.removeFollower(otherUser._id, userId);
+    await userRepository.removeFollower(userId, otherUser._id);
   }
 
   await userRepository.deleteUser(userId);

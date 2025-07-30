@@ -168,5 +168,7 @@ router.get('/settings', isLoggedIn, viewController.renderSettingsPage);
 
 router.get('/search/users', isLoggedIn, viewController.searchUsersView);
 
+router.get('/search/groups', isLoggedIn, viewController.searchGroupsView);
 
+router.get('/search/posts', isLoggedIn, viewController.searchPostsView);
 module.exports = router;
