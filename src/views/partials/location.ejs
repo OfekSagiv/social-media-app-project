@@ -1,6 +1,10 @@
-
 <div class="post-card new-post-form">
     <h2 class="form-title">Update Your Location</h2>
+
+    <div class="current-location-display" style="margin-bottom: 15px;">
+        <strong>Current Address:</strong>
+        <p><%= user.address || 'No address set' %></p>
+    </div>
 
     <form id="edit-location-form">
         <div class="post-header">
