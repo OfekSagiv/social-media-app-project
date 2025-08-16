@@ -123,3 +123,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.post-text').forEach(textEl => {
+    const lineHeight = parseFloat(getComputedStyle(textEl).lineHeight);
+    const textHeight = textEl.scrollHeight;
+    
+    if (textHeight > lineHeight * 3) {
+      textEl.classList.add('multi-column');
+    }
+  });
+});
+

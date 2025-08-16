@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const {isLoggedIn} = require('../middleware/auth');
-const {getAllPosts, getPostsByGroupId, getMyPosts, countPostsByUser, countPostsInGroupByMembers} = require("../services/post.service");
+const {getPostsByGroupId, getMyPosts, countPostsByUser, countPostsInGroupByMembers} = require("../services/post.service");
 const {getGroupById, getGroupMembers} = require("../services/group.service");
 const {getUserById} = require('../services/user.service');
 const groupController = require('../controllers/group.controller');
 const userController = require('../controllers/user.controller');
 const viewController = require('../controllers/view.controller');
 const { getFeedPostsForUser } = require('../services/post.service');
+const statisticsController = require('../controllers/statistics.controller');
+
 
 router.get('/signup', (req, res) => {
     res.render('signup');
@@ -25,14 +27,37 @@ router.get('/', (req, res) => {
 
 router.get('/home', isLoggedIn, async (req, res) => {
     const user = req.session.user;
+    const HISTORY_EVENTS_LIMIT = 5;
 
     try {
         const posts = await getFeedPostsForUser(user._id);
 
+        let historyEvents = [];
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 3000);
+
+        try {
+            const historyRes = await fetch('https://history.muffinlabs.com/date', {
+                signal: controller.signal
+            });
+            clearTimeout(timeout);
+
+            if (!historyRes.ok) {
+                throw new Error(`History API returned status ${historyRes.status}`);
+            }
+
+            const historyData = await historyRes.json();
+            historyEvents = historyData?.data?.Events?.slice(0, HISTORY_EVENTS_LIMIT) || [];
+        } catch (historyErr) {
+            console.warn('Failed to fetch history events:', historyErr.name === 'AbortError' ? 'Request timed out' : historyErr.message);
+            historyEvents = [];
+        }
+
         res.render('home', {
             fullName: user.fullName,
             user,
-            posts
+            posts,
+            historyEvents
         });
     } catch (err) {
         console.error('Error fetching feed:', err.message);
@@ -144,7 +169,11 @@ router.get('/settings', isLoggedIn, viewController.renderSettingsPage);
 
 router.get('/search/users', isLoggedIn, viewController.searchUsersView);
 
+
+router.get('/statistics', isLoggedIn, statisticsController.renderStatisticsPage);
+
 router.get('/search/groups', isLoggedIn, viewController.searchGroupsView);
+
 
 router.get('/search/posts', isLoggedIn, viewController.searchPostsView);
 
