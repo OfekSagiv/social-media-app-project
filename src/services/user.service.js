@@ -129,5 +129,4 @@ module.exports = {
   toggleFollow,
   getUserWithFollowersAndFollowing,
   deleteUserCompletely,
-  getAllUsers
 };
