@@ -1,4 +1,3 @@
-
 .history-widget {
   width: 300px;
   background: #eaf1ff;
@@ -25,4 +24,23 @@
 
 .history-card strong {
   color: #007bff;
+}
+
+.page-intro {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 20px;
+}
+
+.page-title {
+  color: #2e2e2e;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.page-description {
+  color: #666;
+  font-size: 1.2rem;
+  margin-bottom: 0;
 }

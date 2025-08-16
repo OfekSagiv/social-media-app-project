@@ -10,6 +10,7 @@ router.get('/signup', viewController.renderSignup);
 router.get('/login', viewController.renderLogin);
 router.get('/', viewController.renderRoot);
 router.get('/home', isLoggedIn, viewController.renderHome);
+router.get('/history', isLoggedIn, viewController.renderHistory);
 router.get('/error-test', viewController.renderErrorTest);
 router.get('/my-posts', isLoggedIn, viewController.renderMyPosts);
 router.get('/group/:id', isLoggedIn, viewController.renderGroup);

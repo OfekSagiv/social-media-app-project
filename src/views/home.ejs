@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="/styles/navbar.css" />
     <link rel="stylesheet" href="/styles/post.css" />
     <link rel="stylesheet" href="/styles/create-post.css">
-    <link rel="stylesheet" href="/styles/web-service.css">
     <link rel="stylesheet" href="/styles/toast.css">
 
 </head>
@@ -17,34 +16,17 @@
 <%- include('partials/create-post', { user, group: null }) %>
 <%- include('partials/location', { user }) %>
 
-<div class="content-wrapper">
-  <main class="feed-container">
-      <% posts.forEach(post => { %>
-          <%- include('partials/post', { post, user }) %>
-      <% }) %>
-  </main>
-
-    <aside class="history-widget">
-        <h3>On This Day</h3>
-        <% if (historyEvents && historyEvents.length > 0) { %>
-            <% historyEvents.forEach(event => { %>
-                <div class="history-card">
-                    <strong><%= event.year %>:</strong>
-                    <p><%= event.text %></p>
-                </div>
-            <% }) %>
-        <% } else { %>
-            <p>No events available.</p>
-        <% } %>
-    </aside>
-</div>
+<main class="feed-container">
+    <% posts.forEach(post => { %>
+        <%- include('partials/post', { post, user }) %>
+    <% }) %>
+</main>
 
 <script src="/js/toast.js" defer></script>
 <script src="/js/navbar.js" defer></script>
 <script src="/js/post.js" defer></script>
 <script src="/js/create-post.js" defer></script>
 <script src="/js/edit-location.js" defer></script>
-
 
 </body>
 </html>

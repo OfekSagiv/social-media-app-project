@@ -5,11 +5,12 @@ const userService = require('./user.service');
 const {buildValidatedUpdateData} = require('../utils/settingsValidator');
 
 const getHomePageData = async (userId) => {
-    const HISTORY_EVENTS_LIMIT = 5;
-
     const posts = await postService.getFeedPostsForUser(userId);
+    return { posts };
+};
 
-
+const getHistoryEvents = async () => {
+    const HISTORY_EVENTS_LIMIT = 5;
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 3000);
 
@@ -28,10 +29,7 @@ const getHomePageData = async (userId) => {
         console.warn('Failed to fetch history events:', historyErr.name === 'AbortError' ? 'Request timed out' : historyErr.message);
     }
 
-    return {
-        posts,
-        historyEvents
-    };
+    return historyEvents;
 };
 
 const getGroupPageData = async (groupId, userId) => {
@@ -74,6 +72,7 @@ const updateUserSettings = async (userId, body, file) => {
 
 module.exports = {
     getHomePageData,
+    getHistoryEvents,
     getGroupPageData,
     getProfilePageData,
     updateUserSettings
