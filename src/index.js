@@ -5,8 +5,14 @@ const app = require('./app');
 
 const port = process.env.PORT || 3001;
 
-connectDB().then(() => {
-    app.listen(port, () => {
-        console.log(`Listening: http://localhost:${port}`);
-    });
-});
+(async () => {
+    try {
+        await connectDB();
+        app.listen(port, () => {
+            console.log(`Listening: http://localhost:${port}`);
+        });
+    } catch (error) {
+        console.error('Failed to connect to database:', error);
+        process.exit(1);
+    }
+})();

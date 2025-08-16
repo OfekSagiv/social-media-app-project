@@ -138,7 +138,7 @@ class ToastManager {
         return this.show(message, 'loading', { duration: 0, closeable: false, ...options });
     }
 
-    promise(promise, messages = {}) {
+    async promise(promise, messages = {}) {
         const {
             loading = 'Loading...',
             success = 'Success!',
@@ -147,17 +147,16 @@ class ToastManager {
 
         const loadingId = this.loading(loading);
 
-        return promise
-            .then((result) => {
-                this.hide(loadingId);
-                this.success(success);
-                return result;
-            })
-            .catch((err) => {
-                this.hide(loadingId);
-                this.error(typeof error === 'function' ? error(err) : error);
-                throw err;
-            });
+        try {
+            const result = await promise;
+            this.hide(loadingId);
+            this.success(success);
+            return result;
+        } catch (err) {
+            this.hide(loadingId);
+            this.error(typeof error === 'function' ? error(err) : error);
+            throw err;
+        }
     }
 }
 
