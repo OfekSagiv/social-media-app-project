@@ -11,8 +11,7 @@ const renderHome = async (req, res) => {
         res.render('home', {
             fullName: user.fullName,
             user,
-            posts: homeData.posts,
-            historyEvents: homeData.historyEvents
+            posts: homeData.posts
         });
     } catch (err) {
         console.error('Error fetching home page data:', err.message);
@@ -181,11 +180,29 @@ const renderErrorTest = (req, res) => {
     res.status(500).render('error', {message: 'This is a test error page.'});
 };
 
+const renderHistory = async (req, res) => {
+    try {
+        const user = req.session.user;
+        const historyEvents = await viewService.getHistoryEvents();
+
+        res.render('history', {
+            user,
+            historyEvents
+        });
+    } catch (err) {
+        console.error('Error fetching history events:', err.message);
+        res.status(500).render('error', {
+            message: 'Failed to load historical events. Please try again later.'
+        });
+    }
+};
+
 module.exports = {
     renderSignup,
     renderLogin,
     renderRoot,
     renderErrorTest,
+    renderHistory,
     renderHome,
     renderMyPosts,
     renderGroup,
