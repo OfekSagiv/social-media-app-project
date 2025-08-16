@@ -12,20 +12,33 @@ const saveLocation = async (req, res) => {
         return res.status(400).json({ error: 'Address is required.' });
     }
 
+    const trimmedAddress = address.trim();
+    if (trimmedAddress.length < 5) {
+        return res.status(400).json({ error: 'Please enter a more detailed address.' });
+    }
+
+    if (trimmedAddress.length > 200) {
+        return res.status(400).json({ error: 'Address is too long.' });
+    }
+
     try {
-        const updatedUser = await locationService.updateUserLocation(userId, address);
+        const updatedUser = await locationService.updateUserLocation(userId, trimmedAddress);
 
         if (!updatedUser) {
-            return res.status(500).json({ error: 'Update returned null' });
+            return res.status(500).json({ error: 'Failed to update location in database' });
         }
 
         req.session.user.address = updatedUser.address;
         req.session.user.city = updatedUser.city;
         req.session.user.location = updatedUser.location;
 
-        res.status(200).json({ message: 'Location updated successfully' });
+        res.status(200).json({
+            message: 'Location updated successfully',
+            city: updatedUser.city
+        });
     } catch (err) {
-        res.status(500).json({ error: 'Failed to update location' });
+        console.error('Location update error:', err.message);
+        res.status(500).json({ error: err.message || 'Failed to update location' });
     }
 };
 
