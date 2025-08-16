@@ -111,8 +111,16 @@ const likePost = async (req, res) => {
             return res.status(401).json({ error: 'Not authenticated' });
         }
 
+        const post = await postService.getPostById(req.params.id);
+        const wasLiked = post.likes.includes(userId);
+
         const updatedPost = await postService.toggleLike(req.params.id, userId);
-        res.status(200).json({ likes: updatedPost.likes.length });
+        const isNowLiked = !wasLiked;
+
+        res.status(200).json({
+            likes: updatedPost.likes.length,
+            isLiked: isNowLiked
+        });
     } catch (err) {
         res.status(400).json({ error: err.message });
     }

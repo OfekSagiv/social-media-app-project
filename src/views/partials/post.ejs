@@ -29,7 +29,7 @@
         <p class="post-text"><%= post.content %></p>
         <textarea class="edit-post-textarea hidden"><%= post.content %></textarea>
         <button class="save-post-btn glass-button small hidden">Save</button>
-       
+
         <% if (post.media && post.media.length > 0) { %>
             <div class="post-media-grid">
                 <% post.media.forEach((item) => { %>

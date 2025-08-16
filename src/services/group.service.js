@@ -57,6 +57,17 @@ const getGroupById = async (id) => {
 };
 
 const updateGroup = async (id, updateData) => {
+  if (updateData.name) {
+    const currentGroup = await groupRepository.findGroupById(id);
+    if (!currentGroup) {
+      throw new Error('Group not found');
+    }
+
+    if (currentGroup.name !== updateData.name) {
+      await checkIfExists('name', updateData.name, 'Group name already exists');
+    }
+  }
+
   const updated = await groupRepository.updateGroup(id, updateData);
   if (!updated) {
     throw new Error('Group not found or update failed');
