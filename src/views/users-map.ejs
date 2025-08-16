@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Users Map</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/styles/global.css" />
+    <link rel="stylesheet" href="/styles/navbar.css" />
+    <link rel="stylesheet" href="/styles/map.css" />
+    <link rel="stylesheet" href="/styles/post.css" />
+
+</head>
+<body>
+<%- include('partials/navbar', { user }) %>
+<%- include('partials/location', { user }) %>
+
+<main class="feed-container">
+    <h2 style="margin-bottom: 12px;">User Locations</h2>
+    <div id="map"></div>
+</main>
+
+<script src="/js/users-map.js" ></script>
+<script src="/js/edit-location.js" defer></script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=<%= process.env.GOOGLE_API_KEY %>&callback=initMap"
+        async
+        defer
+></script>
+<script src="/js/navbar.js" defer></script>
+
+</body>
+</html>
