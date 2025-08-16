@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-
     const btn = document.getElementById('join-leave-btn');
     if (btn) {
         btn.addEventListener('click', async () => {
             const groupId = btn.dataset.groupId;
             const isMember = btn.dataset.isMember === 'true';
             const action = isMember ? 'leave' : 'join';
+
+            const loadingToast = toast.loading(`${action === 'join' ? 'Joining' : 'Leaving'} group...`);
+            setButtonLoading(btn, true);
 
             try {
                 const res = await fetch(`/api/groups/${groupId}/${action}`, {
@@ -16,12 +18,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (res.ok) {
                     btn.textContent = isMember ? 'Join Group' : 'Leave Group';
                     btn.dataset.isMember = (!isMember).toString();
+                    toast.update(loadingToast, `Successfully ${action}ed group!`, 'success');
                 } else {
                     const data = await res.json();
-                    alert(data.error || 'Error');
+                    toast.hide(loadingToast);
+                    toast.error(data.error || `Failed to ${action} group`);
                 }
             } catch (err) {
-                alert('Network error');
+                console.error(`Group ${action} error:`, err);
+                toast.hide(loadingToast);
+                toast.error('Network error. Please try again.');
+            } finally {
+                setButtonLoading(btn, false);
             }
         });
     }
@@ -80,6 +88,23 @@ function attachEditHandler(icon) {
         return;
       }
 
+      if (field === 'name' && newValue.length < 3) {
+        toast.error('Group name must be at least 3 characters long');
+        return;
+      }
+
+      if (field === 'name' && newValue.length > 50) {
+        toast.error('Group name is too long. Maximum 50 characters allowed.');
+        return;
+      }
+
+      if (field === 'description' && newValue.length > 200) {
+        toast.error('Description is too long. Maximum 200 characters allowed.');
+        return;
+      }
+
+      const loadingToast = toast.loading(`Updating ${field}...`);
+      setButtonLoading(saveBtn, true);
 
       try {
         const groupId = document.getElementById("join-leave-btn").dataset.groupId;
@@ -87,9 +112,13 @@ function attachEditHandler(icon) {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ [field]: newValue }),
+          credentials: 'include'
         });
 
-        if (!res.ok) throw new Error("Update failed");
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || 'Update failed');
+        }
 
         container.innerHTML = `
           ${newValue}
@@ -98,10 +127,19 @@ function attachEditHandler(icon) {
 
         const newIcon = container.querySelector(".edit-icon");
         attachEditHandler(newIcon);
+        toast.update(loadingToast, `Group ${field} updated successfully!`, 'success');
 
       } catch (err) {
-        alert("Error updating group");
-        console.error(err);
+        console.error('Group update error:', err);
+        toast.hide(loadingToast);
+        toast.error(err.message || 'Error updating group');
+
+        container.innerHTML = `
+          ${oldValue}
+          <i class="bi bi-pencil-square edit-icon" data-edit-target="${field}"></i>
+        `;
+        const newIcon = container.querySelector(".edit-icon");
+        attachEditHandler(newIcon);
       }
     });
   });
@@ -115,18 +153,43 @@ document.addEventListener('DOMContentLoaded', () => {
   const deleteBtn = document.getElementById('delete-group-btn');
   if (deleteBtn) {
     deleteBtn.addEventListener('click', async () => {
-      if (!confirm('Are you sure you want to delete this group?')) return;
+      if (!confirm('Are you sure you want to delete this group? This action cannot be undone.')) return;
 
       const groupId = document.getElementById("join-leave-btn").dataset.groupId;
-      try {
-        const res = await fetch(`/api/groups/${groupId}`, { method: 'DELETE' });
-        if (!res.ok) throw new Error('Failed to delete group');
+      const loadingToast = toast.loading('Deleting group...');
+      setButtonLoading(deleteBtn, true);
 
-        window.location.href = '/my-groups';
+      try {
+        const res = await fetch(`/api/groups/${groupId}`, {
+          method: 'DELETE',
+          credentials: 'include'
+        });
+
+        if (!res.ok) {
+          const data = await res.json();
+          throw new Error(data.error || 'Failed to delete group');
+        }
+
+        toast.update(loadingToast, 'Group deleted successfully! Redirecting...', 'success');
+        setTimeout(() => {
+          window.location.href = '/my-groups';
+        }, 1500);
       } catch (err) {
-        alert('Error deleting group');
-        console.error(err);
+        console.error('Group deletion error:', err);
+        toast.hide(loadingToast);
+        toast.error(err.message || 'Error deleting group');
+        setButtonLoading(deleteBtn, false);
       }
     });
   }
 });
+
+function setButtonLoading(button, isLoading) {
+    if (!button) return;
+
+    const originalText = button.getAttribute('data-original-text') || button.textContent;
+    button.setAttribute('data-original-text', originalText);
+
+    button.disabled = isLoading;
+    button.textContent = isLoading ? 'Loading...' : originalText;
+}
