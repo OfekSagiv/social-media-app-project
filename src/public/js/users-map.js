@@ -1,4 +1,4 @@
-function initMap() {
+async function initMap() {
     const mapContainer = document.getElementById('map');
     const loadingDiv = document.createElement('div');
     loadingDiv.className = 'map-loading';
@@ -37,109 +37,108 @@ function initMap() {
         feedContainer.insertBefore(filterContainer, mapContainer);
     };
 
-    fetch('/api/location/with-location', {
-        credentials: 'include'
-    })
-        .then(res => {
-            if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to fetch locations`);
-            return res.json();
-        })
-        .then(users => {
-            loadingDiv.remove();
+    try {
+        const res = await fetch('/api/location/with-location', {
+            credentials: 'include'
+        });
 
-            if (!users || users.length === 0) {
-                const noUsersDiv = document.createElement('div');
-                noUsersDiv.className = 'no-users-message';
-                noUsersDiv.innerHTML = '<p>No users have shared their locations yet.</p>';
-                mapContainer.appendChild(noUsersDiv);
-                return;
-            }
+        if (!res.ok) throw new Error(`HTTP ${res.status}: Failed to fetch locations`);
 
-            const cities = [...new Set(users.filter(u => u.city).map(u => u.city))].sort();
-            addCityFilter(cities);
+        const users = await res.json();
 
-            const bounds = new google.maps.LatLngBounds();
-            const markers = [];
+        loadingDiv.remove();
 
-            users.forEach(user => {
-                if (!user.location || !user.location.lat || !user.location.lng) return;
+        if (!users || users.length === 0) {
+            const noUsersDiv = document.createElement('div');
+            noUsersDiv.className = 'no-users-message';
+            noUsersDiv.innerHTML = '<p>No users have shared their locations yet.</p>';
+            mapContainer.appendChild(noUsersDiv);
+            return;
+        }
 
-                const position = { lat: user.location.lat, lng: user.location.lng };
-                bounds.extend(position);
+        const cities = [...new Set(users.filter(u => u.city).map(u => u.city))].sort();
+        addCityFilter(cities);
 
-                const marker = new google.maps.Marker({
-                    position,
-                    map,
-                    title: user.fullName,
-                    animation: google.maps.Animation.DROP
-                });
+        const bounds = new google.maps.LatLngBounds();
+        const markers = [];
 
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `
-                        <div class="map-info-window">
-                            <h4>${user.fullName}</h4>
-                            <p><i class="bi bi-geo-alt"></i> ${user.city || 'Unknown city'}</p>
-                            <a href="/profile/${user._id}" class="glass-button">View Profile</a>
-                        </div>
-                    `
-                });
+        users.forEach(user => {
+            if (!user.location || !user.location.lat || !user.location.lng) return;
 
-                marker.addListener('click', () => {
+            const position = { lat: user.location.lat, lng: user.location.lng };
+            bounds.extend(position);
 
-                    markers.forEach(m => m.infoWindow?.close());
-                    infoWindow.open(map, marker);
-                });
-
-                markers.push({ marker, infoWindow, user });
+            const marker = new google.maps.Marker({
+                position,
+                map,
+                title: user.fullName,
+                animation: google.maps.Animation.DROP
             });
 
+            const infoWindow = new google.maps.InfoWindow({
+                content: `
+                    <div class="map-info-window">
+                        <h4>${user.fullName}</h4>
+                        <p><i class="bi bi-geo-alt"></i> ${user.city || 'Unknown city'}</p>
+                        <a href="/profile/${user._id}" class="glass-button">View Profile</a>
+                    </div>
+                `
+            });
 
-            if (markers.length > 0) {
-                map.fitBounds(bounds);
+            marker.addListener('click', () => {
+                markers.forEach(m => m.infoWindow?.close());
+                infoWindow.open(map, marker);
+            });
 
-                const listener = google.maps.event.addListener(map, 'idle', () => {
-                    if (map.getZoom() > 15) map.setZoom(15);
-                    google.maps.event.removeListener(listener);
-                });
-            }
+            markers.push({ marker, infoWindow, user });
+        });
 
 
-            const citySelect = document.getElementById('city-select');
-            if (citySelect) {
-                citySelect.addEventListener('change', (e) => {
-                    const selectedCity = e.target.value;
-                    const newBounds = new google.maps.LatLngBounds();
-                    let visibleMarkers = 0;
+        if (markers.length > 0) {
+            map.fitBounds(bounds);
 
-                    markers.forEach(({ marker, user }) => {
-                        const shouldShow = !selectedCity || user.city === selectedCity;
-                        marker.setVisible(shouldShow);
+            const listener = google.maps.event.addListener(map, 'idle', () => {
+                if (map.getZoom() > 15) map.setZoom(15);
+                google.maps.event.removeListener(listener);
+            });
+        }
 
-                        if (shouldShow) {
-                            newBounds.extend(marker.getPosition());
-                            visibleMarkers++;
-                        }
-                    });
 
-                    if (visibleMarkers > 0) {
-                        map.fitBounds(newBounds);
-                        const listener = google.maps.event.addListener(map, 'idle', () => {
-                            if (map.getZoom() > 15) map.setZoom(15);
-                            google.maps.event.removeListener(listener);
-                        });
+        const citySelect = document.getElementById('city-select');
+        if (citySelect) {
+            citySelect.addEventListener('change', (e) => {
+                const selectedCity = e.target.value;
+                const newBounds = new google.maps.LatLngBounds();
+                let visibleMarkers = 0;
+
+                markers.forEach(({ marker, user }) => {
+                    const shouldShow = !selectedCity || user.city === selectedCity;
+                    marker.setVisible(shouldShow);
+
+                    if (shouldShow) {
+                        newBounds.extend(marker.getPosition());
+                        visibleMarkers++;
                     }
                 });
-            }
-        })
-        .catch(err => {
-            console.error('Failed to load user locations:', err);
-            loadingDiv.innerHTML = `
-                <div class="map-error">
-                    <p><i class="bi bi-exclamation-triangle"></i> Failed to load user locations</p>
-                    <button onclick="location.reload()" class="glass-button">Retry</button>
-                </div>
-            `;
-        });
+
+                if (visibleMarkers > 0) {
+                    map.fitBounds(newBounds);
+                    const listener = google.maps.event.addListener(map, 'idle', () => {
+                        if (map.getZoom() > 15) map.setZoom(15);
+                        google.maps.event.removeListener(listener);
+                    });
+                }
+            });
+        }
+    } catch (err) {
+        console.error('Failed to load user locations:', err);
+        loadingDiv.innerHTML = `
+            <div class="map-error">
+                <p><i class="bi bi-exclamation-triangle"></i> Failed to load user locations</p>
+                <button onclick="location.reload()" class="glass-button">Retry</button>
+            </div>
+        `;
+    }
 }
 
 window.gm_authFailure = function() {
