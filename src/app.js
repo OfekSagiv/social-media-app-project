@@ -4,6 +4,7 @@ const viewRoutes = require('./routes/view.routes');
 const apiRoutes = require('./routes/api.routes');
 const { sessionMiddleware, attachUser } = require('./middleware/auth');
 const userRoutes = require('./routes/user.routes');
+const authXRoutes = require('./routes/authX.routes');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+app.use('/api/auth/x', authXRoutes);
 app.use('/', viewRoutes);
 app.use('/api', apiRoutes);
 

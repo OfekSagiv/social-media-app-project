@@ -50,6 +50,14 @@ const postSchema = new mongoose.Schema({
         ref: 'User',
     }],
     comments: [commentSchema],
+    xShare: {
+    requested: { type: Boolean, default: false },
+    status: { type: String, enum: ['pending', 'success', 'failed', null], default: null },
+    tweetId: { type: String },
+    tweetUrl: { type: String },
+    postedAt: { type: Date },
+    error: { type: String }
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Post', postSchema);

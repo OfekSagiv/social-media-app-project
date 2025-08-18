@@ -56,7 +56,18 @@ const userSchema = new mongoose.Schema({
     location: {
         lat: Number,
         lng: Number
+    },
+    xAuth: {
+    accessToken: { type: String },
+    refreshToken: { type: String },
+    scope: { type: String },
+    tokenType: { type: String, default: 'Bearer' },
+    expiresAt: { type: Date },
+    xUserId: { type: String },
+    xUsername: { type: String },
+    connectedAt: { type: Date }
     }
+
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

@@ -91,3 +91,17 @@
     font-size: 14px;
     padding-left: 10px;
 }
+
+.x-button {
+    background-color: #333;
+    margin-top: 20px;
+}
+
+.x-button:hover{
+    background-color: #4c4b4b;
+}
+
+.x-link {
+    color: white;
+    text-decoration: none;
+}
