@@ -64,7 +64,14 @@ const updateGroup = async (id, updateData) => {
     }
 
     if (currentGroup.name !== updateData.name) {
-      await checkIfExists('name', updateData.name, 'Group name already exists');
+      const existing = await Group.findOne({
+        name: updateData.name,
+        _id: { $ne: id }  
+      });
+
+      if (existing) {
+        throw new Error('Group name already exists');
+      }
     }
   }
 
@@ -74,6 +81,7 @@ const updateGroup = async (id, updateData) => {
   }
   return updated;
 };
+
 
 const deleteGroup = async (groupId, userId) => {
   const group = await groupRepository.findGroupById(groupId);
