@@ -166,7 +166,7 @@
 .media-wrapper {
     width: 100%;
     aspect-ratio: 16 / 10;
-    max-height: 300px;
+    max-height: 450px;
     overflow: hidden;
     border-radius: 12px;
     background-color: #ccc;
