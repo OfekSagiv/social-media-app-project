@@ -12,13 +12,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('create-post-form');
     const fileInput = document.getElementById('media');
     const fileListDiv = document.getElementById('selected-files-list');
+    const shareToXCheckbox = document.getElementById('shareToX');
+    const fileLabel = document.querySelector('label[for="media"]');
+    const xContainer = document.querySelector('.share-x-container');
     const accumulatedFiles = [];
 
     if (!form || !fileInput) return;
 
+    const toggleMediaUpload = () => {
+        const isXEnabled = shareToXCheckbox && shareToXCheckbox.checked;
+
+        if (isXEnabled) {
+            fileInput.disabled = true;
+            if (fileLabel) {
+                fileLabel.style.opacity = '0.5';
+                fileLabel.style.cursor = 'not-allowed';
+                fileLabel.style.pointerEvents = 'none';
+                fileLabel.textContent = 'Media disabled for X sharing';
+            }
+            accumulatedFiles.length = 0;
+            fileListDiv.innerHTML = '<p class="placeholder">Media upload disabled when sharing to X</p>';
+        } else {
+            fileInput.disabled = false;
+            if (fileLabel) {
+                fileLabel.style.opacity = '1';
+                fileLabel.style.cursor = 'pointer';
+                fileLabel.style.pointerEvents = 'auto';
+                fileLabel.textContent = 'Choose Files';
+            }
+            if (!fileListDiv.querySelector('.selected-file')) {
+                fileListDiv.innerHTML = '<p class="placeholder">No chosen file</p>';
+            }
+        }
+    };
+
+    const handleXCheckboxChange = function() {
+        if (xContainer) {
+            if (this.checked) {
+                xContainer.style.borderColor = '#1da1f2';
+                xContainer.style.boxShadow = '0 4px 12px rgba(29, 161, 242, 0.15)';
+                xContainer.style.animation = 'xCheckPulse 0.3s ease-out';
+                setTimeout(() => {
+                    xContainer.style.animation = '';
+                }, 300);
+            } else {
+                xContainer.style.borderColor = '#e1e8f0';
+                xContainer.style.boxShadow = '';
+            }
+        }
+        toggleMediaUpload();
+    };
+
     fileInput.addEventListener('change', () => {
         const newFiles = Array.from(fileInput.files);
-
         const placeholder = fileListDiv.querySelector('.placeholder');
         if (placeholder) placeholder.remove();
 
@@ -125,33 +171,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const xCheckbox = document.getElementById('shareToX');
-    const xContainer = document.querySelector('.share-x-container');
-
-    if (xCheckbox && xContainer) {
-        xCheckbox.addEventListener('change', function() {
-            if (this.checked) {
-                xContainer.style.borderColor = '#1da1f2';
-                xContainer.style.boxShadow = '0 4px 12px rgba(29, 161, 242, 0.15)';
-
-                xContainer.style.animation = 'xCheckPulse 0.3s ease-out';
-                setTimeout(() => {
-                    xContainer.style.animation = '';
-                }, 300);
-            } else {
-                xContainer.style.borderColor = '#e1e8f0';
-                xContainer.style.boxShadow = '';
-            }
-        });
+    if (shareToXCheckbox) {
+        shareToXCheckbox.addEventListener('change', handleXCheckboxChange);
+        toggleMediaUpload();
     }
 
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes xCheckPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
-        }
-    `;
-    document.head.appendChild(style);
+    if (!document.getElementById('create-post-styles')) {
+        const style = document.createElement('style');
+        style.id = 'create-post-styles';
+        style.textContent = `
+            @keyframes xCheckPulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 });
