@@ -78,24 +78,7 @@
   border-radius: 8px;
   border: 1px solid #ccc;
   margin-top: 6px;
-}
-
-.forgot-link {
-  float: right;
-  font-size: 12px;
-  text-decoration: none;
-  color: #4285f4;
-}
-
-.checkbox-box {
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-  font-size: 14px;
-}
-
-.checkbox-box input {
-  margin-right: 10px;
+  box-sizing: border-box;
 }
 
 .btn-login {
@@ -107,6 +90,9 @@
   border-radius: 8px;
   cursor: pointer;
   margin-bottom: 15px;
+  width: fit-content;
+  align-self: center;
+  min-width: 200px;
 }
 
 .btn-login:hover {
@@ -123,8 +109,8 @@
   text-decoration: none;
   font-weight: 500;
 }
- 
-.main-link:hover , .forgot-link:hover {
+
+.main-link:hover {
   text-decoration: underline;
 }
 
