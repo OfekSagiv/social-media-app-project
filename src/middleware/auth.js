@@ -42,12 +42,14 @@ async function attachUser(req, res, next) {
 function isLoggedIn(req, res, next) {
     const isApiRequest = req.originalUrl.startsWith('/api/');
 
-
-    if (isApiRequest && req.session?.user && !req.user) {
+    if (isApiRequest && !req.user && req.session?.user) {
         req.user = req.session.user;
     }
 
-    if (req.user) return next();
+    if (req.user || req.session?.user) {
+        return next();
+    }
+
     const acceptsJSON = req.headers.accept && req.headers.accept.includes('application/json');
 
 

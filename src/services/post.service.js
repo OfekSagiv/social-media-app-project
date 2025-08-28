@@ -6,10 +6,10 @@ const Post = require('../models/Post');
 const { sanitizeString, sanitizeDate } = require('../utils/sanitize');
 
 const createPost = async (data) => {
-    const {content, author, groupId} = data;
+    const {content, author, groupId, media} = data;
 
-    if (!content) {
-        throw new Error('Missing content');
+    if (!content && (!media || media.length === 0)) {
+        throw new Error('Post must have either content or media');
     }
     if (!author) {
         throw new Error('Missing author');

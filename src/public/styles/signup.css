@@ -1,4 +1,3 @@
-
 .signup-container {
   display: flex;
   width: 80%;
@@ -79,6 +78,7 @@
   border-radius: 8px;
   border: 1px solid #ccc;
   margin-top: 6px;
+  box-sizing: border-box;
 }
 
 .signup-btn {
@@ -90,6 +90,7 @@
   border-radius: 8px;
   cursor: pointer;
   margin-bottom: 15px;
+  align-self: center;
 }
 
 .signup-btn:hover {
@@ -110,4 +111,3 @@
 .signup-link:hover {
   text-decoration: underline;
 }
-

@@ -4,17 +4,16 @@ const groupController = require('../controllers/group.controller');
 const { isLoggedIn } = require('../middleware/auth');
 
 
-router.post('/', groupController.createGroup);
+router.post('/', isLoggedIn, groupController.createGroup);
 router.get('/', groupController.getGroups);
 router.get('/search', groupController.searchGroups);
-router.get('/:id', groupController.getGroupById);
+router.get('/:id', isLoggedIn, groupController.getGroupById);
 router.get('/:id/members', groupController.getGroupMembers);
-router.put('/:id', groupController.updateGroup);
-router.delete('/:id', groupController.deleteGroup);
-router.post('/:id/join', groupController.joinGroup);
-router.post('/:id/leave', groupController.leaveGroup);
-router.patch('/:id/change-admin', groupController.changeGroupAdmin);
+router.put('/:id', isLoggedIn, groupController.updateGroup);
 router.delete('/:id', isLoggedIn, groupController.deleteGroup);
+router.post('/:id/join', isLoggedIn, groupController.joinGroup);
+router.post('/:id/leave', isLoggedIn, groupController.leaveGroup);
+router.patch('/:id/change-admin', isLoggedIn, groupController.changeGroupAdmin);
 
 
 module.exports = router;

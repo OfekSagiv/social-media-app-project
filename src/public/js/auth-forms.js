@@ -9,10 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function setButtonLoading(button, isLoading) {
     if (!button) return;
     button.disabled = isLoading;
-    button.textContent = isLoading ? 'Loading...' : button.getAttribute('data-original-text') || button.textContent;
-    if (!button.getAttribute('data-original-text')) {
-        button.setAttribute('data-original-text', button.textContent);
-    }
+
 }
 
 async function handleLogin(e) {
@@ -29,7 +26,7 @@ async function handleLogin(e) {
     }
 
     const loadingToast = toast.loading('Logging in...');
-    setButtonLoading(submitBtn, true);
+    submitBtn.disabled = true;
 
     try {
         const res = await fetch('/api/auth/login', {
@@ -44,10 +41,12 @@ async function handleLogin(e) {
         if (!res.ok) {
             toast.hide(loadingToast);
             toast.error(data.error || 'Login failed');
+            submitBtn.disabled = false;
             return;
         }
 
-        toast.update(loadingToast, 'Login successful! Redirecting...', 'success');
+        toast.hide(loadingToast);
+        toast.success('Login successful! Redirecting...');
         setTimeout(() => {
             window.location.href = '/home';
         }, 1000);
@@ -55,8 +54,7 @@ async function handleLogin(e) {
         console.error('Login error:', err);
         toast.hide(loadingToast);
         toast.error('Network error. Please check your connection and try again.');
-    } finally {
-        setButtonLoading(submitBtn, false);
+        submitBtn.disabled = false;
     }
 }
 
@@ -87,7 +85,7 @@ async function handleSignup(e) {
     }
 
     const loadingToast = toast.loading('Creating account...');
-    setButtonLoading(submitBtn, true);
+    submitBtn.disabled = true;
 
     try {
         const res = await fetch('/api/auth/register', {
@@ -102,10 +100,12 @@ async function handleSignup(e) {
         if (!res.ok) {
             toast.hide(loadingToast);
             toast.error(data.error || 'Signup failed');
+            submitBtn.disabled = false;
             return;
         }
 
-        toast.update(loadingToast, 'Account created successfully! Redirecting...', 'success');
+        toast.hide(loadingToast);
+        toast.success('Account created successfully! Redirecting...');
         setTimeout(() => {
             window.location.href = '/home';
         }, 1000);
@@ -113,7 +113,6 @@ async function handleSignup(e) {
         console.error('Signup error:', err);
         toast.hide(loadingToast);
         toast.error('Network error. Please check your connection and try again.');
-    } finally {
-        setButtonLoading(submitBtn, false);
+        submitBtn.disabled = false;
     }
 }

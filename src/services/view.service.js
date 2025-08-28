@@ -38,7 +38,10 @@ const getGroupPageData = async (groupId, userId) => {
     const posts = await postService.getPostsByGroupId(groupId);
     const postCount = await postService.countPostsInGroupByMembers(groupId);
 
-    const isMember = members.some(member => member._id.toString() === userId);
+    const isMember = group.members.some((m) => {
+        const memberId = m._id ? m._id.toString() : m.toString();
+        return memberId === userId.toString();
+    });
 
     return {
         group,

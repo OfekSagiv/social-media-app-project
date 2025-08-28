@@ -26,6 +26,40 @@ body {
     padding: 20px;
     box-sizing: border-box;
 }
+
+.components-container {
+    display: flex;
+    gap: 20px;
+    width: 90%;
+    padding: 20px;
+    box-sizing: border-box;
+    align-items: stretch;
+}
+
+.component-wrapper-left {
+    flex: 2;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.component-wrapper-right {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.component-wrapper-left .post-card,
+.component-wrapper-right .post-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
 .glass-button,
 .glass-button:link,
 .glass-button:visited {
@@ -148,6 +182,10 @@ body {
   height: 100vh;
 }
 
+main {
+  flex: 1;
+}
+
 .main-footer {
   width: 100%;
   text-align: center;
@@ -156,12 +194,31 @@ body {
   padding: 20px;
   background-color: #f2f2f2;
   border-top: 1px solid #ddd;
-  margin-top: 50px;
+  margin-top: auto;
 }
 
+/* Simple solution: Center everything in location component */
+.component-wrapper-right .post-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+.component-wrapper-right * {
+  text-align: center;
+}
 
+.component-wrapper-right .post-header {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 15px;
+  display: block !important;
+  justify-content: unset !important;
+}
 
-
-
-
+.component-wrapper-right .post-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
