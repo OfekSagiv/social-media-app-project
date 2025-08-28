@@ -148,6 +148,10 @@ body {
   height: 100vh;
 }
 
+main {
+  flex: 1;
+}
+
 .main-footer {
   width: 100%;
   text-align: center;
@@ -156,12 +160,5 @@ body {
   padding: 20px;
   background-color: #f2f2f2;
   border-top: 1px solid #ddd;
-  margin-top: 50px;
+  margin-top: auto;
 }
-
-
-
-
-
-
-
