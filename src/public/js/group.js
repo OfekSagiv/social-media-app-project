@@ -16,8 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (res.ok) {
-                    btn.textContent = isMember ? 'Join Group' : 'Leave Group';
-                    btn.dataset.isMember = (!isMember).toString();
+                    const newText = isMember ? 'Join Group' : 'Leave Group';
+                    const newIsMember = !isMember;
+
+                    btn.dataset.isMember = newIsMember.toString();
+                    btn.setAttribute('data-original-text', newText);
+                    btn.textContent = newText;
+
                     toast.update(loadingToast, `Successfully ${action}ed group!`, 'success');
                 } else {
                     const data = await res.json();
