@@ -73,6 +73,26 @@ const callback = async (req, res) => {
 
     const data = await tokenRes.json();
 
+
+    let xUserInfo = {};
+    try {
+      const userRes = await fetch('https://api.twitter.com/2/users/me', {
+        headers: {
+          'Authorization': `Bearer ${data.access_token}`
+        }
+      });
+
+      if (userRes.ok) {
+        const userProfile = await userRes.json();
+        xUserInfo = {
+          xUserId: userProfile.data?.id,
+          xUsername: userProfile.data?.username
+        };
+      }
+    } catch (userErr) {
+      console.warn('Failed to fetch X user info:', userErr.message);
+    }
+
     const updatedUser = await User.findByIdAndUpdate(req.session.user._id, {
       $set: {
         xAuth: {
@@ -81,7 +101,8 @@ const callback = async (req, res) => {
           scope: data.scope || null,
           tokenType: data.token_type || 'Bearer',
           expiresAt: data.expires_in ? new Date(Date.now() + data.expires_in * 1000) : null,
-          connectedAt: new Date()
+          connectedAt: new Date(),
+          ...xUserInfo
         }
       }
     }, { new: true });
@@ -131,11 +152,4 @@ const disconnect = async (req, res) => {
   }
 };
 
-const maybeHandleXCallback = (req, res, next) => {
-  if (req.query && req.query.code) {
-    return callback(req, res, next);
-  }
-  next();
-};
-
-module.exports = { start, callback, disconnect, maybeHandleXCallback };
+module.exports = { start, callback, disconnect };

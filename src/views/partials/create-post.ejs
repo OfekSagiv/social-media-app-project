@@ -19,12 +19,32 @@
             </div>
         </div>
 
-        <div class="share-x">
-            <label>
-                <input type="checkbox" name="shareToX" value="true" />
-                Share to X
-            </label>
+        <% if (user.xAuth && user.xAuth.accessToken) { %>
+        <div class="share-x-container">
+            <div class="share-x-checkbox">
+                <input type="checkbox" id="shareToX" name="shareToX" value="true" />
+                <label for="shareToX" class="x-checkbox-label">
+                    <span class="checkbox-custom"></span>
+                    <span class="x-label-content">
+
+                        <span>Share to <i class="bi bi-twitter-x"></i></span>
+                    </span>
+                </label>
+            </div>
+            <div class="x-status">
+                <span class="x-connected">Connected</span>
+            </div>
         </div>
+        <% } else { %>
+        <div class="share-x-container">
+            <div class="x-connect-prompt">
+                <div class="x-connect-info">
+                    <span>Connect your <i class="bi bi-twitter-x"></i> account to post also there</span>
+                </div>
+                <a href="/x-auth" class="x-connect-btn">Connect <i class="bi bi-twitter-x"></i></a>
+            </div>
+        </div>
+        <% } %>
 
         <div class="post-actions">
             <button type="submit" class="glass-button">Post</button>

@@ -5,12 +5,13 @@ const postService = require('../services/post.service');
 
 const renderHome = async (req, res) => {
     try {
-        const user = req.session.user;
-        const homeData = await viewService.getHomePageData(user._id);
+        const userId = req.session.user._id;
+        const currentUser = await userService.getUserById(userId);
+        const homeData = await viewService.getHomePageData(userId);
 
         res.render('home', {
-            fullName: user.fullName,
-            user,
+            fullName: currentUser.fullName,
+            user: currentUser,
             posts: homeData.posts
         });
     } catch (err) {
@@ -37,15 +38,15 @@ const renderMyPosts = async (req, res) => {
 const renderGroup = async (req, res) => {
     try {
         const groupId = req.params.id;
-        const user = req.session.user;
-
-        const groupData = await viewService.getGroupPageData(groupId, user._id);
+        const userId = req.session.user._id;
+        const currentUser = await userService.getUserById(userId);
+        const groupData = await viewService.getGroupPageData(groupId, userId);
 
         res.render('group', {
             group: groupData.group,
             posts: groupData.posts,
-            user,
-            fullName: user.fullName,
+            user: currentUser,
+            fullName: currentUser.fullName,
             isMember: groupData.isMember,
             members: groupData.members,
             postCount: groupData.postCount

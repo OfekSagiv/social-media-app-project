@@ -4,11 +4,10 @@ const {isLoggedIn} = require('../middleware/auth');
 const viewController = require('../controllers/view.controller');
 const userController = require('../controllers/user.controller');
 const statisticsController = require('../controllers/statistics.controller');
-const authXController = require('../controllers/authX.controller');
 
 router.get('/signup', viewController.renderSignup);
 router.get('/login', viewController.renderLogin);
-router.get('/', authXController.maybeHandleXCallback, viewController.renderRoot);
+router.get('/', viewController.renderRoot);
 router.get('/home', isLoggedIn, viewController.renderHome);
 router.get('/history', isLoggedIn, viewController.renderHistory);
 router.get('/error-test', viewController.renderErrorTest);

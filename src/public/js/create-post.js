@@ -124,4 +124,34 @@ document.addEventListener('DOMContentLoaded', () => {
             setButtonLoading(submitBtn, false);
         }
     });
+
+    const xCheckbox = document.getElementById('shareToX');
+    const xContainer = document.querySelector('.share-x-container');
+
+    if (xCheckbox && xContainer) {
+        xCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                xContainer.style.borderColor = '#1da1f2';
+                xContainer.style.boxShadow = '0 4px 12px rgba(29, 161, 242, 0.15)';
+
+                xContainer.style.animation = 'xCheckPulse 0.3s ease-out';
+                setTimeout(() => {
+                    xContainer.style.animation = '';
+                }, 300);
+            } else {
+                xContainer.style.borderColor = '#e1e8f0';
+                xContainer.style.boxShadow = '';
+            }
+        });
+    }
+
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes xCheckPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+    `;
+    document.head.appendChild(style);
 });
