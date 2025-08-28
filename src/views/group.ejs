@@ -52,11 +52,11 @@
 
         <%- include('partials/create-post', { user, group }) %>
 
-        <ul class="post-list">
+        <div class="posts-container">
             <% posts.forEach(post => { %>
                 <%- include('partials/post', { post, user }) %>
             <% }) %>
-        </ul>
+        </div>
     </div>
 </section>
 
