@@ -43,3 +43,144 @@
     border-bottom: none;
 }
 
+.share-x {
+    padding-top: 20px;
+    color: #2e2e2e;
+}
+
+.share-x-container {
+    margin: 16px 0;
+    padding: 16px;
+    background: linear-gradient(135deg, #f8faff 0%, #f0f4ff 100%);
+    border: 1px solid #e1e8f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.share-x-container:hover {
+    border-color: #1da1f2;
+    box-shadow: 0 2px 8px rgba(29, 161, 242, 0.1);
+}
+
+.share-x-checkbox {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.share-x-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.x-checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.x-checkbox-label:hover {
+    transform: translateY(-1px);
+}
+
+.checkbox-custom {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #d1d9e6;
+    border-radius: 4px;
+    margin-right: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+    background: white;
+    vertical-align: middle;
+}
+
+.share-x-checkbox input[type="checkbox"]:checked + .x-checkbox-label .checkbox-custom {
+    background: #1da1f2;
+    border-color: #1da1f2;
+    transform: scale(1.05);
+}
+
+.share-x-checkbox input[type="checkbox"]:checked + .x-checkbox-label .checkbox-custom::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.x-label-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: #2e2e2e;
+    vertical-align: middle;
+}
+
+.x-icon {
+    fill: #1da1f2;
+    transition: transform 0.2s ease;
+}
+
+.x-checkbox-label:hover .x-icon {
+    transform: scale(1.1);
+}
+
+.x-status {
+    margin-top: 8px;
+    padding-left: 32px;
+}
+
+.x-connected {
+    font-size: 12px;
+    color: #059669;
+    background: rgba(5, 150, 105, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.x-connect-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.x-connect-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.x-connect-btn {
+    background: linear-gradient(135deg, #1da1f2 0%, #1a91da 100%);
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.x-connect-btn:hover {
+    background: linear-gradient(135deg, #1a91da 0%, #1681c2 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(29, 161, 242, 0.3);
+}
+
+.x-connect-btn:active {
+    transform: translateY(0);
+}

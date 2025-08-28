@@ -5,7 +5,6 @@ const viewController = require('../controllers/view.controller');
 const userController = require('../controllers/user.controller');
 const statisticsController = require('../controllers/statistics.controller');
 
-
 router.get('/signup', viewController.renderSignup);
 router.get('/login', viewController.renderLogin);
 router.get('/', viewController.renderRoot);
@@ -25,5 +24,6 @@ router.get('/statistics', isLoggedIn, statisticsController.renderStatisticsPage)
 router.get('/search/groups', isLoggedIn, viewController.searchGroupsView);
 router.get('/search/posts', isLoggedIn, viewController.searchPostsView);
 router.get('/map', isLoggedIn, viewController.renderUsersMap);
+router.get('/x-auth', isLoggedIn, viewController.renderXAuth);
 
 module.exports = router;

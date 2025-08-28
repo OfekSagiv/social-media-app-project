@@ -1,22 +1,52 @@
 const postService = require('../services/post.service');
 const { parseUploadedFiles } = require('../utils/mediaParser');
+const User = require('../models/User');
 
 const createPost = async (req, res) => {
-    try {
-        const { content, groupId } = req.body;
-        const media = req.files && req.files.length > 0 ? parseUploadedFiles(req.files) : [];
+  try {
+    const { content, groupId, shareToX } = req.body;
+    const media = req.files && req.files.length > 0 ? parseUploadedFiles(req.files) : [];
 
-        const newPost = await postService.createPost({
-            content,
-            author: req.user._id,
-            groupId: groupId || null,
-            media,
-        });
+    const newPost = await postService.createPost({
+      content,
+      author: req.user._id,
+      groupId: groupId || null,
+      media,
+    });
 
-        res.status(201).json(newPost);
-    } catch (err) {
-        res.status(400).json({ error: err.message });
+    if (shareToX === 'true') {
+      const user = await User.findById(req.user._id);
+
+      if (user?.xAuth?.accessToken) {
+        try {
+          const tweetResponse = await fetch(
+            'https://api.twitter.com/2/tweets',
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${user.xAuth.accessToken}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ text: content.slice(0, 280) })
+            }
+          );
+
+          if (!tweetResponse.ok) {
+            throw new Error(`HTTP error! status: ${tweetResponse.status}`);
+          }
+        } catch (err) {
+          console.error('Failed to share on X:', err.message);
+        }
+      } else {
+        console.warn('User not connected to X — skipping share');
+      }
     }
+
+    res.status(201).json(newPost);
+  } catch (err) {
+    console.error('createPost error:', err);
+    res.status(400).json({ error: 'Failed to create post' });
+  }
 };
 
 const getAllPosts = async (req, res) => {
@@ -127,12 +157,12 @@ const likePost = async (req, res) => {
 };
 
 module.exports = {
-    createPost,
-    getAllPosts,
-    getPostById,
-    updatePost,
-    deletePost,
-    addComment,
-    deleteComment,
-    likePost,
+  createPost,
+  getAllPosts,
+  getPostById,
+  updatePost,
+  deletePost,
+  addComment,
+  deleteComment,
+  likePost,
 };

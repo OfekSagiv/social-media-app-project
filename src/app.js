@@ -3,7 +3,6 @@ const path = require('path');
 const viewRoutes = require('./routes/view.routes');
 const apiRoutes = require('./routes/api.routes');
 const { sessionMiddleware, attachUser } = require('./middleware/auth');
-const userRoutes = require('./routes/user.routes');
 
 const app = express();
 

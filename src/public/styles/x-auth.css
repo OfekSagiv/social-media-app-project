@@ -1,0 +1,101 @@
+.x-auth-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 2rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.x-auth-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 3rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+.x-logo {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: #1DA1F2;
+}
+
+.x-auth-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.x-auth-description {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #666;
+    line-height: 1.6;
+}
+
+.x-button {
+    margin: 0.5rem;
+    min-width: 200px;
+}
+
+.x-button.disconnect-button {
+    background-color: #dc2626;
+}
+
+.x-link {
+    color: white;
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 12px 24px;
+}
+
+.x-link:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.connection-status {
+    background: rgba(0, 255, 0, 0.1);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    color: #4ade80;
+}
+
+.disconnect-warning {
+    background: rgba(255, 255, 0, 0.1);
+    border: 1px solid rgba(255, 255, 0, 0.3);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    color: #fbbf24;
+    font-size: 0.9rem;
+}
+
+.back-link {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    color: #333;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.back-link:hover {
+    color: #007bff;
+}
+
+.security-note {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #666;
+}

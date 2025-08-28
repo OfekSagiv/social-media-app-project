@@ -5,12 +5,13 @@ const postService = require('../services/post.service');
 
 const renderHome = async (req, res) => {
     try {
-        const user = req.session.user;
-        const homeData = await viewService.getHomePageData(user._id);
+        const userId = req.session.user._id;
+        const currentUser = await userService.getUserById(userId);
+        const homeData = await viewService.getHomePageData(userId);
 
         res.render('home', {
-            fullName: user.fullName,
-            user,
+            fullName: currentUser.fullName,
+            user: currentUser,
             posts: homeData.posts
         });
     } catch (err) {
@@ -37,15 +38,15 @@ const renderMyPosts = async (req, res) => {
 const renderGroup = async (req, res) => {
     try {
         const groupId = req.params.id;
-        const user = req.session.user;
-
-        const groupData = await viewService.getGroupPageData(groupId, user._id);
+        const userId = req.session.user._id;
+        const currentUser = await userService.getUserById(userId);
+        const groupData = await viewService.getGroupPageData(groupId, userId);
 
         res.render('group', {
             group: groupData.group,
             posts: groupData.posts,
-            user,
-            fullName: user.fullName,
+            user: currentUser,
+            fullName: currentUser.fullName,
             isMember: groupData.isMember,
             members: groupData.members,
             postCount: groupData.postCount
@@ -197,12 +198,30 @@ const renderHistory = async (req, res) => {
     }
 };
 
+const renderXAuth = async (req, res) => {
+    try {
+        const User = require('../models/User');
+        const user = await User.findById(req.session.user._id);
+
+        if (!user) {
+            return res.status(404).render('error', {
+                message: 'User not found'
+            });
+        }
+
+        res.render('x-auth', { user });
+    } catch (err) {
+        console.error('Error rendering X auth page:', err.message);
+        res.status(500).render('error', {
+            message: 'Failed to load X authentication page. Please try again later.'
+        });
+    }
+};
+
 module.exports = {
     renderSignup,
     renderLogin,
     renderRoot,
-    renderErrorTest,
-    renderHistory,
     renderHome,
     renderMyPosts,
     renderGroup,
@@ -214,5 +233,8 @@ module.exports = {
     searchUsersView,
     searchGroupsView,
     searchPostsView,
-    renderUsersMap
+    renderUsersMap,
+    renderErrorTest,
+    renderHistory,
+    renderXAuth
 };
