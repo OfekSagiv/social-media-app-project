@@ -11,5 +11,6 @@ router.post('/logout', isLoggedIn, authController.logout);
 router.get('/x/start', isLoggedIn, authXController.start);
 router.get('/x/callback', isLoggedIn, authXController.callback);
 router.get('/x/disconnect', isLoggedIn, authXController.disconnect);
+router.post('/x/disconnect', isLoggedIn, authXController.disconnect);
 
 module.exports = router;

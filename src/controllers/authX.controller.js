@@ -22,7 +22,13 @@ const start = (req, res) => {
     code_challenge_method: 'S256'
   });
 
-  res.redirect(`https://twitter.com/i/oauth2/authorize?${params.toString()}`);
+  const authUrl = `https://twitter.com/i/oauth2/authorize?${params.toString()}`;
+
+  if (req.headers.accept && req.headers.accept.includes('application/json')) {
+    return res.json({ redirectUrl: authUrl });
+  }
+
+  res.redirect(authUrl);
 };
 
 const callback = async (req, res) => {
@@ -96,6 +102,9 @@ const callback = async (req, res) => {
 const disconnect = async (req, res) => {
   try {
     if (!req.session?.user?._id) {
+      if (req.headers.accept && req.headers.accept.includes('application/json')) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
       return res.status(401).send('Not authenticated');
     }
 
@@ -107,10 +116,17 @@ const disconnect = async (req, res) => {
 
     req.session.user = updatedUser.toObject();
 
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.json({ message: 'Successfully disconnected from X' });
+    }
+
     const back = req.query.redirect || '/x-auth';
     res.redirect(back);
   } catch (err) {
     console.error('X disconnect error:', err.message);
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.status(500).json({ error: 'X disconnect failed' });
+    }
     return res.status(500).send('X disconnect failed');
   }
 };
