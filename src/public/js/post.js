@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const loadingToast = toast.loading('Deleting post...');
-            setButtonLoading(deletePostBtn, true);
+            deletePostBtn.disabled = true;
 
             try {
                 const res = await fetch(`/api/posts/${postId}`, {
@@ -66,13 +66,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     throw new Error(`Failed to delete post: ${res.status}`);
                 }
 
-                toast.update(loadingToast, 'Post deleted successfully!', 'success');
+                toast.hide(loadingToast);
+                toast.success('Post deleted successfully!');
                 postEl.remove();
             } catch (err) {
                 console.error('Error deleting post:', err);
                 toast.hide(loadingToast);
                 toast.error('Failed to delete post. Please try again.');
-                setButtonLoading(deletePostBtn, false);
+                deletePostBtn.disabled = false;
             }
         });
 
