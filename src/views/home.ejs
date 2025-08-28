@@ -13,8 +13,15 @@
 <body>
 
 <%- include('partials/navbar', { user }) %>
-<%- include('partials/create-post', { user, group: null }) %>
-<%- include('partials/location', { user }) %>
+
+<div class="components-container">
+    <div class="component-wrapper-left">
+        <%- include('partials/create-post', { user, group: null }) %>
+    </div>
+    <div class="component-wrapper-right">
+        <%- include('partials/location', { user }) %>
+    </div>
+</div>
 
 <main class="feed-container">
     <% posts.forEach(post => { %>
