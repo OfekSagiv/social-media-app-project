@@ -197,12 +197,30 @@ const renderHistory = async (req, res) => {
     }
 };
 
+const renderXAuth = async (req, res) => {
+    try {
+        const User = require('../models/User');
+        const user = await User.findById(req.session.user._id);
+
+        if (!user) {
+            return res.status(404).render('error', {
+                message: 'User not found'
+            });
+        }
+
+        res.render('x-auth', { user });
+    } catch (err) {
+        console.error('Error rendering X auth page:', err.message);
+        res.status(500).render('error', {
+            message: 'Failed to load X authentication page. Please try again later.'
+        });
+    }
+};
+
 module.exports = {
     renderSignup,
     renderLogin,
     renderRoot,
-    renderErrorTest,
-    renderHistory,
     renderHome,
     renderMyPosts,
     renderGroup,
@@ -214,5 +232,8 @@ module.exports = {
     searchUsersView,
     searchGroupsView,
     searchPostsView,
-    renderUsersMap
+    renderUsersMap,
+    renderErrorTest,
+    renderHistory,
+    renderXAuth
 };

@@ -1,6 +1,5 @@
 const postService = require('../services/post.service');
 const { parseUploadedFiles } = require('../utils/mediaParser');
-const axios = require('axios');
 const User = require('../models/User');
 
 const createPost = async (req, res) => {
@@ -10,7 +9,7 @@ const createPost = async (req, res) => {
 
     const newPost = await postService.createPost({
       content,
-      author: req.user._id,        
+      author: req.user._id,
       groupId: groupId || null,
       media,
     });
@@ -20,14 +19,23 @@ const createPost = async (req, res) => {
 
       if (user?.xAuth?.accessToken) {
         try {
-          await axios.post(
+          const tweetResponse = await fetch(
             'https://api.twitter.com/2/tweets',
-            { text: content.slice(0, 280) }, 
-            { headers: { Authorization: `Bearer ${user.xAuth.accessToken}` } }
+            {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${user.xAuth.accessToken}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ text: content.slice(0, 280) })
+            }
           );
+
+          if (!tweetResponse.ok) {
+            throw new Error(`HTTP error! status: ${tweetResponse.status}`);
+          }
         } catch (err) {
-          console.error('Failed to share on X:', err.response?.data || err.message);
-          
+          console.error('Failed to share on X:', err.message);
         }
       } else {
         console.warn('User not connected to X — skipping share');

@@ -6,16 +6,9 @@ const userController = require('../controllers/user.controller');
 const statisticsController = require('../controllers/statistics.controller');
 const authXController = require('../controllers/authX.controller');
 
-function maybeHandleXCallback(req, res, next) {
-  if (req.query && req.query.code) {
-    return authXController.callback(req, res, next);
-  }
-  next();
-}
-
 router.get('/signup', viewController.renderSignup);
 router.get('/login', viewController.renderLogin);
-router.get('/', maybeHandleXCallback, viewController.renderRoot);
+router.get('/', authXController.maybeHandleXCallback, viewController.renderRoot);
 router.get('/home', isLoggedIn, viewController.renderHome);
 router.get('/history', isLoggedIn, viewController.renderHistory);
 router.get('/error-test', viewController.renderErrorTest);
@@ -32,6 +25,6 @@ router.get('/statistics', isLoggedIn, statisticsController.renderStatisticsPage)
 router.get('/search/groups', isLoggedIn, viewController.searchGroupsView);
 router.get('/search/posts', isLoggedIn, viewController.searchPostsView);
 router.get('/map', isLoggedIn, viewController.renderUsersMap);
-
+router.get('/x-auth', isLoggedIn, viewController.renderXAuth);
 
 module.exports = router;

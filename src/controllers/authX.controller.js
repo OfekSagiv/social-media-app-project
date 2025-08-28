@@ -1,11 +1,10 @@
 const crypto = require('crypto');
-const axios = require('axios');
 const User = require('../models/User');
 
 const b64url = (buf) => buf.toString('base64').replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 
-exports.start = (req, res) => {
-  req.session.afterX = req.query.redirect || '/settings';
+const start = (req, res) => {
+  req.session.afterX = req.query.redirect || '/x-auth';
 
   const codeVerifier = b64url(crypto.randomBytes(32));
   const codeChallenge = b64url(crypto.createHash('sha256').update(codeVerifier).digest());
@@ -26,7 +25,7 @@ exports.start = (req, res) => {
   res.redirect(`https://twitter.com/i/oauth2/authorize?${params.toString()}`);
 };
 
-exports.callback = async (req, res) => {
+const callback = async (req, res) => {
   try {
     const { code, state } = req.query;
     const pkce = req.session.xPkce;
@@ -50,20 +49,25 @@ exports.callback = async (req, res) => {
       `${process.env.X_CLIENT_ID}:${process.env.X_CLIENT_SECRET}`
     ).toString('base64');
 
-    const tokenRes = await axios.post(
+    const tokenRes = await fetch(
       'https://api.twitter.com/2/oauth2/token',
-      body.toString(),
       {
+        method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': `Basic ${authHeader}`
-        }
+        },
+        body: body.toString()
       }
     );
 
-    const data = tokenRes.data;
+    if (!tokenRes.ok) {
+      throw new Error(`HTTP error! status: ${tokenRes.status}`);
+    }
 
-    await User.findByIdAndUpdate(req.session.user._id, {
+    const data = await tokenRes.json();
+
+    const updatedUser = await User.findByIdAndUpdate(req.session.user._id, {
       $set: {
         xAuth: {
           accessToken: data.access_token,
@@ -74,16 +78,48 @@ exports.callback = async (req, res) => {
           connectedAt: new Date()
         }
       }
-    });
+    }, { new: true });
 
-    const back = req.session.afterX || '/settings';
+    req.session.user = updatedUser.toObject();
+
+    const back = req.session.afterX || '/x-auth';
     delete req.session.xPkce;
     delete req.session.afterX;
 
     return res.redirect(back);
   } catch (err) {
-    console.error('X OAuth callback error:', err.response?.data || err.message);
+    console.error('X OAuth callback error:', err.message);
     return res.status(500).send('X auth failed');
   }
 };
 
+const disconnect = async (req, res) => {
+  try {
+    if (!req.session?.user?._id) {
+      return res.status(401).send('Not authenticated');
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.session.user._id, {
+      $unset: {
+        xAuth: 1
+      }
+    }, { new: true });
+
+    req.session.user = updatedUser.toObject();
+
+    const back = req.query.redirect || '/x-auth';
+    res.redirect(back);
+  } catch (err) {
+    console.error('X disconnect error:', err.message);
+    return res.status(500).send('X disconnect failed');
+  }
+};
+
+const maybeHandleXCallback = (req, res, next) => {
+  if (req.query && req.query.code) {
+    return callback(req, res, next);
+  }
+  next();
+};
+
+module.exports = { start, callback, disconnect, maybeHandleXCallback };
