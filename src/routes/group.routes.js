@@ -5,10 +5,10 @@ const { isLoggedIn } = require('../middleware/auth');
 
 
 router.post('/', isLoggedIn, groupController.createGroup);
-router.get('/', groupController.getGroups);
-router.get('/search', groupController.searchGroups);
+router.get('/', isLoggedIn, groupController.getGroups);
+router.get('/search', isLoggedIn, groupController.searchGroups);
 router.get('/:id', isLoggedIn, groupController.getGroupById);
-router.get('/:id/members', groupController.getGroupMembers);
+router.get('/:id/members', isLoggedIn, groupController.getGroupMembers);
 router.put('/:id', isLoggedIn, groupController.updateGroup);
 router.delete('/:id', isLoggedIn, groupController.deleteGroup);
 router.post('/:id/join', isLoggedIn, groupController.joinGroup);

@@ -8,12 +8,12 @@ const { isSelf } = require('../middleware/isSelf');
 
 router.put('/settings', isLoggedIn, upload.single('profileImage'), viewController.updateSettings);
 router.post('/', userController.createUser);
-router.get('/', userController.getUsers);
+router.get('/', isLoggedIn, userController.getUsers);
 router.put('/change-password', isLoggedIn, userController.changePassword);
-router.get('/:id', userController.getUserById);
-router.put('/:id', userController.updateUser);
+router.get('/:id', isLoggedIn, userController.getUserById);
+router.put('/:id', isLoggedIn, userController.updateUser);
 router.delete('/:id', isLoggedIn, isSelf, userController.deleteUser);
 router.post('/:id/follow', isLoggedIn, userController.toggleFollow);
-router.get('/search', userController.searchUsers);
+router.get('/search', isLoggedIn, userController.searchUsers);
 
 module.exports = router;
