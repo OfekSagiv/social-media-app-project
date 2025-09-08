@@ -52,7 +52,7 @@ X_SCOPES=tweet.read,tweet.write,users.read,offline.access
 
 **Development mode:**
 ```bash
-npm run dev
+node src/index.js
 ```
 
 The application will be available at: `http://localhost:3001`
