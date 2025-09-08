@@ -55,7 +55,7 @@ X_SCOPES=tweet.read,tweet.write,users.read,offline.access
 node src/index.js
 ```
 
-The application will be available at: `http://localhost:3001`
+The application will be available at: `http://localhost:8080`
 
 ## Project Structure
 
@@ -68,14 +68,11 @@ social-media-app-project/
 │   ├── controllers/          # HTTP request handlers
 │   │   ├── auth.controller.js
 │   │   ├── post.controller.js
-│   │   ├── group.controller.js
-│   │   ├── user.controller.js
 │   │   └── ...
 │   ├── models/               # MongoDB models
 │   │   ├── User.js
 │   │   ├── Post.js
-│   │   ├── Group.js
-│   │   └── Notification.js
+│   │   └── Group.js
 │   ├── repositories/         # Data access layer
 │   │   ├── user.repository.js
 │   │   ├── post.repository.js
@@ -90,11 +87,13 @@ social-media-app-project/
 │   │   └── ...
 │   ├── middleware/          # Custom middleware functions
 │   │   ├── auth.js
-│   │   └── upload.js
+│   │   └── ...
 │   ├── views/               # EJS templates
+│   │   ├── partials/
+│   │   ├── search/
 │   │   ├── home.ejs
 │   │   ├── profile.ejs
-│   │   └── partials/
+│   │   └── ...
 │   ├── public/              # Static files
 │   │   ├── js/             # Client-side JavaScript
 │   │   ├── styles/         # CSS files
