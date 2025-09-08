@@ -1,6 +1,6 @@
 # Social Media App Project
 
-A modern social media application built with Node.js and MongoDB featuring advanced capabilities like posts, groups, location sharing, and real-time notifications.
+A modern social media application built with Node.js and MongoDB featuring advanced capabilities like posts, groups, location sharing, real-time notifications, and Twitter (X) integration.
 
 ## Key Features
 
@@ -11,6 +11,7 @@ A modern social media application built with Node.js and MongoDB featuring advan
 - **Location Sharing** - Share location on interactive maps (Google Maps integration)
 - **Statistics** - Reports and analytics on user activity
 - **Search** - Advanced search for users, posts, and groups
+- **Twitter (X) Integration** - Connect with Twitter/X to post in this app and on your twitter account at the same time
 
 ## System Requirements
 
@@ -39,16 +40,22 @@ MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/social-media-app
 PORT=8080
 
 GOOGLE_API_KEY=your-google-maps-api-key
+
+# Twitter (X) Integration
+X_CLIENT_ID=your-twitter-client-id
+X_CLIENT_SECRET=your-twitter-client-secret
+X_REDIRECT_URI=http://localhost:8080/auth/x/callback
+X_SCOPES=tweet.read,tweet.write,users.read,offline.access
 ```
 
 ### 4. Run the Application
 
 **Development mode:**
 ```bash
-npm run dev
+node src/index.js
 ```
 
-The application will be available at: `http://localhost:3001`
+The application will be available at: `http://localhost:8080`
 
 ## Project Structure
 
@@ -61,14 +68,11 @@ social-media-app-project/
 │   ├── controllers/          # HTTP request handlers
 │   │   ├── auth.controller.js
 │   │   ├── post.controller.js
-│   │   ├── group.controller.js
-│   │   ├── user.controller.js
 │   │   └── ...
 │   ├── models/               # MongoDB models
 │   │   ├── User.js
 │   │   ├── Post.js
-│   │   ├── Group.js
-│   │   └── Notification.js
+│   │   └── Group.js
 │   ├── repositories/         # Data access layer
 │   │   ├── user.repository.js
 │   │   ├── post.repository.js
@@ -83,11 +87,13 @@ social-media-app-project/
 │   │   └── ...
 │   ├── middleware/          # Custom middleware functions
 │   │   ├── auth.js
-│   │   └── upload.js
+│   │   └── ...
 │   ├── views/               # EJS templates
+│   │   ├── partials/
+│   │   ├── search/
 │   │   ├── home.ejs
 │   │   ├── profile.ejs
-│   │   └── partials/
+│   │   └── ...
 │   ├── public/              # Static files
 │   │   ├── js/             # Client-side JavaScript
 │   │   ├── styles/         # CSS files
@@ -135,10 +141,13 @@ social-media-app-project/
 - Map display of users
 - City-based filtering
 
+### Twitter (X) Integration
+- OAuth 2.0 secure authentication
+- Dedicated connection interface
+- post to both platforms simultaneously
+
 ### User Interface
 
 - Modern design with glass morphism effects
 - Smooth animations
 - Advanced Toast notification system
-
-
